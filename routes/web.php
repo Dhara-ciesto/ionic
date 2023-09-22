@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('payment-plan', [IndexController::class, 'paymentPlan'])->name('payment_plan');
     Route::get('terms-and-conditions', [IndexController::class, 'termsAndConditions'])->name('terms_and_conditions');
 });
-Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
+Route::get('/', [App\Http\Controllers\IndexController::class, 'index'])->name('root');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
