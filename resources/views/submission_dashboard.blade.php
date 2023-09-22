@@ -40,43 +40,6 @@
                                 </div>
                             </div>
                         </div>
-                    @else
-                    <div class="table-responsive">
-                        <table>
-
-                        </table>
-                        <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
-                            data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
-                            data-total-field="count" data-data-field="items" data-show-columns="true"
-                            data-show-toggle="false" data-filter-control="true" data-filter-control-container="#filters"
-                            data-show-columns-toggle-all="true">
-                            <div id="filters" class="row bootstrap-table-filter-control">
-
-                            </div>
-                            <thead>
-                                <tr>
-                                    <th data-field="counter" data-sortable="true">#</th>
-                                    {{-- <th data-field="product_brand.name" data-filter-control="select" data-sortable="true">Brand </th> --}}
-                                    <th data-field="buyer_name" data-formatter="nameFormatter" data-filter-control="input" data-sortable="true">Buyer Name
-                                    </th>
-
-                                    {{-- <th data-field="transport_name" data-filter-control="select" data-sortable="true">
-                                        Transport name </th> --}}
-                                    {{-- <th data-field="car_no" data-filter-control="select" data-sortable="true">Car No. </th> --}}
-                                    {{-- <th data-field="created_at" data-filter-control="select" data-sortable="true">Date</th> --}}
-                                    {{-- <th data-field="qty" data-filter-control="input" data-sortable="true">Quantity </th> --}}
-                                    {{-- <th data-field="fragrance_tone_1.name" data-filter-control="select" data-sortable="true">Fragrance Tone 1 </th> --}}
-                                    {{-- <th data-field="price" data-filter-control="input" data-sortable="true">Price </th> --}}
-                                    {{-- <th data-field="campaign.name" data-filter-control="select" data-sortable="true">Campaign </th> --}}
-                                    {{-- <th data-field="gender" data-filter-control="select" data-sortable="true">Gender</th> --}}
-                                    {{-- <th data-field="status"  data-sortable="true">Status</th> --}}
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
                     @endif
                     </div>
                 </div>
