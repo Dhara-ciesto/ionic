@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title> @yield('title') | Estimate</title>
+        <title> @yield('title') | YogiIndustries</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- CSRF Token -->
@@ -16,7 +16,7 @@
   </head>
 
     @yield('body')
-    
+
     @yield('content')
 
     @include('layouts.vendor-scripts')
