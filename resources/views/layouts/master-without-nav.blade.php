@@ -11,7 +11,7 @@
         <meta content="Tira" name="description" />
         <meta content="Tira" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png')}}">
+        {{-- <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png')}}"> --}}
         @include('layouts.head-css')
   </head>
 
