@@ -18,6 +18,21 @@
                             <div class="form-group">
                                 <div class="col-sm-11">
                                     <div class="mb-2">
+                                        <label for="brand_name">Select Category<span class="error">*</span></label>
+                                        <select id="category_id" name="category_id" type="text" class="form-control select2" data-placeholder="Select Scent Type">
+                                            @foreach ($categories as $category)
+                                                <option value="{{$category->id}}" {{old('scent_type_id') == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('category_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-11">
+                                    <div class="mb-2">
                                         <label for="brand_name">Product Name<span class="error">*</span></label>
                                         <input id="product_name" name="product_name" type="text" value="{{old('product_name')}}" class="form-control" placeholder="Product Name">
                                         @error('product_name')
@@ -29,20 +44,10 @@
                             <div class="form-group">
                                 <div class="col-sm-11">
                                     <div class="mb-2">
-                                        <label for="brand_name">Quantity<span class="error">*</span></label>
-                                        <input id="qty" name="qty" type="text" value="{{old('qty')}}" class="form-control" placeholder="Quantity" autocomplete="off">
-                                        @error('qty')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-11">
-                                    <div class="mb-2">
-                                        <label for="brand_name">Price<span class="error">*</span></label>
-                                        <input id="price" name="price" type="text" value="{{old('price')}}" class="form-control" placeholder="Price" autocomplete="off">
-                                        @error('price')
+                                        <label for="brand_name">Photo<span class="error">*</span></label>
+                                        <input id="photo" type="file" name="photo" class="form-control" placeholder="Campaign">{{old('photo')}}</textarea>
+                                        <small>File size maximum limit 5 MB.</small>
+                                        @error('photo')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -238,18 +243,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-11">
-                                    <div class="mb-2">
-                                        <label for="brand_name">Photo<span class="error">*</span></label>
-                                        <input id="photo" type="file" name="photo" class="form-control" placeholder="Campaign">{{old('photo')}}</textarea>
-                                        <small>File size maximum limit 5 MB.</small>
-                                        @error('photo')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>--}}
+                            --}}
                             {{-- <div class="form-group">
                                 <div class="col-sm-5 pt-2">
                                     <div class="text-end">

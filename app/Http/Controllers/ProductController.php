@@ -6,8 +6,8 @@ use Log;
 use App\Models\Unit;
 use App\Models\Product;
 use App\Models\Campaign;
+use App\Models\Category;
 use App\Models\ScentType;
-use App\Models\ProductBrand;
 use Illuminate\Http\Request;
 use App\Models\FragranceTone;
 
@@ -41,11 +41,11 @@ class ProductController extends Controller
         $i = 1;
 
         // your table name
-        $query = Product::with(['product_brand', 'fragrance_tone_1', 'fragrance_tone_2', 'scent_type', 'campaign'])
+        $query = Product::with(['category'])
             ->when($search, function ($q) use ($filter, $i) {
                 foreach ($filter as $key => $item) {
-                    if ($key == 'product_brand.name') {
-                        $q->whereHas('product_brand', function ($c) use ($item) {
+                    if ($key == 'category.name') {
+                        $q->whereHas('category', function ($c) use ($item) {
                             $c->where('name', 'like', '%' . $item . '%');
                         });
                     // } else if ($key == 'scent_type.name') {
@@ -85,7 +85,7 @@ class ProductController extends Controller
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
             $row[$key]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="' . $row[$key]['id'] . '">';
-            // $row[$key]['qty'] =  $row[$key]['size'];
+            $row[$key]['file'] = '<img src="'.$item['file'].'" height="50" width="50">';
         }
         $data['items'] = $row;
         $data['count'] = $count;
@@ -99,11 +99,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $data['brands'] = ProductBrand::where('status', 'Active')->get()->all();
-        $data['fragrence_tones'] = FragranceTone::get()->all();
-        $data['units'] = Unit::get()->all();
-        $data['scent_types'] = ScentType::get()->all();
-        $data['campaigns'] = Campaign::get()->all();
+        $data['categories'] = Category::where('status', 'Active')->get()->all();
         return view('product.create', $data);
     }
 
@@ -117,8 +113,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'product_name' => 'required|unique:products,product_name',
-            'qty' => 'required|numeric',
-            'price' => 'required|numeric'
+            'photo' => 'required'
 
         ]);
 
@@ -158,11 +153,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $data['brands'] = ProductBrand::where('status', 'Active')->get()->all();
-        $data['fragrence_tones'] = FragranceTone::get()->all();
-        $data['units'] = Unit::get()->all();
-        $data['scent_types'] = ScentType::get()->all();
-        $data['campaigns'] = Campaign::get()->all();
+        $data['categories'] = Category::where('status', 'Active')->get()->all();
+
         $data['product'] = Product::findOrFail($id);
         return view('product.edit', $data);
     }
@@ -178,7 +170,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'product_name' => 'required|unique:products,product_name,' . $id,
-            'qty' => 'required|numeric'
+            'category_id' => 'required|numeric'
 
         ]);
         $reqData = $request->all();

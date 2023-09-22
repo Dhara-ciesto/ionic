@@ -13,9 +13,9 @@ class Product extends Model
 
 
 
-    public function product_brand()
+    public function category()
     {
-        return $this->HasOne(ProductBrand::class, 'id', 'product_brand_id');
+        return $this->HasOne(Category::class, 'id', 'category_id');
     }
 
     public function fragrance_tone_1()

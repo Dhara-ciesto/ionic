@@ -88,6 +88,8 @@ class OrderController extends Controller
         $data = [];
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
+            $row[$key]['receipt_image'] = '<img src="'.$item['receipt_image'].'" height="50" width="50">';
+
             $row[$key]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="' . $row[$key]['id'] . '">';
             $row[$key]['created_at'] =  date('d-m-Y h:i a', strtotime($row[$key]['created_at']));
         }
@@ -238,6 +240,28 @@ class OrderController extends Controller
         $product->update($reqData);
         \Log::info('Order having id ' . $id . ' Updated');
         return redirect()->route('product.index')->with('success', 'Order updated successfully');
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addDetails(Request $request)
+    {
+        $order = Order::find($request->order_id);
+        $order->lr_no = $request->lr_no;
+        if ($request->file('photo')) {
+            $photo = $request->file('photo');
+            $filename = time() . '.' . $photo->getClientOriginalExtension();
+            $avatarPath = public_path('/images/product');
+            $photo->move($avatarPath, $filename);
+            $reqData = '/images/product/' . $filename;
+        }
+        $order->receipt_image = $reqData;
+        $order->save();
+        \Log::info('Order having id ' . $order->id . ' Added Details');
+        return response()->json(['success' => true, 'message' => 'Order details addedd successfully']);
     }
 
     /**

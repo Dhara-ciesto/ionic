@@ -76,10 +76,10 @@
                             <tr>
                                 <th data-field="counter" data-sortable="true">#</th>
                                 <th data-field="checkbox"><input type="checkbox" id="select_all" onchange="select_all(this)"></th>
-                                {{-- <th data-field="product_brand.name" data-filter-control="select" data-sortable="true">Brand </th> --}}
+                                <th data-field="category.name" data-filter-control="select" data-sortable="true">Category </th>
                                 <th data-field="product_name" data-filter-control="input" data-sortable="true">Product Name </th>
-                                {{-- <th data-field="scent_type.name" data-filter-control="select" data-sortable="true">Scent Type </th> --}}
-                                <th data-field="qty" data-filter-control="input" data-sortable="true">Quantity </th>
+                                <th data-field="file" data-filter-control="" data-sortable="true">Image </th>
+                                {{-- <th data-field="qty" data-filter-control="input" data-sortable="true">Quantity </th> --}}
                                 {{-- <th data-field="fragrance_tone_1.name" data-filter-control="select" data-sortable="true">Fragrance Tone 1 </th> --}}
                                 {{-- <th data-field="price" data-filter-control="input" data-sortable="true">Price </th> --}}
                                 {{-- <th data-field="campaign.name" data-filter-control="select" data-sortable="true">Campaign </th> --}}
@@ -111,7 +111,7 @@
     <script>
         let $table = $('#user_table');
         $table.bootstrapTable({
-            columns: [{}, {}, {},{},{
+            columns: [{}, {}, {},{},{},{
                 field: 'operate',
                 sortable: 'false',
                 title: 'Action',
@@ -126,7 +126,7 @@
                     let status = row.status == 'Active' ? 'Deactive' : 'Active' ;
                     var class_name = row.status == 'Active' ? 'btn-outline-danger' : 'btn-outline-primary' ;
 
-                    let action = `<a href="${show_url}" class="btn btn-sm btn-outline-info">View</a>&nbsp;<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>
+                    let action = `<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>&nbsp;<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>
                     <button type="button" onClick="changeStatus(${row.id}, ${index}, '${status}')" class="btn btn-sm `+class_name+`">`+status+`</button>`;
                     return action;
                 }

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Product Brand
+    Product Category
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
             Masters
         @endslot
         @slot('title')
-            Product Brand
+        Category
         @endslot
     @endcomponent
 
@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="{{ route('product.brands.create') }}" class="btn btn-outline-danger float-end">{{ __('Add Product Brand') }}</a>
+                    <a href="{{ route('product.category.create') }}" class="btn btn-outline-danger float-end">{{ __('Add Product Category') }}</a>
                 </div>
                 <div class="card-body">
                     {{-- <h4 class="card-title">Basic example</h4> --}}
@@ -29,7 +29,7 @@
                         data-show-toggle="false" data-filter-control="true"  data-filter-control-container="#filters" data-show-columns-toggle-all="true">
                         <div id="filters" class="row bootstrap-table-filter-control">
                             <div class="col-md-4">
-                                <label class="form-label">Brand</label>
+                                <label class="form-label">Category</label>
                                 <input type="text" class="form-control bootstrap-table-filter-control-name" placeholder="Enter Brand Name">
                             </div>
                             <div class="col-md-4">
@@ -42,7 +42,8 @@
                             <thead>
                                 <tr>
                                     <th data-field="counter" data-sortable="true">#</th>
-                                    <th data-field="name" data-filter-control="select" data-sortable="true">Brand Name</th>
+                                    <th data-field="name" data-filter-control="select" data-sortable="true">Category Name</th>
+                                    <th data-field="image"  data-sortable="true">Category Name</th>
                                     <th data-field="status" data-filter-control="select" data-sortable="true">Status</th>
                                 </tr>
                             </thead>
@@ -79,7 +80,7 @@
                 valign: 'middle',
                 clickToSelect: false,
                 formatter: function(value, row, index) {
-                    let url = "{{ route('product.brands.edit', ['id' => ':queryId']) }}";
+                    let url = "{{ route('product.category.edit', ['id' => ':queryId']) }}";
                     var new_status = row.status == 'Deactive' ? 'Active' : 'Deactive';
                     url = url.replace(':queryId', row.id);
                     let color = row.status == 'Active' ? 'btn-outline-danger' : 'btn-outline-success';
@@ -92,7 +93,7 @@
 
 
         function ajaxRequest(params) {
-            var url = "{{ route('product.brands.server_side') }}"
+            var url = "{{ route('product.category.server_side') }}"
             $.get(url + '?' + $.param(params.data)).then(function(res) {
                 params.success(res)
             })
@@ -113,7 +114,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let url = "{{ route('product.brands.destroy', ['id' => ':queryId']) }}";
+                    let url = "{{ route('product.category.destroy', ['id' => ':queryId']) }}";
                     url = url.replace(':queryId', id);
                     $.ajax({
                         url: url,
@@ -153,7 +154,7 @@
 
         }
         function changeStatus(id, index, status) {
-           
+
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -164,7 +165,7 @@
                 confirmButtonText: 'Yes, Change it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let url = "{{ route('product.brands.change_status', ['id' => ':queryId']) }}";
+                    let url = "{{ route('product.category.change_status', ['id' => ':queryId']) }}";
                     url = url.replace(':queryId', id);
                     $.ajax({
                         url: url,
@@ -205,7 +206,7 @@
             })
 
         }
-        
+
     </script>
 
     @if (Session::has('success'))

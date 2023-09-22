@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubmissionController;
 
 /*
@@ -44,14 +45,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('dashboard', [SubmissionController::class, 'SubmissionDashboard'])->name('submission.dashboard');
     Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('logs');
     //product brands routes
-    Route::get('product/brands', [ProductBrandController::class, 'index'])->name('product.brands.index');
-    Route::get('product/brands/create', [ProductBrandController::class, 'create'])->name('product.brands.create');
-    Route::post('product/brands/store', [ProductBrandController::class, 'store'])->name('product.brands.store');
-    Route::get('product/brands/edit/{id}', [ProductBrandController::class, 'edit'])->name('product.brands.edit');
-    Route::post('product/brands/edit/{id}', [ProductBrandController::class, 'update'])->name('product.brands.update');
-    Route::get('product/brands/delete/{id}', [ProductBrandController::class, 'destroy'])->name('product.brands.destroy');
-    Route::get('product/brands-server-side', [ProductBrandController::class, 'logsServerSideOwn'])->name('product.brands.server_side');
-    Route::post('product/brands-changeStatus/{id}', [ProductBrandController::class, 'changeStatus'])->name('product.brands.change_status');
+    Route::get('product/category', [CategoryController::class, 'index'])->name('product.category.index');
+    Route::get('product/category/create', [CategoryController::class, 'create'])->name('product.category.create');
+    Route::post('product/category/store', [CategoryController::class, 'store'])->name('product.category.store');
+    Route::get('product/category/edit/{id}', [CategoryController::class, 'edit'])->name('product.category.edit');
+    Route::post('product/category/edit/{id}', [CategoryController::class, 'update'])->name('product.category.update');
+    Route::get('product/category/delete/{id}', [CategoryController::class, 'destroy'])->name('product.category.destroy');
+    Route::get('product/category-server-side', [CategoryController::class, 'logsServerSideOwn'])->name('product.category.server_side');
+    Route::post('product/category-changeStatus/{id}', [CategoryController::class, 'changeStatus'])->name('product.category.change_status');
 
     //units routes
     Route::get('unit', [UnitController::class, 'index'])->name('unit.index');
@@ -113,6 +114,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
      Route::get('order/selected/delete', [OrderController::class, 'destroySelected'])->name('order.destroy.selected');
      Route::get('order/view/{id}', [OrderController::class, 'show'])->name('order.show');
      Route::get('order/print/{id}', [OrderController::class, 'print'])->name('order.print');
+     Route::post('order/addDetails', [OrderController::class, 'addDetails'])->name('order.addDetails');
+
 
 
 

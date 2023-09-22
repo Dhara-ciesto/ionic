@@ -12,7 +12,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <form method="POST" action="{{route('product.brands.update', ['id' => $brand->id])}}">
+                <form method="POST" action="{{route('product.category.update', ['id' => $brand->id])}}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6">
@@ -22,6 +22,20 @@
                                 @error('name')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="category_image">Category Image<span class="error">*</span></label>
+                                <input id="image" name="image" type="file" value="" accept="image/*" class="form-control" placeholder="Name">
+                                @error('image')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                                @if($brand->image)
+                                <img src="{{ $brand->image }}" height="100" width="100" style="align:right;">
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -38,7 +52,7 @@
                     </div>
                     <div class="d-flex flex-wrap gap-2">
                         <button type="submit" class="btn btn-outline-danger waves-effect waves-light">Update</button>
-                        <a href="{{route('product.brands.index')}}" class="btn btn-danger waves-effect waves-light">Cancel</a>
+                        <a href="{{route('product.category.index')}}" class="btn btn-danger waves-effect waves-light">Cancel</a>
                     </div>
                 </form>
 

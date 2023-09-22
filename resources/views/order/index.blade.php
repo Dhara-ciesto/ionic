@@ -82,15 +82,11 @@
                                     <th data-field="checkbox"><input type="checkbox" id="select_all"
                                             onchange="select_all(this)"></th>
                                     {{-- <th data-field="product_brand.name" data-filter-control="select" data-sortable="true">Brand </th> --}}
-                                    <th data-field="buyer_name" data-filter-control="input" data-sortable="true">Buyer Name
-                                    </th>
-                                    <th data-field="village_name" data-filter-control="select" data-sortable="true">Village
-                                        Type </th>
-                                    <th data-field="transport_name" data-filter-control="select" data-sortable="true">
-                                        Transport name </th>
-                                    <th data-field="car_no" data-filter-control="select" data-sortable="true">Car No. </th>
+                                    <th data-field="lr_no" data-filter-control="input" data-sortable="true">LR Number    </th>
+                                    <th data-field="receipt_image" data-filter-control="select" data-sortable="true">Receipt Image
+                                         </th>
+                                        <th data-field="qty" data-filter-control="input" data-sortable="true">Quantity </th>
                                     <th data-field="created_at" data-filter-control="select" data-sortable="true">Date</th>
-                                    <th data-field="qty" data-filter-control="input" data-sortable="true">Quantity </th>
                                     {{-- <th data-field="fragrance_tone_1.name" data-filter-control="select" data-sortable="true">Fragrance Tone 1 </th> --}}
                                     {{-- <th data-field="price" data-filter-control="input" data-sortable="true">Price </th> --}}
                                     {{-- <th data-field="campaign.name" data-filter-control="select" data-sortable="true">Campaign </th> --}}
@@ -108,6 +104,52 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="post" id="orderDetails" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myLargeModalLabel">Add Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="col-sm-11">
+                                <div class="mb-2">
+                                    <input type="hidden" name="order_id" id="order_id" value="">
+                                    <label for="brand_name">LR Number<span class="error">*</span></label>
+                                    <input id="lr_no" name="lr_no" type="text" value="{{ old('lr_no') }}"
+                                        class="form-control" placeholder="LR Number">
+                                    @error('lr_no')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-11">
+                                <div class="mb-2">
+                                    <label for="brand_name">Photo<span class="error">*</span></label>
+                                    <input id="photo" type="file" name="photo" class="form-control"
+                                        placeholder="Campaign">{{ old('photo') }}</textarea>
+                                    <small>File size maximum limit 5 MB.</small>
+                                    @error('photo')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="addDetails()" class="btn btn-outline-success">Submit</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" id="close_order_dtls">Cancel</button>
+
+                    </div>
+            </form>
+        </div>
+    </div>
+    </div>
 @endsection
 @section('script')
     <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
@@ -121,7 +163,7 @@
     <script>
         let $table = $('#user_table');
         $table.bootstrapTable({
-            columns: [{}, {}, {}, {}, {}, {}, {}, {}, {
+            columns: [{}, {}, {}, {}, {}, {}, {
                 field: 'operate',
                 sortable: 'false',
                 title: 'Action',
@@ -138,11 +180,12 @@
                         'btn-outline-primary';
                     // <a href="${show_url}" class="btn btn-sm btn-outline-info">View</a>&nbsp;
                     let action =
-                        `<select class="form-control" onchange="changeStatus(${row.id}, ${index}, ${this.value})">
-                            <option value="Pending">Pending</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Dispatched">Dispatched</option>
-                            <option value="Cancel">Cancel</option>
+                        ` <a class="btn btn-sm btn-outline-info" data-bs-toggle="modal" onclick="setOrderId(${row.id})" data-bs-target="#exampleModal" >Details</a>&nbsp; <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>&nbsp;<select class="form-control mt-2" id="status_` +
+                        index + `" onchange="changeStatus(${row.id}, ${index}, 'status_` + index + `')">
+                            <option value="Pending" ${row.status == 'Pending' ? `selected` : ''}>Pending</option>
+                            <option value="Completed" ${row.status == 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option value="Dispatched" ${row.status == 'Dispatched' ? 'selected' :''}>Dispatched</option>
+                            <option value="Cancel" ${row.status == 'Cancel' ? 'selected' : ''}>Cancel</option>
                             </select>`;
                     return action;
                 }
@@ -159,6 +202,10 @@
 
         window.tableFilterStripHtml = function(value) {
             return value.replace(/<[^>]+>/g, '').trim();
+        }
+
+        function setOrderId(order_id) {
+            $('#order_id').val(order_id);
         }
 
         function remove(id, index) {
@@ -214,6 +261,7 @@
         }
 
         function changeStatus(id, index, status) {
+            var status = $('#' + status).val();
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -264,6 +312,48 @@
                 }
             })
 
+        }
+
+
+        function addDetails() {
+            var order_id = $('#order_id').val();
+            let url = "{{ route('order.addDetails') }}";
+            // url = url.replace(':queryId', id);
+            $.ajax({
+                url: url,
+                type: "post",
+                data: new FormData($('#orderDetails')[0]),
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data, textStatus, jqXHR) {
+                    if (data.success) {
+                        $('#close_order_dtls').trigger('click');
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal
+                                    .resumeTimer)
+                            }
+                        })
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.message
+                        });
+
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                }
+            });
         }
 
         function select_all(e) {
