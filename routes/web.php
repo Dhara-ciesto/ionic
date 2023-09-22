@@ -123,7 +123,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('view/{id}', [IndexController::class, 'show'])->name('profile_view');
     Route::get('dashboard-data/exports', [IndexController::class, 'export'])->name('dashboard.export');
 
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
+    // Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 
     //Update User Details
     Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
