@@ -1,0 +1,1 @@
+<h3>{{ $details['name'] }} updated by {{auth()->user()->name}}</h3>

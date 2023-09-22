@@ -1,0 +1,1 @@
+<h3>{{ $details['name'] }} created by {{auth()->user()->name}}</h3>

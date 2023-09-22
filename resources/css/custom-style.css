@@ -1,0 +1,7 @@
+.text-login h5.text-primary{
+    color: #fdca27 !important;
+  }
+  a.d-block.auth-logo {
+    background: #fdca27 !important;
+    padding: 10px !important;
+  }

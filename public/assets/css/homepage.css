@@ -1,0 +1,318 @@
+body.home-page , nav.fixed-top.sticky.navbar-background {
+    max-width: 1350px;
+    margin: 0 auto;
+  }
+img.logo-lg-home {
+    margin: 35px auto;
+    text-align: center;
+    width: 100%;
+    object-fit: contain;
+}
+
+section.hero-small-container {
+    /* max-width: 1350px !important; */
+    background-color: #F8F8F8;
+    margin: 0 auto !important;
+}
+div#form_section .card .card-body {
+    /* box-shadow: 0 0 1rem rgb(255 213 53 / 47%); */
+    /* box-shadow: 0 0 1rem #7f7f7f; */
+    /* border-radius: 15px; */
+    border: solid 0.5px #7f7f7f !important;
+    border-color: #7f7f7f;
+    margin-bottom: 30px;
+}
+div#form_section .card .input-group span.input-group-text, div#form_section .card span.input-group-text {
+    background: #7f7f7f;
+    color: #FFFFFF !important;
+    min-width: 30%;
+    border-radius: 30px;
+    font-size: 16px;
+    line-height: 16px;
+    text-transform: uppercase;
+    text-align: center !important;
+    justify-content: center;
+    z-index: 999 !important;
+    border: 0px !important;
+    min-height:38px !important;
+}
+div#form_section .card .input-group input, div#form_section .card .input-group select {
+    border-radius: 30px;
+    border-color: #7f7f7f;
+    border-width: 2px;
+    margin-left: -25px;
+    text-indent: 30px;
+}
+select option{
+    color:#495057;
+}
+div#form_section .card p {
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+.card.files-attached input {
+    border: 0 !important;
+}
+div#form_section .card .card-body .btn-success {
+    color: #7f7f7f;
+    border-color: #7f7f7f;
+    background: transparent;
+    padding: 0.3rem 0.5rem !important;
+}
+.card.files-attached span.input-group-text {
+    position: absolute;
+}
+
+div#form_section .files-attached .input-group input[type=file], div#form_section .files-attached input[type=file] {
+    color: transparent !important;
+    z-index: 999;
+    display: block !important;
+    margin: 0 auto !important;
+    max-width: 150px !important;
+    width:150px;
+    opacity:0
+}
+.card.files-attached span.input-group-text:after {
+    position: absolute;
+    color: #000;
+    font-size: 10px;
+    left: 170px;
+}
+.card.files-attached .photos span.input-group-text:after {
+    /* content: "ADD A PROFILE PICTURE TO SHOW YOUR AUTHENTIC SELF (Optional)"; */
+    border: 2px solid;
+    border-radius: 30px;
+    border-color: #7f7f7f;
+    margin: 5px;
+    padding: 5px 16px 5px 56px;
+    /* left:118px; */
+    color: #495057;
+}
+.photos-icos{
+    font-size:23px;
+    width: 100%;
+    margin-top: -35px;
+    justify-content:center;
+    border:0px;
+    background: none;
+}
+.videos-icos{
+    font-size:23px;
+    width: 100%;
+    margin-top: -35px;
+    justify-content:center;
+    border:0px;
+    background: none;
+}
+.card.files-attached .videos span.input-group-text:after {
+    /* content: "TAKE 60 SECONDS TO TELL US ABOUT YOURSELF (Optional)"; */
+    border: 2px solid;
+    border-radius: 30px;
+    border-color: #7f7f7f;
+    margin: 10px;
+    padding: 5px 16px 5px 56px;
+    /* left:118px; */
+
+    color: #495057;
+}
+.card.files-attached.attach span.input-group-text:after {
+    /* content: "(Optional)"; */
+    color: #495057;
+}
+
+.hero-title {
+    margin-bottom: 0;
+}
+.btn-success,.btn-success:hover {
+    color: #fff;
+    background-color: #7f7f7f;
+    border-color: #7f7f7f;
+    border-radius: 30px;
+}
+.btn-check:focus+.btn-success, .btn-success:focus {
+    -webkit-box-shadow: 0 0 0 0.15rem rgb(253 198 35 / 43%) !important;
+    box-shadow: 0 0 0 0.15rem rgb(253 198 35 / 22%) !important;
+}
+.btn-check:focus+.btn-success, .btn-success:focus, .btn-success:hover {
+    color: #000000 !important;
+    background-color: #7f7f7f !important;
+    border-color: #7f7f7f !important;
+}
+div#form_section .card {
+    box-shadow: 0 0 0 0 !important;
+}
+.file-uploads {
+    display: flex;
+    align-items: center;
+}
+.white-bg{
+    background:#FFFFFF !important;
+  }
+  .list-group-item {
+    border: 0px solid #eff2f7 !important;
+}
+body.home-page, nav.fixed-top.sticky.navbar-background {
+    z-index: 99999999;
+}
+@media only screen and (max-width:600px){
+    .navbar-brand-box {
+        max-width: 80%;
+        display: block !important;
+        /* padding-left: 0 !important; */
+    }
+.navbar-brand-box img.auth-logo-dark {
+    width: 100%;
+    max-width: 250px;
+}
+.card.files-attached span.input-group-text:after {
+    position: absolute;
+    color: #000;
+    font-size: 10px;
+    left: 110px;
+    white-space: break-spaces;
+    width: 200px;
+}
+.section.bg-white .offset-3 {
+    margin-left: 0px !important;
+}
+section.hero-small-container .text-center-.mb-5 {
+    margin: 0 auto !important;
+}
+section.hero-small-container .hero-title {
+    font-size: 18px;
+}
+div#form_section .card .input-group span.input-group-text, div#form_section .card span.input-group-text {
+    border-radius: 30px;
+    font-size: 12px;
+    line-height: 16px;
+}
+div#form_section .card .card-body .btn-success {
+    margin-top: 0 !important;
+}
+h2.title-heading {
+    color: #fdca27;
+    font-size: 1.2pc;
+}
+body.home-page, nav.fixed-top.sticky.navbar-background {
+    margin: 0 auto;
+    max-width: 100%;
+}
+.navbar-brand-box img.auth-logo-dark {
+    max-width: 550px !important;
+}
+.mb-3.file-uploads .input-group {
+    justify-content: center !important;
+}
+.files-attached .card-body.mb-1 {
+    padding: 15px !important;
+}
+.col-lg-12.videos .mb-3.file-uploads {
+    margin-top: -35px;
+    margin-bottom: 0 !important;
+}
+ul.working {
+    padding-left: 0 !important;
+}
+.m-response-p1 {
+    padding: 1rem!important;
+}
+.hero-small-container .align-items-center.text-center.p-5 {
+    padding: 2rem !important;
+}
+.mresponse-p2 {
+    padding: 2rem 1rem !important;
+}
+.m-response-mt-2 {
+    margin-top: 30px !important;
+}
+.work-number {
+    padding: 0px !important;
+    justify-content: center;
+    display: flex;
+    align-self: auto;
+    padding-top: 0px !important;
+    height: 50px !important;
+    width: 50px !important;
+    align-items: center;
+    min-width: 50px !important;
+}
+footer.landing-footer {
+    text-align: center;
+}
+footer.landing-footer img {
+    min-width: 60px;
+    min-height: 60px;
+    object-fit: contain !important;
+}
+.col-md-10.footer-links .col-md-4 {
+    margin-top: 25px !important;
+}
+.file-uploads .input-group {
+    width: 100% !important;
+    display: block !important;
+}
+}
+
+.col-lg-9.text-info-img {
+    font-size: 10px;
+    line-height: 12px;
+    padding-left: 35px;
+    border: 2px solid #7f7f7f;
+    border-radius: 30px !important;
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+}
+.auth-logo-dark{
+    max-width:150px !important;
+}
+@media only screen and (min-width:600px){
+    .spacing-mlr{
+        margin: 0 10rem;
+    }
+    .work-number {
+
+            padding-top: 14.5px !important;
+
+}
+
+}
+@media only screen and (max-width:600px){
+
+    .work-number {
+                    padding: 0px 0px 0px 0px !important;
+
+    padding-top: 0px !important;
+    }
+}
+
+.cv-uploadsfield{
+    width: 100%;
+    margin-top: 0px !important;
+    justify-content:center;
+    border:0px;
+    background: none;
+    margin-bottom: -24px;
+}
+.cv-uploadsfield span.input-group-text {
+    z-index: 0 !important;
+}
+.card.files-attached .card-body {
+    padding-bottom: 15px !important;
+}
+img.toptier-img {
+    max-width: 88% !important;
+    height: auto;
+    width: 100%;
+}
+.footer-links .col-md-4 a {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+.form-check .form-check-input {
+    float: unset !important;
+}
+
+body[data-sidebar=dark] .navbar-brand-box {
+    background: #ffffff !important;
+}
