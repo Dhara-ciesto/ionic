@@ -130,7 +130,7 @@
                         <div class="form-group">
                             <div class="col-sm-11">
                                 <div class="mb-2">
-                                    <label for="brand_name">Photo<span class="error">*</span></label>
+                                    <label for="brand_name">Receipt Photo<span class="error">*</span></label>
                                     <input id="photo" type="file" name="photo" class="form-control"
                                         placeholder="Campaign">{{ old('photo') }}</textarea>
                                     <small>File size maximum limit 5 MB.</small>
