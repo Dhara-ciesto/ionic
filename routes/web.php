@@ -29,7 +29,7 @@ use App\Http\Controllers\SubmissionController;
     });
 Auth::routes(['register' => false]);
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/', [IndexController::class, 'index'])->name('home');
+    Route::get('/login', [IndexController::class, 'index'])->name('home');
     Route::post('/postdata', [SubmissionController::class, 'store'])->name('submission.store');
     Route::post('/get-states', [SubmissionController::class, 'getStates'])->name('submission.getStates');
     Route::post('/get-cities', [SubmissionController::class, 'getCities'])->name('submission.getCities');
@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('payment-plan', [IndexController::class, 'paymentPlan'])->name('payment_plan');
     Route::get('terms-and-conditions', [IndexController::class, 'termsAndConditions'])->name('terms_and_conditions');
 });
-Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
+Route::get('/login', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
