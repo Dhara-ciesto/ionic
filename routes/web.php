@@ -29,7 +29,7 @@ use App\Http\Controllers\SubmissionController;
     });
 Auth::routes(['register' => false]);
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/login', [IndexController::class, 'index'])->name('home');
+    Route::get('/', [IndexController::class, 'index'])->name('home');
     Route::post('/postdata', [SubmissionController::class, 'store'])->name('submission.store');
     Route::post('/get-states', [SubmissionController::class, 'getStates'])->name('submission.getStates');
     Route::post('/get-cities', [SubmissionController::class, 'getCities'])->name('submission.getCities');
