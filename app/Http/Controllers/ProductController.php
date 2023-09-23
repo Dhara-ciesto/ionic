@@ -10,6 +10,12 @@ use App\Models\Category;
 use App\Models\ScentType;
 use Illuminate\Http\Request;
 use App\Models\FragranceTone;
+use App\Exports\ProductExport;
+use App\Imports\ProductImport;
+use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -48,20 +54,20 @@ class ProductController extends Controller
                         $q->whereHas('category', function ($c) use ($item) {
                             $c->where('name', 'like', '%' . $item . '%');
                         });
-                    // } else if ($key == 'scent_type.name') {
-                    //     $q->whereHas('scent_type', function ($c) use ($item) {
-                    //         $c->where('name', 'like', '%' . $item . '%');
-                    //     });
-                    // } else if ($key == 'fragrance_tone_1.name') {
-                    //     $q->whereHas('fragrance_tone_1', function ($c) use ($item) {
-                    //         $c->where('name', 'like', '%' . $item . '%');
-                    //     });
-                    // } else if ($key == 'campaign.name') {
-                    //     $q->whereHas('campaign', function ($c) use ($item) {
-                    //         $c->where('name', 'like', '%' . $item . '%');
-                    //     });
+                        // } else if ($key == 'scent_type.name') {
+                        //     $q->whereHas('scent_type', function ($c) use ($item) {
+                        //         $c->where('name', 'like', '%' . $item . '%');
+                        //     });
+                        // } else if ($key == 'fragrance_tone_1.name') {
+                        //     $q->whereHas('fragrance_tone_1', function ($c) use ($item) {
+                        //         $c->where('name', 'like', '%' . $item . '%');
+                        //     });
+                        // } else if ($key == 'campaign.name') {
+                        //     $q->whereHas('campaign', function ($c) use ($item) {
+                        //         $c->where('name', 'like', '%' . $item . '%');
+                        //     });
                     } else {
-                        $q->where($key,'Like', '%'.$item.'%');
+                        $q->where($key, 'Like', '%' . $item . '%');
                     }
                 }
             })->when($sort, function ($q1) use ($sort, $order) {
@@ -85,7 +91,7 @@ class ProductController extends Controller
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
             $row[$key]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="' . $row[$key]['id'] . '">';
-            $row[$key]['file'] = '<img src="'.$item['file'].'" height="50" width="50">';
+            $row[$key]['file'] = '<img src="' . $item['file'] . '" height="50" width="50">';
         }
         $data['items'] = $row;
         $data['count'] = $count;
@@ -113,7 +119,8 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'product_name' => 'required|unique:products,product_name',
-            'photo' => 'required'
+            'photo' => 'required|mimes:jpeg,png,jpg|size:5120',
+            'category_id' => 'required|numeric',
 
         ]);
 
@@ -170,7 +177,8 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'product_name' => 'required|unique:products,product_name,' . $id,
-            'category_id' => 'required|numeric'
+            'category_id' => 'required|numeric',
+            'photo' => 'mimes:jpeg,png,jpg|size:5120',
 
         ]);
         $reqData = $request->all();
@@ -184,7 +192,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         unset($reqData['photo']);
         $product->update($reqData);
-        \Log::info('Product having id '. $id. ' Updated');
+        \Log::info('Product having id ' . $id . ' Updated');
         return redirect()->route('product.index')->with('success', 'Product updated successfully');
     }
 
@@ -197,7 +205,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::find($id)->delete();
-        \Log::info('Product having id '. $id .' Deleted');
+        \Log::info('Product having id ' . $id . ' Deleted');
         return response()->json(['success' => true, 'message' => 'Product deleted successfully']);
     }
 
@@ -211,7 +219,7 @@ class ProductController extends Controller
     {
         $brand = Product::findOrFail($id);
         $brand->update(['status' => $request->status]);
-        \Log::info('Product having id '. $id.' Updated status to '.$request->status);
+        \Log::info('Product having id ' . $id . ' Updated status to ' . $request->status);
         return response()->json(['success' => true, 'message' => 'Product status changed successfully']);
     }
 
@@ -224,7 +232,104 @@ class ProductController extends Controller
     {
         $ids = $request->ids;
         Product::whereIn('id', explode(",", $ids))->delete();
-        \Log::info('Product with ids '. $request->ids .' Deleted ');
+        \Log::info('Product with ids ' . $request->ids . ' Deleted ');
         return response()->json(['success' => "Products Deleted successfully."]);
+    }
+
+
+    public function import(Request $request)
+    {
+        // dd(request()->file('products'));
+        $file = request()->file('products');
+        $file = fopen($file, "r");
+        $all_products = [];
+        $i = 0;
+        while (($data = fgetcsv($file, 2000, ",")) !== FALSE) {
+
+            if ($i > 0) {
+
+                $exist_product = Product::where('product_name', 'Like', $data[1])->pluck('id')->first();
+                // dump($data[1]);
+                // dd( $exist_product);
+                $category_id = Category::where('name', 'Like', $data[0])->pluck('id')->first();
+                if (!($data[0] && $data[1] && $data[2])) {
+                    $all_products[$i]['product'] = $data[1];
+                    $all_products[$i]['error'] = 'Incomplete Data';
+                } else if (!$category_id) {
+                    $all_products[$i]['product'] = $data[1];
+                    $all_products[$i]['error'] = 'Category Does not match';
+                } elseif ($exist_product) {
+
+                    $all_products[$i]['product'] = $data[1];
+                    $all_products[$i]['error'] = 'Product name already exist';
+                } else {
+                    $filename = $data[2];
+                    $image  = '';
+                    if (file_exists($data[2])) {
+                        $filename = time() . '_' .  basename($data[2]);
+                        $image = '/images/product/' . $filename;
+                        File::copy($data[2], public_path('/images/product/' . $filename));
+                    }
+
+                    Product::create([
+                        'category_id' => $category_id,
+                        'product_name' => $data[1],
+                        'file' => $image,
+                    ]);
+                }
+            }
+            $i++;
+        }
+        // dd($all_products);
+        if ($all_products) {
+            Session::put('all_products', $all_products);
+            return redirect()->route('import.product.success')->with(["all_products" => $all_products, 'msg' => __("Products Imported successfully")]);
+        } else {
+            Session::forget('all_products');
+            return redirect()->route('product.index')->with("success", __("Products Imported successfully"));
+        }
+
+        // try {
+        //     //code...
+        //     Excel::import(new ProductImport, request()->file('products')->store('temp'));
+        // } catch (\Exception $e){
+        //     Log::error($e->getMessage());
+        //     return redirect()->route('product.index')->with("error",$e->getMessage());
+        // }
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function demoexport(Request $request)
+    {
+        return Excel::download(new ProductExport, 'product.csv');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function importSuccess(Request $request)
+    {
+        $data['all_products'] = Session::get('all_products');
+        return view('product.importsuccess', $data);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showimport()
+    {
+        return view('product.import');
     }
 }

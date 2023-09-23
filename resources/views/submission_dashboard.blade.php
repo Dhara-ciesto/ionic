@@ -22,7 +22,7 @@
 <div class="row">
     <div class="col-xl-12">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-3">
                 <div class="card mini-stats-wid">
                     <div class="card-body">
                         @if(Auth::user()->id == 1)

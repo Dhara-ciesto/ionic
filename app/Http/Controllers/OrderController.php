@@ -249,9 +249,17 @@ class OrderController extends Controller
      */
     public function addDetails(Request $request)
     {
+        $request->validate([
+            'lr_no' => 'required',
+            'receipt_image' => 'required|image|max:5120'
+
+        ],['lr_no.required' => 'The LR number field is required',
+        'receipt_image.max' => 'The receipt image may not be greater than 5 MB'
+    ]);
         $order = Order::find($request->order_id);
         $order->lr_no = $request->lr_no;
-        if ($request->file('photo')) {
+        $reqData = '';
+        if ($request->file('receipt_image')) {
             $photo = $request->file('photo');
             $filename = time() . '.' . $photo->getClientOriginalExtension();
             $avatarPath = public_path('/images/product');

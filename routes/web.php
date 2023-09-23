@@ -20,15 +20,16 @@ use App\Http\Controllers\SubmissionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-  Route::get('/clear', function () {
-        \Artisan::call('cache:clear');
-        \Artisan::call('config:clear');
-        \Artisan::call('config:cache');
-        \Artisan::call('view:clear');
-        return "Cleared!";
-    });
+
+Route::get('/clear', function () {
+    \Artisan::call('cache:clear');
+    \Artisan::call('config:clear');
+    \Artisan::call('config:cache');
+    \Artisan::call('view:clear');
+    return "Cleared!";
+});
 Auth::routes(['register' => false]);
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [IndexController::class, 'index'])->name('home');
     Route::post('/postdata', [SubmissionController::class, 'store'])->name('submission.store');
     Route::post('/get-states', [SubmissionController::class, 'getStates'])->name('submission.getStates');
@@ -42,7 +43,7 @@ Route::group(['middleware' => 'auth'], function() {
 Route::get('/', [App\Http\Controllers\IndexController::class, 'index'])->name('root');
 
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('dashboard', [SubmissionController::class, 'SubmissionDashboard'])->name('submission.dashboard');
     Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('logs');
     //product brands routes
@@ -82,19 +83,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('fragrance_tone/delete/{id}', [FragranceToneController::class, 'destroy'])->name('fragrance_tone.destroy');
     Route::get('fragrance_tone-server-side', [FragranceToneController::class, 'logsServerSideOwn'])->name('fragrance_tone.server_side');
 
-     //scent types routes
-     Route::get('product', [ProductController::class, 'index'])->name('product.index');
-     Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
-     Route::post('product/store', [ProductController::class, 'store'])->name('product.store');
-     Route::get('product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
-     Route::post('product/edit/{id}', [ProductController::class, 'update'])->name('product.update');
-     Route::get('product/delete/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
-     Route::get('product-server-side', [ProductController::class, 'logsServerSideOwn'])->name('product.server_side');
-     Route::post('product/changeStatus/{id}', [ProductController::class, 'changeStatus'])->name('product.change_status');
-     Route::get('product/selected/delete', [ProductController::class, 'destroySelected'])->name('product.destroy.selected');
-     Route::get('product/view/{id}', [ProductController::class, 'show'])->name('product.show');
+    //scent types routes
+    Route::get('product', [ProductController::class, 'index'])->name('product.index');
+    Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
+    Route::post('product/store', [ProductController::class, 'store'])->name('product.store');
+    Route::get('product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::post('product/edit/{id}', [ProductController::class, 'update'])->name('product.update');
+    Route::get('product/delete/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+    Route::get('product-server-side', [ProductController::class, 'logsServerSideOwn'])->name('product.server_side');
+    Route::post('product/changeStatus/{id}', [ProductController::class, 'changeStatus'])->name('product.change_status');
+    Route::get('product/selected/delete', [ProductController::class, 'destroySelected'])->name('product.destroy.selected');
+    Route::get('product/view/{id}', [ProductController::class, 'show'])->name('product.show');
+    Route::post('/import/excel/products', [ProductController::class, 'import'])->name("import.excel.product");
+    Route::get('/import/products', [ProductController::class, 'showimport'])->name("import.product");
+    Route::get('/import/products/success', [ProductController::class, 'importSuccess'])->name("import.product.success");
+    Route::get('/export/demoexport', [ProductController::class, 'demoexport'])->name("export.productdemo");
 
-     //Fragrence Tone routes
+
+    //Fragrence Tone routes
     Route::get('campaign', [CampaignController::class, 'index'])->name('campaign.index');
     Route::get('campaign/create', [CampaignController::class, 'create'])->name('campaign.create');
     Route::post('campaign/store', [CampaignController::class, 'store'])->name('campaign.store');
@@ -103,19 +109,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('campaign/delete/{id}', [CampaignController::class, 'destroy'])->name('campaign.destroy');
     Route::get('campaign-server-side', [CampaignController::class, 'logsServerSideOwn'])->name('campaign.server_side');
 
-     //scent types routes
-     Route::get('order', [OrderController::class, 'index'])->name('order.index');
-     Route::get('order/create', [OrderController::class, 'create'])->name('order.create');
-     Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
-     Route::get('order/edit/{id}', [OrderController::class, 'edit'])->name('order.edit');
-     Route::post('order/edit/{id}', [OrderController::class, 'update'])->name('order.update');
-     Route::get('order/delete/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
-     Route::get('order-server-side', [OrderController::class, 'logsServerSideOwn'])->name('order.server_side');
-     Route::post('order/changeStatus/{id}', [OrderController::class, 'changeStatus'])->name('order.change_status');
-     Route::get('order/selected/delete', [OrderController::class, 'destroySelected'])->name('order.destroy.selected');
-     Route::get('order/view/{id}', [OrderController::class, 'show'])->name('order.show');
-     Route::get('order/print/{id}', [OrderController::class, 'print'])->name('order.print');
-     Route::post('order/addDetails', [OrderController::class, 'addDetails'])->name('order.addDetails');
+    //scent types routes
+    Route::get('order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('order/create', [OrderController::class, 'create'])->name('order.create');
+    Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
+    Route::get('order/edit/{id}', [OrderController::class, 'edit'])->name('order.edit');
+    Route::post('order/edit/{id}', [OrderController::class, 'update'])->name('order.update');
+    Route::get('order/delete/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
+    Route::get('order-server-side', [OrderController::class, 'logsServerSideOwn'])->name('order.server_side');
+    Route::post('order/changeStatus/{id}', [OrderController::class, 'changeStatus'])->name('order.change_status');
+    Route::get('order/selected/delete', [OrderController::class, 'destroySelected'])->name('order.destroy.selected');
+    Route::get('order/view/{id}', [OrderController::class, 'show'])->name('order.show');
+    Route::get('order/print/{id}', [OrderController::class, 'print'])->name('order.print');
+    Route::post('order/addDetails', [OrderController::class, 'addDetails'])->name('order.addDetails');
 
 
 
@@ -173,8 +179,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     // Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('sendmail', [App\Http\Controllers\EmailController::class, 'sendEmail']);
     Route::any('emailconfig', [App\Http\Controllers\EmailController::class, 'emailConfig'])->name('email.config');
-
 });
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
-

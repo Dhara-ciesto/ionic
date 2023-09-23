@@ -100,7 +100,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|unique:categories,name',
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg|size:5120',
         ],[
             'name.required' => 'Please Enter Category name',
             'name.unique' => 'Product Brand name has already been taken.'
@@ -154,7 +154,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|unique:categories,name,' . $id,
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg|size:5120',
         ],[
             'name.required' => 'Please Enter Product Category name',
             'name.unique' => 'Product Category name has already been taken.'

@@ -130,11 +130,11 @@
                         <div class="form-group">
                             <div class="col-sm-11">
                                 <div class="mb-2">
-                                    <label for="brand_name">Receipt Photo<span class="error">*</span></label>
-                                    <input id="photo" type="file" name="photo" class="form-control"
-                                        placeholder="Campaign">{{ old('photo') }}</textarea>
+                                    <label for="brand_name">Receipt Image<span class="error">*</span></label>
+                                    <input id="receipt_image" type="file" name="receipt_image" class="form-control"
+                                        placeholder="Campaign">{{ old('receipt_image') }}</textarea>
                                     <small>File size maximum limit 5 MB.</small>
-                                    @error('photo')
+                                    @error('receipt_image')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -351,7 +351,9 @@
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
+                    $.each(jqXHR.responseJSON.errors,function(field_name,error){
+                        $(document).find('[name='+field_name+']').after('<span class="text-strong text-danger">' +error+ '</span>')
+                    })
                 }
             });
         }
