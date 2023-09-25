@@ -334,6 +334,7 @@
                 },
                 success: function(data, textStatus, jqXHR) {
                     if (data.success) {
+                        $table.bootstrapTable('refresh');
                         $('#close_order_dtls').trigger('click');
                         const Toast = Swal.mixin({
                             toast: true,
