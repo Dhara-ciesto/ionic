@@ -137,6 +137,7 @@
                                     @error('receipt_image')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                    <br><span id="old_image"></span>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +181,7 @@
                         'btn-outline-primary';
                     // <a href="${show_url}" class="btn btn-sm btn-outline-info">View</a>&nbsp;
                     let action =
-                        ` <a class="btn btn-sm btn-outline-info" data-bs-toggle="modal" onclick="setOrderId(${row.id})" data-bs-target="#exampleModal" >Details</a>&nbsp; <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>&nbsp;<select class="form-control mt-2" id="status_` +
+                        ` <a class="btn btn-sm btn-outline-info" data-bs-toggle="modal" onclick="setOrderId(${row.id},'${row.lr_no}','${row.receipt_image_url}')" data-bs-target="#exampleModal" >Details</a>&nbsp; <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>&nbsp;<select class="form-control mt-2" id="status_` +
                         index + `" onchange="changeStatus(${row.id}, ${index}, 'status_` + index + `')">
                             <option value="Pending" ${row.status == 'Pending' ? `selected` : ''}>Pending</option>
                             <option value="Completed" ${row.status == 'Completed' ? 'selected' : ''}>Completed</option>
@@ -204,8 +205,11 @@
             return value.replace(/<[^>]+>/g, '').trim();
         }
 
-        function setOrderId(order_id) {
+        function setOrderId(order_id,lr_no,img) {
             $('#order_id').val(order_id);
+            $('#lr_no').val(lr_no);
+            
+            $('#old_image').html('<img src="'+img+'" height="100" width="100">');
         }
 
         function remove(id, index) {

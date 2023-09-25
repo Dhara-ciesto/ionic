@@ -89,6 +89,7 @@ class OrderController extends Controller
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
             $row[$key]['receipt_image'] = '<img src="'.$item['receipt_image'].'" height="50" width="50">';
+            $row[$key]['receipt_image_url'] = $item['receipt_image'];
 
             $row[$key]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="' . $row[$key]['id'] . '">';
             $row[$key]['created_at'] =  date('d-m-Y h:i a', strtotime($row[$key]['created_at']));
