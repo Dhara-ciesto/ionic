@@ -1,16 +1,16 @@
 @extends('layouts.master')
 
 @section('title')
-Campaign
+Notification
 @endsection
 
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-        Masters
+        Notification
         @endslot
         @slot('title')
-            Campaign
+        Notification
         @endslot
     @endcomponent
 
@@ -18,7 +18,7 @@ Campaign
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="{{ route('campaign.create') }}" class="btn btn-outline-danger float-end">{{ __('Add Campaign') }}</a>
+                    <a href="{{ route('notification.create') }}" class="btn btn-outline-danger float-end">{{ __('Add Notification') }}</a>
                 </div>
                 <div class="card-body">
                     {{-- <h4 class="card-title">Basic example</h4> --}}
@@ -29,21 +29,21 @@ Campaign
                             data-show-toggle="false" data-filter-control="true" data-filter-control-container="#filters" data-show-columns-toggle-all="true">
                             <div id="filters" class="row bootstrap-table-filter-control">
                                 <div class="col-md-4">
-                                    <label class="form-label">Campaign</label>
-                                    <input type="text" class="form-control bootstrap-table-filter-control-name" placeholder="Enter Campaign">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="form-control bootstrap-table-filter-control-title" placeholder="Enter title">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Desciption</label>
-                                    <input type="text" class="form-control bootstrap-table-filter-control-description" placeholder="Enter Description">
+                                    <label class="form-label">Message</label>
+                                    <input type="text" class="form-control bootstrap-table-filter-control-message" placeholder="Enter Description">
                                 </div>
                             </div>
                             <thead>
                                 <tr>
                                     <th data-field="counter" data-sortable="true">#</th>
-                                    <th data-field="name" data-filter-control="select" data-sortable="true">Campaign Name</th>
-                                    <th data-field="description" data-filter-control="input" data-sortable="true">Description</th>
-                                    <th data-field="start_date" data-sortable="true">Start Date</th>
-                                    <th data-field="end_date" data-sortable="true">End Date</th>
+                                    <th data-field="title" data-filter-control="select" data-sortable="true">Title</th>
+                                    <th data-field="message" data-filter-control="input" data-sortable="true">Message</th>
+                                    <th data-field="send_date" data-sortable="true">Send Date</th>
+                                    <th data-field="send_time" data-sortable="true">Send Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -79,11 +79,12 @@ Campaign
                 valign: 'middle',
                 clickToSelect: false,
                 formatter: function(value, row, index) {
-                    let url = "{{ route('campaign.edit', ['id' => ':queryId']) }}";
+                    let url = "{{ route('notification.edit', ['id' => ':queryId']) }}";
                     url = url.replace(':queryId', row.id);
                     let checked = row.status == 'Active' ? 'checked' : '';
-                    let action = `<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>
-                    <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-danger">Delete</button>`;
+                    let edit_action = `<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>&nbsp;`;
+                    let action = `<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-danger">Delete</button>`;
+                    row.status == 'Active' ? action = edit_action+action : '';
                     return action;
                 }
             }]
@@ -91,7 +92,7 @@ Campaign
 
 
         function ajaxRequest(params) {
-            var url = "{{ route('campaign.server_side') }}"
+            var url = "{{ route('notification.server_side') }}"
             $.get(url + '?' + $.param(params.data)).then(function(res) {
                 params.success(res)
             })
@@ -112,7 +113,7 @@ Campaign
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let url = "{{ route('campaign.destroy', ['id' => ':queryId']) }}";
+                    let url = "{{ route('notification.destroy', ['id' => ':queryId']) }}";
                     url = url.replace(':queryId', id);
                     $.ajax({
                         url: url,
@@ -152,7 +153,7 @@ Campaign
             })
 
         }
-        
+
     </script>
 
     @if (Session::has('success'))

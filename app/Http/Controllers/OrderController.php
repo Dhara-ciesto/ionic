@@ -260,7 +260,7 @@ class OrderController extends Controller
         $order->lr_no = $request->lr_no;
         $reqData = '';
         if ($request->file('receipt_image')) {
-            $photo = $request->file('photo');
+            $photo = $request->file('receipt_image');
             $filename = time() . '.' . $photo->getClientOriginalExtension();
             $avatarPath = public_path('/images/product');
             $photo->move($avatarPath, $filename);

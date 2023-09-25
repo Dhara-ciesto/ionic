@@ -27,24 +27,27 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::get('kitchen', [KitchenController::class, 'index']);
     // Route::post('place-order', [FranchiseController::class, 'store']);
     // Route::post('change-password', [FranchiseController::class, 'changePassword']);
-    // Route::post('update-profile', [FranchiseController::class, 'updateProfile']);
-    // Route::get('order-history', [FranchiseController::class, 'orderHistory']);
+    Route::post('updateProfile/{id}', [AuthController::class, 'updateProfile']);
+    Route::get('products', [ApiResponseController::class, 'index'])->name('product.index');
+    Route::post('addtocart', [ApiResponseController::class, 'addToCart'])->name('product.addtocart');
+    Route::get('categories', [ApiResponseController::class, 'getCategories'])->name('categories.index');
+    Route::get('getcart', [ApiResponseController::class, 'getcart'])->name('product.getcart');
+    Route::post('editCartItem/{id}', [ApiResponseController::class, 'editCartItem'])->name('product.editCartItem');
+    Route::post('createOrder', [ApiResponseController::class, 'createOrder'])->name('product.createOrder');
+
+
+
     Route::get('/logout', [AuthController::class, 'signout']);
 });
 
 Route::group(['middleware' => ['cors']], function () {
     Route::post('/login', [AuthController::class, 'loginUser']);
+
+    Route::post('/sendotp', [AuthController::class, 'sendotp']);
+    Route::post('/otpverify', [AuthController::class, 'otpverify']);
+
+
     Route::post('/register', [AuthController::class, 'register']);
-    Route::get('products', [ApiResponseController::class, 'index'])->name('product.index');
-    Route::get('getGenderProduct/{gender}/{code?}', [ApiResponseController::class, 'getGenderwiseProduct'])->name('product.genderwise');
-    
-    Route::post('shareFavProduct', [ApiResponseController::class, 'shareFavProduct'])->name('product.shareFavProduct');
-    Route::get('getProducts/{ids}', [ApiResponseController::class, 'getProducts'])->name('product.getProducts');
-    Route::get('getProduct/{id}', [ApiResponseController::class, 'getProduct'])->name('product.getProduct');
-    Route::get('getFragRenceTone/{code}', [ApiResponseController::class, 'getFragRenceTone'])->name('product.getFragRenceTone');
-    Route::get('popup-dismiss', [ApiResponseController::class, 'popupDismissAfter'])->name('product.popupDismissAfter');
-
-
 });
 
 

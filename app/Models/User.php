@@ -25,7 +25,7 @@ class User extends Authenticatable
         'dob', 
         'avatar',
         'username',
-        'company',
+        'whatsapp_no',
         'role'
     ];
 

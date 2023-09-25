@@ -118,7 +118,7 @@
                         </a>
                     </li> --}}
 
-                     <li>
+                    <li>
                         <a href="{{route('user.index')}}" class="waves-effect">
                             <i class="fas fa-users"></i>
                             <span key="t-starter-page">{{__('Manage Admin')}}</span>
@@ -128,6 +128,12 @@
                         <a href="{{ route('order.index') }}" class="waves-effect">
                             <i class="fas fa-list"></i>
                             <span key="t-starter-page">{{ __('Orders') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('notification.index') }}" class="waves-effect">
+                            <i class="fas fa-bell"></i>
+                            <span key="t-starter-page">{{ __('Notification') }}</span>
                         </a>
                     </li>
                         {{-- <li>

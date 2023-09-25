@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubmissionController;
 
@@ -65,25 +66,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('unit/delete/{id}', [UnitController::class, 'destroy'])->name('unit.destroy');
     Route::get('unit-server-side', [UnitController::class, 'logsServerSideOwn'])->name('unit.server_side');
 
-    //scent types routes
-    Route::get('scent_types', [ScentTypeController::class, 'index'])->name('scent_types.index');
-    Route::get('scent_types/create', [ScentTypeController::class, 'create'])->name('scent_types.create');
-    Route::post('scent_types/store', [ScentTypeController::class, 'store'])->name('scent_types.store');
-    Route::get('scent_types/edit/{id}', [ScentTypeController::class, 'edit'])->name('scent_types.edit');
-    Route::post('scent_types/edit/{id}', [ScentTypeController::class, 'update'])->name('scent_types.update');
-    Route::get('scent_types/delete/{id}', [ScentTypeController::class, 'destroy'])->name('scent_types.destroy');
-    Route::get('scent_types-server-side', [ScentTypeController::class, 'logsServerSideOwn'])->name('scent_types.server_side');
 
-    //Fragrence Tone routes
-    Route::get('fragrance_tone', [FragranceToneController::class, 'index'])->name('fragrance_tone.index');
-    Route::get('fragrance_tone/create', [FragranceToneController::class, 'create'])->name('fragrance_tone.create');
-    Route::post('fragrance_tone/store', [FragranceToneController::class, 'store'])->name('fragrance_tone.store');
-    Route::get('fragrance_tone/edit/{id}', [FragranceToneController::class, 'edit'])->name('fragrance_tone.edit');
-    Route::post('fragrance_tone/edit/{id}', [FragranceToneController::class, 'update'])->name('fragrance_tone.update');
-    Route::get('fragrance_tone/delete/{id}', [FragranceToneController::class, 'destroy'])->name('fragrance_tone.destroy');
-    Route::get('fragrance_tone-server-side', [FragranceToneController::class, 'logsServerSideOwn'])->name('fragrance_tone.server_side');
 
-    //scent types routes
     Route::get('product', [ProductController::class, 'index'])->name('product.index');
     Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('product/store', [ProductController::class, 'store'])->name('product.store');
@@ -100,14 +84,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/export/demoexport', [ProductController::class, 'demoexport'])->name("export.productdemo");
 
 
-    //Fragrence Tone routes
-    Route::get('campaign', [CampaignController::class, 'index'])->name('campaign.index');
-    Route::get('campaign/create', [CampaignController::class, 'create'])->name('campaign.create');
-    Route::post('campaign/store', [CampaignController::class, 'store'])->name('campaign.store');
-    Route::get('campaign/edit/{id}', [CampaignController::class, 'edit'])->name('campaign.edit');
-    Route::post('campaign/edit/{id}', [CampaignController::class, 'update'])->name('campaign.update');
-    Route::get('campaign/delete/{id}', [CampaignController::class, 'destroy'])->name('campaign.destroy');
-    Route::get('campaign-server-side', [CampaignController::class, 'logsServerSideOwn'])->name('campaign.server_side');
+    //notification Tone routes
+    Route::get('notification', [NotificationController::class, 'index'])->name('notification.index');
+    Route::get('notification/create', [NotificationController::class, 'create'])->name('notification.create');
+    Route::post('notification/store', [NotificationController::class, 'store'])->name('notification.store');
+    Route::get('notification/edit/{id}', [NotificationController::class, 'edit'])->name('notification.edit');
+    Route::post('notification/edit/{id}', [NotificationController::class, 'update'])->name('notification.update');
+    Route::get('notification/delete/{id}', [NotificationController::class, 'destroy'])->name('notification.destroy');
+    Route::get('notification-server-side', [NotificationController::class, 'logsServerSideOwn'])->name('notification.server_side');
 
     //scent types routes
     Route::get('order', [OrderController::class, 'index'])->name('order.index');

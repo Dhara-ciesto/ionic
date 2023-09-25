@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Http\Request;
-use App\Models\Campaign;
 
-class CampaignController extends Controller
+class NotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,15 +15,15 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        return view('campaign.index');
+        return view('notification.index');
     }
 
     /**
      * Display a listing of the resource.
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\Response
-     * 
+     *
      */
     public function logsServerSideOwn(Request $request)
     {
@@ -34,8 +35,8 @@ class CampaignController extends Controller
         $limit = $request->limit;
         $i = 1;
 
-        // your table name 
-        $query = Campaign::when($search, function ($q) use ($filter, $i) {
+        // your table name
+        $query = Notification::when($search, function ($q) use ($filter, $i) {
             foreach ($filter as $key => $item) {
                 if ($key == 'status') {
                     if (strtolower($item) == 'active') {
@@ -67,6 +68,10 @@ class CampaignController extends Controller
         $data = [];
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
+            $row[$key]['send_date'] = date('d-m-Y',strtotime($item['send_date']));
+            $row[$key]['send_time'] = date('h:i a',strtotime($item['send_time']));
+
+            
         }
         $data['items'] = $row;
         $data['count'] = $count;
@@ -81,7 +86,8 @@ class CampaignController extends Controller
      */
     public function create()
     {
-        return view('campaign.create');
+        $data['users'] =  User::where('role',2)->get()->all();
+        return view('notification.create',$data);
     }
 
     /**
@@ -93,16 +99,18 @@ class CampaignController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:campaigns,name',
-            'start_date' => 'date',
-            'end_date' => 'date',
-        ],[ 
-            'name.required' => 'Please Enter Campaign name',
-            'name.unique' => 'Campaign name has already been taken.'
+            'title' => 'required|unique:notification,title',
+            'user_ids' => 'required',
+            'message' => 'required',
+            'send_date' => 'required|date',
+            'send_time' => 'required',
+        ],[
+            'title.required' => 'Please Enter Notification name',
+            'user_ids.required' => 'Please Select Users.'
         ]);
-        Campaign::create($request->all());
-        \Log::info('Campaign Created');
-        return redirect()->route('campaign.index')->with('success', 'Campaign created successfully');
+        Notification::create($request->all());
+        \Log::info('Notification Created');
+        return redirect()->route('notification.index')->with('success', 'Notification created successfully');
     }
 
     /**
@@ -124,8 +132,9 @@ class CampaignController extends Controller
      */
     public function edit($id)
     {
-        $data['campaign'] = Campaign::findOrFail($id);
-        return view('campaign.edit', $data);
+        $data['users'] =  User::where('role',2)->get()->all();
+        $data['notification'] = Notification::findOrFail($id);
+        return view('notification.edit', $data);
     }
 
     /**
@@ -138,17 +147,21 @@ class CampaignController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:campaigns,name,'.$id
-        ],[ 
-            'name.required' => 'Please Enter Campaign name',
-            'name.unique' => 'Campaign name has already been taken'
+            'title' => 'required|unique:notification,title',
+            'user_ids' => 'required',
+            'message' => 'required',
+            'send_date' => 'required|date',
+            'send_time' => 'required',
+        ],[
+            'title.required' => 'Please Enter Notification name',
+            'user_ids.required' => 'Please Select Users.'
         ]);
         $reqData = $request->all();
 
-        $brand = Campaign::findOrFail($id);
+        $brand = Notification::findOrFail($id);
         $brand->update($reqData);
-        \Log::info('Campaign having id '. $id.' Updated');
-        return redirect()->route('campaign.index')->with('success', 'Campaign updated successfully');
+        \Log::info('Notification having id '. $id.' Updated');
+        return redirect()->route('notification.index')->with('success', 'Notification updated successfully');
     }
 
     /**
@@ -159,9 +172,9 @@ class CampaignController extends Controller
      */
     public function destroy($id)
     {
-        Campaign::find($id)->delete();
-        \Log::info('Campaign having id '. $id.' Deleted');
-        return response()->json(['success' => true, 'message' => 'Campaign deleted successfully']);
+        Notification::find($id)->delete();
+        \Log::info('Notification having id '. $id.' Deleted');
+        return response()->json(['success' => true, 'message' => 'Notification deleted successfully']);
     }
 
     /**
@@ -172,9 +185,10 @@ class CampaignController extends Controller
      */
     public function changeStatus($id, Request $request)
     {
-        $brand = Campaign::findOrFail($id);
+        $brand = Notification::findOrFail($id);
         $brand->update(['status' => $request->status]);
-        \Log::info('Campaign having id '. $id.' Updated status to '.$request->status);
-        return response()->json(['success' => true, 'message' => 'Campaign status changed successfully']);
+        \Log::info('Notification having id '. $id.' Updated status to '.$request->status);
+        return response()->json(['success' => true, 'message' => 'Notification status changed successfully']);
     }
+
 }

@@ -28,10 +28,16 @@ class Order extends Model
     //     return Product::whereIn('id', explode(',', $monitorId))->get();
     // }
 
-    // public function products(): Attribute
-    // {
-    //     return new Attribute(
-    //         get: fn($value) =>  Product::whereIn('id',explode(',', $this->attributes['product']))->get(),
-    //     );
-    // }
+    public function carts(): Attribute
+    {
+        return new Attribute(
+            get: fn($value) =>  Cart::whereIn('id',explode(',', $this->attributes['cart_id']))->get(),
+        );
+    }
+    public function cartproducts(): Attribute
+    {
+        return new Attribute(
+            get: fn($value) =>  Product::whereIn('id',explode(',', $this->attributes['product_id']))->get(),
+        );
+    }
 }
