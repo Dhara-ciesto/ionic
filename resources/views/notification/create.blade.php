@@ -85,7 +85,7 @@
                                         <label for="Campaign">Send Date<span class="error">*</span></label>
                                         <input id="send_date" name="send_date" type="text" autocomplete="off"
                                             value="{{ old('send_date') }}" class="form-control datepicker"
-                                            placeholder="Start Date">
+                                            placeholder="Send Date">
                                             @error('send_date')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
