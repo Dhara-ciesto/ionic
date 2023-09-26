@@ -20,7 +20,7 @@
                                     <div class="col-7">
                                         <div class="text-danger p-4">
                                             <h5 class="text-danger"> Reset Password</h5>
-                                            <p>Re-Password with Tira.</p>
+                                            <p>Re-Password</p>
                                         </div>
                                     </div>
                                     <div class="col-5 align-self-end">
@@ -77,7 +77,7 @@
                             <p>© <script>
                                     document.write(new Date().getFullYear())
 
-                                </script> Tira
+                                </script> Yogi Industries
                         </div>
 
                     </div>

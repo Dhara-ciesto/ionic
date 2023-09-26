@@ -29,12 +29,12 @@
                                 </div>
                             </div>
                             <div class="card-body pt-0">
-                                {{-- <div class="auth-logo">
+                                <div class="auth-logo">
                                     <a href="" class="auth-logo-light">
                                         <div class="avatar-lg profile-user-wid mb-4">
                                             <span class="avatar-title rounded-circle bg-light">
                                               <img src="{{ URL::asset('assets/images/logo.png') }}" alt=""
-                                                    class="" height="40">
+                                                    class="" height="50">
                                             </span>
                                         </div>
                                     </a>
@@ -42,11 +42,11 @@
                                         <div class="avatar-lg profile-user-wid mb-4">
                                             <span class="avatar-title rounded-circle bg-light">
                                                  <img src="{{ URL::asset('/assets/images/logo.png') }}" alt=""
-                                                    class="" height="40">
+                                                    class="" height="50">
                                             </span>
                                         </div>
                                     </a>
-                                </div> --}}
+                                </div>
                                 <div class="p-2">
                                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                                         @csrf
