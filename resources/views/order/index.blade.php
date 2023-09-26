@@ -181,13 +181,18 @@
                         'btn-outline-primary';
                     // <a href="${show_url}" class="btn btn-sm btn-outline-info">View</a>&nbsp;
                     let action =
-                        ` <a class="btn btn-sm btn-outline-info" data-bs-toggle="modal" onclick="setOrderId(${row.id},'${row.lr_no}','${row.receipt_image_url}')" data-bs-target="#exampleModal" >Details</a>&nbsp; <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>&nbsp;<select class="form-control mt-2" id="status_` +
+                        ` <a class="btn btn-sm btn-outline-info" data-bs-toggle="modal" onclick="setOrderId(${row.id},'${row.lr_no}','${row.receipt_image_url}')" data-bs-target="#exampleModal" >Details</a>&nbsp; <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>`;
+                        if(row.status != 'Completed'){
+                            action += `&nbsp;<select class="form-control mt-2" id="status_` +
                         index + `" onchange="changeStatus(${row.id}, ${index}, 'status_` + index + `')">
                             <option value="Pending" ${row.status == 'Pending' ? `selected` : ''}>Pending</option>
                             <option value="Completed" ${row.status == 'Completed' ? 'selected' : ''}>Completed</option>
                             <option value="Dispatched" ${row.status == 'Dispatched' ? 'selected' :''}>Dispatched</option>
                             <option value="Cancel" ${row.status == 'Cancel' ? 'selected' : ''}>Cancel</option>
                             </select>`;
+                        }else{
+                            action += `<input type="text" class="form-control" value="${row.status}" disabled readonly>`;
+                        }
                     return action;
                 }
             }]
