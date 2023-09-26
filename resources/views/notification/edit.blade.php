@@ -48,7 +48,7 @@
                                     </option>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}"
-                                            {{ in_array($user->id,old('user_ids',$notification->user_ids)) == $user->id ? 'selected' : '' }}>{{ $user->name }}
+                                            @if(old('user_ids',$notification->user_ids)) {{ in_array($user->id,old('user_ids',$notification->user_ids)) == $user->id ? 'selected' : '' }} @endif >{{ $user->name }}
                                         </option>
                                     @endforeach
                                 </select>
