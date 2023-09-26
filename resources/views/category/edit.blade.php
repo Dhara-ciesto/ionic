@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
-@section('title') Product Brand @endsection
+@section('title') Category @endsection
 
 @section('content')
 @component('components.breadcrumb')
 @slot('li_1') Masters @endslot
-@slot('title') Edit Product Brand @endslot
+@slot('title') Edit Category @endslot
 @endcomponent
 
 <div class="row">

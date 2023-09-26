@@ -25,9 +25,9 @@
                     <div class="">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                         data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
-                        data-total-field="count" data-data-field="items" data-show-columns="true"
+                        data-total-field="count" data-data-field="items" data-show-columns="false"
                         data-show-toggle="false" data-filter-control="true"  data-filter-control-container="#filters" data-show-columns-toggle-all="true">
-                        <div id="filters" class="row bootstrap-table-filter-control">
+                        <div id="filters" class="row bootstrap-table-filter-control mb-4">
                             <div class="col-md-4">
                                 <label class="form-label">Category</label>
                                 <input type="text" class="form-control bootstrap-table-filter-control-name" placeholder="Enter Brand Name">
@@ -73,7 +73,7 @@
     <script>
         let $table = $('#user_table');
         $table.bootstrapTable({
-            columns: [{}, {}, {}, {
+            columns: [{}, {}, {},  {}, {
                 field: 'operate',
                 title: 'Action',
                 align: 'center',

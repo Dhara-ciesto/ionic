@@ -156,12 +156,11 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|unique:categories,name,' . $id,
-            'image' => 'required|mimes:jpeg,png,jpg|max:5120',
+            'image' => 'mimes:jpeg,png,jpg|max:5120',
         ],[
             'name.required' => 'Please Enter Product Category name',
             'name.unique' => 'Product Category name has already been taken.',
-            'image.size'=> 'Category Image may not be greater than 5 mb.',
-            'image.size'=> 'The category image field is required.'
+            'image.size'=> 'Category Image may not be greater than 5 mb.'
         ]);
         $reqData = $request->all();
 

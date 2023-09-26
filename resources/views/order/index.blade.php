@@ -26,9 +26,9 @@
                     <div class="">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                             data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
-                            data-total-field="count" data-data-field="items" data-show-columns="true"
+                            data-total-field="count" data-data-field="items" data-show-columns="false"
                             data-show-toggle="false" data-filter-control="true" data-filter-control-container="#filters"
-                            data-show-columns-toggle-all="true">
+                            data-show-columns-toggle-all="false">
                             <div id="filters" class="row bootstrap-table-filter-control">
                                 {{-- <div class="col-md-2">
                                 <label class="form-label">Brand</label>
@@ -36,10 +36,10 @@
                                     <option value=""></option>
                                 </select>
                             </div> --}}
-                                {{-- <div class="col-md-2">
-                                <label class="form-label">Product</label>
-                                <input type="text" class="form-control bootstrap-table-filter-control-product_name" placeholder="Enter Product Name">
-                            </div> --}}
+                            <div class="col-md-2">
+                                <label class="form-label">LR Number</label>
+                                <input type="text" class="form-control bootstrap-table-filter-control-lr_no" placeholder="Enter Product Name">
+                            </div>
                                 {{-- <div class="col-md-1">
                                 <label class="form-label">Scent Type</label>
                                 <select class="form-control bootstrap-table-filter-control-scent_type.name" data-placeholder="Select Scent Type" data-field="scent_type.name">
@@ -73,7 +73,7 @@
                                 </select>
                             </div> --}}
                             </div>
-                            <button type="button" id="delete_all" style="margin-bottom:0px;margin-top:20px"
+                            <button type="button" id="delete_all" style="margin-bottom:20px;margin-top:20px"
                                 class="btn btn-outline-danger" data-url="{{ route('product.destroy.selected') }}"
                                 onclick="delete_all()">Delete All Selected</button>
                             <thead>
@@ -208,7 +208,7 @@
         function setOrderId(order_id,lr_no,img) {
             $('#order_id').val(order_id);
             $('#lr_no').val(lr_no);
-            
+
             $('#old_image').html('<img src="'+img+'" height="100" width="100">');
         }
 

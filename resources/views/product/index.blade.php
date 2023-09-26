@@ -26,7 +26,7 @@
                     <div class="">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                         data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
-                        data-total-field="count" data-data-field="items" data-show-columns="true"
+                        data-total-field="count" data-data-field="items" data-show-columns="false"
                         data-show-toggle="false" data-filter-control="true" data-filter-control-container="#filters" data-show-columns-toggle-all="true">
                         <div id="filters" class="row bootstrap-table-filter-control">
                             {{-- <div class="col-md-2">
@@ -72,7 +72,7 @@
                                 </select>
                             </div> --}}
                         </div>
-                        <button type="button" id="delete_all" style="margin-bottom:0px;margin-top:20px" class="btn btn-outline-danger" data-url="{{ route('product.destroy.selected') }}" onclick="delete_all()">Delete All Selected</button>
+                        <button type="button" id="delete_all" style="margin-bottom:20px;margin-top:20px" class="btn btn-outline-danger" data-url="{{ route('product.destroy.selected') }}" onclick="delete_all()">Delete All Selected</button>
                         <thead>
                             <tr>
                                 <th data-field="counter" data-sortable="true">#</th>
