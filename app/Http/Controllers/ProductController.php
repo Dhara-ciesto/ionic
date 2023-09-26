@@ -252,9 +252,18 @@ class ProductController extends Controller
                 // dump($data[1]);
                 // dd( $exist_product);
                 $category_id = Category::where('name', 'Like', $data[0])->pluck('id')->first();
+                $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief','jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
+                $explodeImage = explode('.',  $data[2]);
+                $extension = end($explodeImage);
+                
+                
+
                 if (!($data[0] && $data[1] && $data[2])) {
                     $all_products[$i]['product'] = $data[1];
                     $all_products[$i]['error'] = 'Incomplete Data';
+                } else if(!in_array($extension, $imageExtensions)){
+                    $all_products[$i]['product'] = $data[1];
+                    $all_products[$i]['error'] = 'Product image file must be a image';
                 } else if (!$category_id) {
                     $all_products[$i]['product'] = $data[1];
                     $all_products[$i]['error'] = 'Category Does not match';
@@ -265,6 +274,8 @@ class ProductController extends Controller
                 } else {
                     $filename = $data[2];
                     $image  = '';
+                  
+
                     if (file_exists($data[2])) {
                         $filename = time() . '_' .  basename($data[2]);
                         $image = '/images/product/' . $filename;

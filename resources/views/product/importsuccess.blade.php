@@ -19,6 +19,8 @@
             <div class="card">
                 <div class="card-header">
                     <a href="{{ route('import.product') }}" class="btn btn-outline-danger float-end me-1">{{ __('Back') }}</a>
+                    <a href="{{ route('product.index') }}" class="btn btn-outline-info float-end me-1">{{ __('View Products') }}</a>
+
                 </div>
                 <div class="card-body p-5">
                     <div class="row">

@@ -23,7 +23,7 @@
                 </div>
                 <div class="card-body">
                     <h4 class="card-title">Filters</h4>
-                    <div class="table-responsive">
+                    <div class="">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                         data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
                         data-total-field="count" data-data-field="items" data-show-columns="true"
