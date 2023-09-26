@@ -105,7 +105,7 @@ class NotificationController extends Controller
             // 'send_date' => 'required|date',
             // 'send_time' => 'required',
         ],[
-            'title.required' => 'Please Enter Notification name',
+            'title.required' => 'Please enter notification title',
             'user_ids.required' => 'Please Select Users.'
         ]);
         Notification::create($request->all());
@@ -153,7 +153,7 @@ class NotificationController extends Controller
             // 'send_date' => 'required|date',
             // 'send_time' => 'required',
         ],[
-            'title.required' => 'Please Enter Notification name',
+            'title.required' => 'Please enter notification title',
             'user_ids.required' => 'Please Select Users.'
         ]);
         $reqData = $request->all();
