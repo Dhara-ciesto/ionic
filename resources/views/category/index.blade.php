@@ -7,7 +7,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            Masters
+        Dashboard
         @endslot
         @slot('title')
             Category

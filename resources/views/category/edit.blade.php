@@ -4,7 +4,7 @@
 
 @section('content')
 @component('components.breadcrumb')
-@slot('li_1') Masters @endslot
+@slot('li_1') Dashboard @endslot
 @slot('title') Edit Category @endslot
 @endcomponent
 

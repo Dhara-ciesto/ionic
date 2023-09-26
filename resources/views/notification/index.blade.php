@@ -7,7 +7,7 @@ Notification
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-        Notification
+        Dashboard
         @endslot
         @slot('title')
         Notification
@@ -25,8 +25,8 @@ Notification
                     <div class="table-responsive">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                             data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
-                            data-total-field="count" data-data-field="items" data-show-columns="true"
-                            data-show-toggle="false" data-filter-control="false" data-filter-control-container="#filters" data-show-columns-toggle-all="true">
+                            data-total-field="count" data-data-field="items" data-show-columns="false"
+                            data-show-toggle="false" data-filter-control="false" data-filter-control-container="#filters" data-show-columns-toggle-all="false">
                             {{-- <div id="filters" class="row bootstrap-table-filter-control">
                                 <div class="col-md-4">
                                     <label class="form-label">Title</label>
