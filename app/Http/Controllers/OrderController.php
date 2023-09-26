@@ -252,7 +252,7 @@ class OrderController extends Controller
     {
         $request->validate([
             'lr_no' => 'required',
-            'receipt_image' => 'required|image|max:5120'
+            'receipt_image' => 'image|max:5120'
 
         ],['lr_no.required' => 'The LR number field is required',
         'receipt_image.max' => 'The receipt image may not be greater than 5 MB'
