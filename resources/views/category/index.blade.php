@@ -46,9 +46,9 @@
                             <thead>
                                 <tr>
                                     <th data-field="counter" data-sortable="true">#</th>
+                                    <th data-field="image" data-sortable="true">Image</th>
                                     <th data-field="name" data-filter-control="select" data-sortable="true">Category Name
                                     </th>
-                                    <th data-field="image" data-sortable="true">Category Image</th>
                                     <th data-field="status" data-filter-control="select" data-sortable="true">Status</th>
                                 </tr>
                             </thead>
