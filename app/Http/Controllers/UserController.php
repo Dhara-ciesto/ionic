@@ -15,10 +15,12 @@ class UserController extends Controller
 {
     public function __construct() {
         $this->middleware(function ($request, $next) {
-            if (auth()->user()->role != 0) {
+            if (auth()->user()->role == 0 || auth()->user()->role == 1) {
+                // abort(404);
+                return $next($request);
+            }else{
                 abort(404);
             }
-            return $next($request);
         });
     }
 
