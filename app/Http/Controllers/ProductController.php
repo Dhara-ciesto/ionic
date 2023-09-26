@@ -119,7 +119,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'product_name' => 'required|unique:products,product_name',
-            'photo' => 'required|mimes:jpeg,png,jpg|size:5120',
+            'photo' => 'required|image|max:5120',
             'category_id' => 'required|numeric',
 
         ]);
@@ -178,7 +178,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'product_name' => 'required|unique:products,product_name,' . $id,
             'category_id' => 'required|numeric',
-            'photo' => 'mimes:jpeg,png,jpg|size:5120',
+            'photo' => 'image|max:5120',
 
         ]);
         $reqData = $request->all();
