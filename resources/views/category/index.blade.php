@@ -10,7 +10,7 @@
             Masters
         @endslot
         @slot('title')
-        Category
+            Category
         @endslot
     @endcomponent
 
@@ -18,32 +18,37 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="{{ route('product.category.create') }}" class="btn btn-outline-danger float-end">{{ __('Add Product Category') }}</a>
+                    <a href="{{ route('product.category.create') }}"
+                        class="btn btn-outline-danger float-end">{{ __('Add Product Category') }}</a>
                 </div>
                 <div class="card-body">
                     {{-- <h4 class="card-title">Basic example</h4> --}}
                     <div class="">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
-                        data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
-                        data-total-field="count" data-data-field="items" data-show-columns="false"
-                        data-show-toggle="false" data-filter-control="true"  data-filter-control-container="#filters" data-show-columns-toggle-all="true">
-                        <div id="filters" class="row bootstrap-table-filter-control mb-4">
-                            <div class="col-md-4">
-                                <label class="form-label">Category</label>
-                                <input type="text" class="form-control bootstrap-table-filter-control-name" placeholder="Enter Brand Name">
+                            data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
+                            data-total-field="count" data-data-field="items" data-show-columns="false"
+                            data-show-toggle="false" data-filter-control="true" data-filter-control-container="#filters"
+                            data-show-columns-toggle-all="true">
+                            <div id="filters" class="row bootstrap-table-filter-control mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label">Category</label>
+                                    <input type="text" class="form-control bootstrap-table-filter-control-name"
+                                        placeholder="Enter Category">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-control bootstrap-table-filter-control-status"
+                                        aria-placeholder="Select Status">
+                                        <option value="">Select Status</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Status</label>
-                                <select class="form-control bootstrap-table-filter-control-status" aria-placeholder="Select Status">
-                                    <option value="">Select Status</option>
-                                </select>
-                            </div>
-                        </div>
                             <thead>
                                 <tr>
                                     <th data-field="counter" data-sortable="true">#</th>
-                                    <th data-field="name" data-filter-control="select" data-sortable="true">Category Name</th>
-                                    <th data-field="image"  data-sortable="true">Category Name</th>
+                                    <th data-field="name" data-filter-control="select" data-sortable="true">Category Name
+                                    </th>
+                                    <th data-field="image" data-sortable="true">Category Image</th>
                                     <th data-field="status" data-filter-control="select" data-sortable="true">Status</th>
                                 </tr>
                             </thead>
@@ -73,7 +78,7 @@
     <script>
         let $table = $('#user_table');
         $table.bootstrapTable({
-            columns: [{}, {}, {},  {}, {
+            columns: [{}, {}, {}, {}, {
                 field: 'operate',
                 title: 'Action',
                 align: 'center',
@@ -85,7 +90,8 @@
                     url = url.replace(':queryId', row.id);
                     let color = row.status == 'Active' ? 'btn-outline-danger' : 'btn-outline-success';
                     // <button type="button" onClick="changeStatus(${row.id}, ${index}, '${new_status}')" class="btn btn-sm `+color+`">`+new_status+`</button>&nbsp;
-                    let action = `<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>&nbsp;<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>`;
+                    let action =
+                        `<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>&nbsp;<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>&nbsp;<button type="button" onClick="changeStatus(${row.id}, ${index}, '${new_status}')" class="btn btn-sm `+color+`">`+new_status+`</button>`;
                     return action;
                 }
             }]
@@ -153,6 +159,7 @@
             })
 
         }
+
         function changeStatus(id, index, status) {
 
             Swal.fire({
@@ -170,7 +177,9 @@
                     $.ajax({
                         url: url,
                         type: "post",
-                        data:{status: status },
+                        data: {
+                            status: status
+                        },
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
@@ -200,13 +209,12 @@
                             console.log(jqXHR);
                         }
                     });
-                }else{
-                    $('#status-switch-'+index).prop('checked',false);
+                } else {
+                    $('#status-switch-' + index).prop('checked', false);
                 }
             })
 
         }
-
     </script>
 
     @if (Session::has('success'))

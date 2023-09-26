@@ -14,6 +14,9 @@ class Notification extends Model
     protected $dates = [
         'send_date',
     ];
+    protected $casts = [
+        'user_ids' => 'array',
+    ];
     public function setSendTimeAttribute($value)
     {
         $this->attributes['send_time'] = Carbon::parse($value);

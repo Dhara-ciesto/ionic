@@ -26,8 +26,8 @@ Notification
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                             data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
                             data-total-field="count" data-data-field="items" data-show-columns="true"
-                            data-show-toggle="false" data-filter-control="true" data-filter-control-container="#filters" data-show-columns-toggle-all="true">
-                            <div id="filters" class="row bootstrap-table-filter-control">
+                            data-show-toggle="false" data-filter-control="false" data-filter-control-container="#filters" data-show-columns-toggle-all="true">
+                            {{-- <div id="filters" class="row bootstrap-table-filter-control">
                                 <div class="col-md-4">
                                     <label class="form-label">Title</label>
                                     <input type="text" class="form-control bootstrap-table-filter-control-title" placeholder="Enter title">
@@ -36,14 +36,14 @@ Notification
                                     <label class="form-label">Message</label>
                                     <input type="text" class="form-control bootstrap-table-filter-control-message" placeholder="Enter Description">
                                 </div>
-                            </div>
+                            </div> --}}
                             <thead>
                                 <tr>
                                     <th data-field="counter" data-sortable="true">#</th>
                                     <th data-field="title" data-filter-control="select" data-sortable="true">Title</th>
                                     <th data-field="message" data-filter-control="input" data-sortable="true">Message</th>
-                                    <th data-field="send_date" data-sortable="true">Send Date</th>
-                                    <th data-field="send_time" data-sortable="true">Send Time</th>
+                                    {{-- <th data-field="send_date" data-sortable="true">Send Date</th> --}}
+                                    {{-- <th data-field="send_time" data-sortable="true">Send Time</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,7 +72,7 @@ Notification
     <script>
         let $table = $('#user_table');
         $table.bootstrapTable({
-            columns: [{}, {}, {},{},{}, {
+            columns: [{}, {}, {}, {
                 field: 'operate',
                 title: 'Action',
                 align: 'center',

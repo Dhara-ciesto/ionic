@@ -41,14 +41,14 @@
                         <div class="col-sm-6">
                             <div class="mb-2">
                                 <label for="brand_name">Select Users<span class="error">*</span></label>
-                                <select id="user_ids" name="user_ids" class="form-control select2"
+                                <select id="user_ids" name="user_ids[]" class="form-control select2"
                                     data-placeholder="Select User" multiple>
                                     <option disabled>Select User</option>
-                                    <option value="all" {{ old('user_ids',$notification->user_ids) == 'all' ? 'selected' : '' }}>Select All
+                                    <option value="all" {{ in_array('all',$notification->user_ids)  ? 'selected' : '' }}>Select All
                                     </option>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}"
-                                            {{ old('user_ids',$notification->user_ids) == $user->id ? 'selected' : '' }}>{{ $user->name }}
+                                            {{ in_array($user->id,old('user_ids',$notification->user_ids)) == $user->id ? 'selected' : '' }}>{{ $user->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -70,7 +70,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <div class="mb-3">
@@ -98,17 +98,14 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    </div>
+                    </div> --}}
                     <div class="d-flex flex-wrap gap-2">
                         <button type="submit" class="btn btn-outline-danger waves-effect waves-light">Update</button>
                         <a href="{{route('notification.index')}}" class="btn btn-danger waves-effect waves-light">Cancel</a>
                     </div>
                 </form>
-
             </div>
         </div>
-
     </div>
 </div>
 @endsection

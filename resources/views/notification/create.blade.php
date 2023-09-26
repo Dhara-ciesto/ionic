@@ -49,7 +49,7 @@
                         <div class="col-sm-12 col-md-8 col-lg-6">
                             <div class="mb-2">
                                 <label for="brand_name">Select Users<span class="error">*</span></label>
-                                <select id="user_ids" name="user_ids" class="form-control select2"
+                                <select id="user_ids" name="user_ids[]" class="form-control select2"
                                     data-placeholder="Select User" multiple>
                                     <option disabled>Select User</option>
                                     <option value="all" {{ old('user_ids') == 'all' ? 'selected' : '' }}>Select All
@@ -78,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="form-group">
                                 <div class="mb-3">
@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="d-flex col-sm-7 flex-wrap gap-2 float-end">
                         <button type="submit" class="btn btn-outline-success waves-effect waves-light">Save</button>
                         <a href="{{ route('notification.index') }}"

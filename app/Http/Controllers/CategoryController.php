@@ -37,12 +37,8 @@ class CategoryController extends Controller
         // your table name
         $query = Category::when($search, function ($q) use ($filter, $i) {
             foreach ($filter as $key => $item) {
-                if ($key == 'status') {
-                    if (strtolower($item) == 'active') {
-                        $q->where($key, 1);
-                    } else {
-                        $q->where($key, 0);
-                    }
+                if ($key == 'name') {
+                    $q->where($key, 'Like', '%' . $item . '%');
                 } else {
                     $q->where($key, $item);
                 }
@@ -71,7 +67,7 @@ class CategoryController extends Controller
             } else if ($item['status'] == 0) {
                 $row[$key]['status'] = 'Deactive';
             }
-            $row[$key]['image'] = '<img src="'.$item['image'].'" height="50" width="50">';
+            $row[$key]['image'] = '<img src="' . $item['image'] . '" height="50" width="50">';
             $row[$key]['counter'] = $index++;
         }
         $data['items'] = $row;
@@ -101,11 +97,11 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:categories,name',
             'image' => 'required|mimes:jpeg,png,jpg|max:5120',
-        ],[
+        ], [
             'name.required' => 'Please Enter Category name',
             'name.unique' => 'Product Brand name has already been taken.',
-            'image.size'=> 'Category Image may not be greater than 5 mb.',
-            'image.size'=> 'The category image field is required.'
+            'image.size' => 'Category Image may not be greater than 5 mb.',
+            'image.size' => 'The category image field is required.'
         ]);
         $requestall = $request->all();
 
@@ -157,10 +153,10 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:categories,name,' . $id,
             'image' => 'mimes:jpeg,png,jpg|max:5120',
-        ],[
+        ], [
             'name.required' => 'Please Enter Product Category name',
             'name.unique' => 'Product Category name has already been taken.',
-            'image.size'=> 'Category Image may not be greater than 5 mb.'
+            'image.size' => 'Category Image may not be greater than 5 mb.'
         ]);
         $reqData = $request->all();
 
@@ -186,7 +182,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::find($id)->delete();
-        \Log::info('Product Category having id '. $id.' Deleted');
+        \Log::info('Product Category having id ' . $id . ' Deleted');
         return response()->json(['success' => true, 'message' => 'Product Category deleted successfully']);
     }
 
@@ -203,5 +199,4 @@ class CategoryController extends Controller
         \Log::info('Product Category having id ' . $id . ' Staus Changed to ' . $request->status);
         return response()->json(['success' => true, 'message' => 'Category status changed successfully']);
     }
-
 }

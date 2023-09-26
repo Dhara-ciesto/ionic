@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="row mb-4" style="display: none">
                         <div class="col-md-6">
                             <div class="form-check">
                                 <input class="form-check-input" type="hidden" name="status" value="Deactive">

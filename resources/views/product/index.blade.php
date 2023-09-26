@@ -22,7 +22,7 @@
                         <a href="{{ route('import.product') }}" class="btn btn-outline-success float-end me-1">{{ __('Import Product') }}</a>
                 </div>
                 <div class="card-body">
-                    <h4 class="card-title">Filters</h4>
+                    {{-- <h4 class="card-title">Filters</h4> --}}
                     <div class="">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                         data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
@@ -75,17 +75,17 @@
                         <button type="button" id="delete_all" style="margin-bottom:20px;margin-top:20px" class="btn btn-outline-danger" data-url="{{ route('product.destroy.selected') }}" onclick="delete_all()">Delete All Selected</button>
                         <thead>
                             <tr>
-                                <th data-field="counter" data-sortable="true">#</th>
+                                {{-- <th data-field="counter" data-sortable="true">#</th> --}}
                                 <th data-field="checkbox"><input type="checkbox" id="select_all" onchange="select_all(this)"></th>
-                                <th data-field="category.name" data-filter-control="select" data-sortable="true">Category </th>
                                 <th data-field="product_name" data-filter-control="input" data-sortable="true">Product Name </th>
+                                <th data-field="category.name" data-filter-control="select" data-sortable="true">Category </th>
                                 <th data-field="file" data-filter-control="" data-sortable="true">Image </th>
                                 {{-- <th data-field="qty" data-filter-control="input" data-sortable="true">Quantity </th> --}}
                                 {{-- <th data-field="fragrance_tone_1.name" data-filter-control="select" data-sortable="true">Fragrance Tone 1 </th> --}}
                                 {{-- <th data-field="price" data-filter-control="input" data-sortable="true">Price </th> --}}
                                 {{-- <th data-field="campaign.name" data-filter-control="select" data-sortable="true">Campaign </th> --}}
                                 {{-- <th data-field="gender" data-filter-control="select" data-sortable="true">Gender</th> --}}
-                                {{-- <th data-field="status"  data-sortable="true">Status</th> --}}
+                                <th data-field="status"  data-sortable="true">Status</th>
 
                             </tr>
                             </thead>
@@ -112,7 +112,7 @@
     <script>
         let $table = $('#user_table');
         $table.bootstrapTable({
-            columns: [{}, {}, {},{},{},{
+            columns: [{}, {},{},{},{},{
                 field: 'operate',
                 sortable: 'false',
                 title: 'Action',

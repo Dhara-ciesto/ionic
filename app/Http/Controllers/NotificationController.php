@@ -71,7 +71,7 @@ class NotificationController extends Controller
             $row[$key]['send_date'] = date('d-m-Y',strtotime($item['send_date']));
             $row[$key]['send_time'] = date('h:i a',strtotime($item['send_time']));
 
-            
+
         }
         $data['items'] = $row;
         $data['count'] = $count;
@@ -102,8 +102,8 @@ class NotificationController extends Controller
             'title' => 'required|unique:notification,title',
             'user_ids' => 'required',
             'message' => 'required',
-            'send_date' => 'required|date',
-            'send_time' => 'required',
+            // 'send_date' => 'required|date',
+            // 'send_time' => 'required',
         ],[
             'title.required' => 'Please Enter Notification name',
             'user_ids.required' => 'Please Select Users.'
@@ -147,11 +147,11 @@ class NotificationController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'title' => 'required|unique:notification,title',
+            'title' => 'required|unique:notification,title,' . $id,
             'user_ids' => 'required',
             'message' => 'required',
-            'send_date' => 'required|date',
-            'send_time' => 'required',
+            // 'send_date' => 'required|date',
+            // 'send_time' => 'required',
         ],[
             'title.required' => 'Please Enter Notification name',
             'user_ids.required' => 'Please Select Users.'

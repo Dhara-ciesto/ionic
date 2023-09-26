@@ -9,7 +9,7 @@
     <meta content="Estimate" name="description" />
     <meta content="Estimate" name="author" />
     <!-- App favicon -->
-    {{-- <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png') }}"> --}}
+    <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png') }}">
 
     @include('layouts.head-css')
 
