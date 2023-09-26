@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     public function __construct() {
         $this->middleware(function ($request, $next) {
-            if (auth()->user()->role != 1) {
+            if (auth()->user()->role != 0) {
                 abort(404);
             }
             return $next($request);
@@ -97,8 +97,9 @@ class UserController extends Controller
     public function store(UserPostRequest $request)
     {
         $reqData = $request->all();
-        $reqData['password'] = Hash::make($request->password);
+        // $reqData['password'] = Hash::make($request->password);
         $reqData['name'] = $request->username;
+        $reqData['role'] = 1;
         User::create($reqData);
         return redirect()->route('user.index')->with('success', 'Admin created successfully');
     }

@@ -18,8 +18,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="{{ route('order.create') }}"
-                        class="btn btn-outline-danger float-end">{{ __('Create Order') }}</a>
+                    {{-- <a href="{{ route('order.create') }}"
+                        class="btn btn-outline-danger float-end">{{ __('Create Order') }}</a> --}}
                 </div>
                 <div class="card-body">
                     {{-- <h4 class="card-title">Filters</h4> --}}

@@ -82,7 +82,7 @@ class ApiResponseController extends Controller
             'cartoon' => $request->cartoon,
             'size' => $request->size,
             'length' => $request->length,
-            'details' => $request->details,
+            // 'details' => $request->details,
             'status' => 'Active'
         ]);
         return response()->json(['success' => true, 'message' => 'Product Added to cart']);
@@ -133,6 +133,7 @@ class ApiResponseController extends Controller
             'cart_id' => $request->cart_id,
             'qty' => $request->total_qty,
             'order_by' => Auth::user()->id,
+            'description' => $request->description,
             'status' => 'Pending'
         ]);
         return response()->json(['success' => true, 'message' => 'Order Created successfully', 'data' => $order]);

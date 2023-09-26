@@ -137,7 +137,7 @@
                                 <p>© <script>
                                         document.write(new Date().getFullYear())
 
-                                    </script> Tira
+                                    </script> Yogi Industries
                                 </p>
                             </div>
                         </div>

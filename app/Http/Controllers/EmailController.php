@@ -14,11 +14,11 @@ class EmailController extends Controller
     {
         $mailInfo = new \stdClass();
         $mailInfo->recieverName = "John Defoe";
-        $mailInfo->sender = "TIRA";
-        $mailInfo->senderCompany = "TIRA";
+        $mailInfo->sender = "Yogi Industries";
+        $mailInfo->senderCompany = "Yogi Industries";
         $mailInfo->to = "dhara.ciesto@gmail.com";
         $mailInfo->subject = "Favourite Products";
-        $mailInfo->name = "TIRA";
+        $mailInfo->name = "Yogi Industries";
         $mailInfo->cc = "ci@email.com";
         $mailInfo->bcc = "jim@email.com";
         $mailInfo->from = "nonreply@yogiindustries.co.in";

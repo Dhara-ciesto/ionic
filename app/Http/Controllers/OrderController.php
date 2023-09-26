@@ -43,9 +43,9 @@ class OrderController extends Controller
         $i = 1;
         // your table name
         $query = Order::where('id', '>', 0);
-        if (Auth::user()->id != 1) {
-            $query->where('status', 'Active');
-        }
+        // if (Auth::user()->id != 1) {
+        //     $query->where('status', 'Active');
+        // }
         $query->when($search, function ($q) use ($filter, $i) {
             foreach ($filter as $key => $item) {
                 if ($key == 'product_brand.name') {

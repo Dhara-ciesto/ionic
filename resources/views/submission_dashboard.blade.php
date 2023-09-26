@@ -19,13 +19,33 @@
     </div> <!-- end col -->
 </div> <!-- end row -->
 @endif
+@if(Auth::user()->role == 1)
 <div class="row">
     <div class="col-xl-12">
         <div class="row">
             <div class="col-md-3">
                 <div class="card mini-stats-wid">
                     <div class="card-body">
-                        @if(Auth::user()->id == 1)
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium"><a href="{{ route('product.category.index') }}">Total Catgory </a></p>
+                                <h4 class="mb-0">{{$data['category']}}</h4>
+                            </div>
+
+                            <div class="flex-shrink-0 align-self-center">
+                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                    <span class="avatar-title">
+                                        <i class="bx bx-copy-alt font-size-24"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-muted fw-medium"><a href="{{ route('product.index') }}">Total Products </a></p>
@@ -40,7 +60,26 @@
                                 </div>
                             </div>
                         </div>
-                    @endif
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium"><a href="{{ route('order.index') }}">Total Order </a></p>
+                                <h4 class="mb-0">{{$data['order']}}</h4>
+                            </div>
+
+                            <div class="flex-shrink-0 align-self-center">
+                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                    <span class="avatar-title">
+                                        <i class="bx bx-copy-alt font-size-24"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,6 +90,7 @@
 
 
 </div>
+@endif
 <!-- end row -->
 
 {{-- @endsection --}}

@@ -14,7 +14,7 @@
                         <span key="t-starter-page">{{ __('Dashboard') }}</span>
                     </a>
                 </li>
-                @if (Auth::user()->role == 1)
+                @if (Auth::user()->role == 1 || Auth::user()->role == 0)
                 <li>
                     <a href="{{ route('product.category.index') }}" class="waves-effect ">
                         <i class="fas fa-building"></i>
@@ -117,13 +117,14 @@
                             <span key="t-starter-page">{{__('Order Report')}}</span>
                         </a>
                     </li> --}}
-
+                    @if (Auth::user()->role == 0)
                     <li>
                         <a href="{{route('user.index')}}" class="waves-effect">
                             <i class="fas fa-users"></i>
                             <span key="t-starter-page">{{__('Manage Admin')}}</span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="{{ route('order.index') }}" class="waves-effect">
                             <i class="fas fa-list"></i>

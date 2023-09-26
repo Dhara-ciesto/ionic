@@ -176,7 +176,7 @@
                                                 document.write(new Date().getFullYear())
 
                                             </script> Crafted with <i class="mdi mdi-heart text-danger"></i> by
-                                            Tira</p>
+                                            Yogi Industries</p>
                                     </div>
                                 </div>
 

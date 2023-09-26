@@ -21,8 +21,12 @@ class AuthController extends Controller
         // Validate request data
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string|max:255',
-            'shop_name' => 'required|unique:users,username|max:255',
+            'business_name' => 'required|unique:users,username|max:255',
             'whatsapp_no' => 'required|unique:users,whatsapp_no|digits:10'
+        ],[
+            'business_name.required' => 'The Business name is required',
+            'business_name.max' => 'The Business name can not more than25 character',
+            'business_name.unique' => 'The Business name is already been taken'
         ]);
         // Return errors if validation error occur.
         if ($validator->fails()) {
@@ -35,8 +39,8 @@ class AuthController extends Controller
         if ($validator->passes()) {
             $user = User::create([
                 'name' => $request->full_name,
-                'username' => $request->shop_name,
-                'email' => $request->whatsapp_no.'@mailinator.com',
+                'username' => $request->business_name,
+                'email' => $request->whatsapp_no . '@mailinator.com',
                 'whatsapp_no' => $request->whatsapp_no,
                 'password' => Hash::make('123456789')
             ]);
@@ -49,7 +53,7 @@ class AuthController extends Controller
         }
     }
 
-    
+
 
     public function sendotp(Request $request)
     {
@@ -61,10 +65,10 @@ class AuthController extends Controller
             'whatsapp_no' => $request->whatsapp_no,
         ]);
 
-         return response()->json([
+        return response()->json([
             'otp' => $otp->otp,
             'message' => 'OTP Sent'
-            ]);
+        ]);
         // $message = "Hii";
         // $recipients = '+9173158283';
         // $account_sid = getenv("MAIL_MAILER");
@@ -122,12 +126,12 @@ class AuthController extends Controller
     public function otpverify(Request $request)
     {
 
-        $request->validate(['whatsapp_no' => 'required','otp' => 'required']);
+        $request->validate(['whatsapp_no' => 'required', 'otp' => 'required']);
 
-        $otp = OTP::where('whatsapp_no',$request->whatsapp_no)->where('otp',$request->otp)->where('status','Active')->first();
-        if($otp){
+        $otp = OTP::where('whatsapp_no', $request->whatsapp_no)->where('otp', $request->otp)->where('status', 'Active')->first();
+        if ($otp) {
 
-            $user = User::where('whatsapp_no',$request->whatsapp_no)->get()->first();
+            $user = User::where('whatsapp_no', $request->whatsapp_no)->get()->first();
             if (!Auth::loginUsingId($user->id)) {
                 return response()->json([
                     'message' => 'Invalid login details'
@@ -140,14 +144,12 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
             ]);
-
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'message' => 'OTP Invalid'
-                ]);
+            ]);
         }
-
     }
     //use this method to signin users
     // public function loginUser(Request $request)
@@ -166,23 +168,28 @@ class AuthController extends Controller
     //     ]);
     // }
 
-    
-    public function updateProfile(Request $request,$id){
+
+    public function updateProfile(Request $request, $id)
+    {
 
         $request->validate([
             'full_name' => 'required|string|max:255',
-            'shop_name' => 'required|max:255|unique:users,username,' . $id,
+            'business_name' => 'required|max:255|unique:users,username,' . $id,
             'whatsapp_no' => 'required|digits:10|unique:users,whatsapp_no,' . $id,
+        ], [
+            'business_name.required' => 'The Business name is required',
+            'business_name.max' => 'The Business name can not more than25 character',
+            'business_name.unique' => 'The Business name is already been taken'
         ]);
         $user = User::findOrFail($id);
         $user->name = $request->full_name;
-        $user->username = $request->shop_name;
-        if($request->whatsapp_no){
-            $user->email = $request->whatsapp_no.'@mailinator.com';
+        $user->username = $request->business_name;
+        if ($request->whatsapp_no) {
+            $user->email = $request->whatsapp_no . '@mailinator.com';
         }
         $user->whatsapp_no = $request->whatsapp_no;
         $user->save();
-    
+
         return response()->json([
             'success' => true,
             'message' => 'Profile Updated Successfully'

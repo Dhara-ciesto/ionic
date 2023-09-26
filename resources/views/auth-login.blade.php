@@ -122,7 +122,7 @@
                                 <p>© <script>
                                         document.write(new Date().getFullYear())
 
-                                    </script>Crafted with <i class="mdi mdi-heart text-danger"></i> by Tira
+                                    </script>Crafted with <i class="mdi mdi-heart text-danger"></i> by Yogi Industries
                                 </p>
                             </div>
                         </div>

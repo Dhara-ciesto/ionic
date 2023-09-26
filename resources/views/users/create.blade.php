@@ -26,6 +26,8 @@
                                 @enderror
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="email">Email</label>
@@ -35,21 +37,21 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="role">Role</label>
                                 <select class="form-select" name="role" id="role">
-                                    <option value="">Select Role</option>
-                                    <option value="1">Admin</option>
-                                    {{-- <option value="1">Manger</option> --}}
-                                    {{-- <option value="2">Recruiter</option> --}}
+                                    <option value="" disabled>Select Role</option>
+                                    <option value="1"  selected>Admin</option>
+
                                 </select>
                                 @error('role')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
+                    <div class="row">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -60,6 +62,7 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="password">Confirm Password</label>
@@ -70,7 +73,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-wrap gap-2">
+                    <div class="row float-end">
+                    <div class="d-flex flex-wrap gap-2 ">
                         <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
                         <a href="{{route('user.index')}}" class="btn btn-secondary waves-effect waves-light">Cancel</a>
                     </div>

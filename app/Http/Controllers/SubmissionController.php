@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use ZipArchive;
 use Carbon\Carbon;
 use App\Models\City;
+use App\Models\Order;
 use App\Models\State;
 use App\Models\Bakery;
 use App\Models\Client;
@@ -12,6 +13,7 @@ use App\Models\Country;
 use App\Models\Kitchen;
 use App\Models\Manager;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Franchise;
 use App\Models\Recruiter;
 use App\Models\OrderChild;
@@ -329,9 +331,11 @@ class SubmissionController extends Controller
     {
         // $data['farnchises'] = Franchise::with('city')->groupBy('franchises.city_id')->get();
         // $data['franchises'] = DB::table('franchises')->select(DB::raw('from cities'))->join('cities','franchises.city_id','=','cities.id')->select(DB::raw('count(`franchises`.`city_id`)'),'cities.name')->groupBy(DB::raw('franchises.city_id'))->get();
-        
+
         // SELECT COUNT(`city_id`),`cities`.`name` FROM `franchises`,`cities` WHERE `franchises`.`city_id`=`cities`.`id` GROUP BY `city_id`;
         $data['products'] = Product::count('id');
+        $data['category'] = Category::count('id');
+        $data['order'] = Order::count('id');
 
         return view('submission_dashboard',compact('data'));
     }
@@ -340,8 +344,8 @@ class SubmissionController extends Controller
     {
         $search = $request->filter;
         $filter = (array)json_decode($search);
-        $filter['created_at'] = isset($filter['created_at']) ? $filter['created_at'] : Carbon::now()->format('Y-m-d'); 
-        
+        $filter['created_at'] = isset($filter['created_at']) ? $filter['created_at'] : Carbon::now()->format('Y-m-d');
+
         $allrecord = Submission::whereDate('created_at', $filter['created_at'])->count();
         $placed = Submission::whereDate('created_at', $filter['created_at'])->where('update_from_client', 'Placed')->count();
         $count = 1;
@@ -364,7 +368,7 @@ class SubmissionController extends Controller
     {
         $search = $request->filter;
         $filter = (array)json_decode($search);
-        $filter['created_at'] = isset($filter['created_at']) ? $filter['created_at'] : Carbon::now()->format('Y-m-d'); 
+        $filter['created_at'] = isset($filter['created_at']) ? $filter['created_at'] : Carbon::now()->format('Y-m-d');
         // dd($filter);
         $sort = $request->sort;
         $order = $request->order;
@@ -373,7 +377,7 @@ class SubmissionController extends Controller
         // $date = Carbon::now();
         // dd($filter);
         $rows = [];
-        
+
         // $allRecords = Submission::select('recruiter_name')->with('recruiter')->whereDate('created_at', $date)->groupBy('recruiter_name')->get();
         // $allRecords = Submission::select('recruiter_name')->with('recruiter')->whereDate('created_at', $date)->groupBy('recruiter_name')
         $allRecords = Submission::select('recruiter_name')->with('recruiter')->groupBy('recruiter_name')
@@ -397,7 +401,7 @@ class SubmissionController extends Controller
             $d['total_submissions'] = Submission::where('recruiter_name', $item->recruiter->id)->count();
             $d['total_placements'] = Submission::where([['recruiter_name', $item->recruiter->id], ['update_from_client', 'Placed']])->count();
             $rows[] = $d;
-        }        
+        }
         $collection = collect($rows);
         $collection->when($filter, function ($q) use ($filter, $collection) {
             foreach ($filter as $key => $item) {

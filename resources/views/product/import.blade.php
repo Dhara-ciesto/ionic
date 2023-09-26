@@ -29,6 +29,7 @@
                             <div class="col-md-5 p-0">
                                 <div class="form-group">
                                     <div class="mb-3">
+                                    <label class="form-label">Upload Products</label>
                                         <input type="file" name="products" class="form-control"
                                         accept=".csv"
                                             required>
