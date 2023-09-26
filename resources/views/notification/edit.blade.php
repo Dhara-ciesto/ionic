@@ -44,7 +44,7 @@
                                 <select id="user_ids" name="user_ids[]" class="form-control select2"
                                     data-placeholder="Select User" multiple>
                                     <option disabled>Select User</option>
-                                    <option value="all" {{ in_array('all',$notification->user_ids)  ? 'selected' : '' }}>Select All
+                                    <option value="all" @if($notification->user_ids) {{ in_array('all',$notification->user_ids)  ? 'selected' : '' }} @endif>Select All
                                     </option>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}"
