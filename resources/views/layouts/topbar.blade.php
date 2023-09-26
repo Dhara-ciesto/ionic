@@ -19,8 +19,8 @@
                 </a>
 
                 <a href="{{ route('submission.dashboard') }}" class="logo logo-light">
-                    <span class="logo-sm">
-                        <img src="{{ URL::asset('/assets/images/small_logo.png') }}" alt="" height="30">
+                    <span class="logo-sm" style="margin-left:-10px;">
+                        <img src="{{ URL::asset('/assets/images/logo.png') }}" alt="" height="30">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ URL::asset('/assets/images/logo.png') }}" alt="" height="50">
