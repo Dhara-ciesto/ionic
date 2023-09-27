@@ -78,6 +78,7 @@
     <script>
         let $table = $('#user_table');
         $table.bootstrapTable({
+            pageSize: 100,
             columns: [{}, {}, {}, {}, {
                 field: 'operate',
                 title: 'Action',
