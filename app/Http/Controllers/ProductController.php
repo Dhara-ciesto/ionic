@@ -91,7 +91,7 @@ class ProductController extends Controller
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
             $row[$key]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="' . $row[$key]['id'] . '">';
-            $row[$key]['file'] = '<img src="' . $item['file'] . '" height="50" width="50">';
+            $row[$key]['file'] = "<img src='" . $item['file'] . "' height='50' width='50' onerror=this.src='".asset("/images/placeholder.png")."'>";
         }
         $data['items'] = $row;
         $data['count'] = $count;
@@ -255,9 +255,6 @@ class ProductController extends Controller
                 $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief','jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
                 $explodeImage = explode('.',  $data[2]);
                 $extension = end($explodeImage);
-                
-                
-
                 if (!($data[0] && $data[1] && $data[2])) {
                     $all_products[$i]['product'] = $data[1];
                     $all_products[$i]['error'] = 'Incomplete Data';
@@ -272,20 +269,11 @@ class ProductController extends Controller
                     $all_products[$i]['product'] = $data[1];
                     $all_products[$i]['error'] = 'Product name already exist';
                 } else {
-                    $filename = $data[2];
-                    $image  = '';
-                  
-
-                    if (file_exists($data[2])) {
-                        $filename = time() . '_' .  basename($data[2]);
-                        $image = '/images/product/' . $filename;
-                        File::copy($data[2], public_path('/images/product/' . $filename));
-                    }
 
                     Product::create([
                         'category_id' => $category_id,
                         'product_name' => $data[1],
-                        'file' => $image,
+                        'file' => $data[2],
                     ]);
                 }
             }

@@ -137,6 +137,12 @@
                             <span key="t-starter-page">{{ __('Notification') }}</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('media.index') }}" class="waves-effect">
+                            <i class="fas fa-bell"></i>
+                            <span key="t-starter-page">{{ __('Media Management') }}</span>
+                        </a>
+                    </li>
                         {{-- <li>
                         <a href="{{route('client.index')}}" class="waves-effect">
                             <i class="fas fa-user-secret"></i>

@@ -129,7 +129,7 @@ class ApiResponseController extends Controller
     {
 
         $order = Order::create([
-            'order_id'=> rand(111111111,999999999),
+            'uid'=> rand(111111111,999999999),
             'cart_id' => $request->cart_id,
             'qty' => $request->total_qty,
             'order_by' => Auth::user()->id,
@@ -139,5 +139,5 @@ class ApiResponseController extends Controller
         return response()->json(['success' => true, 'message' => 'Order Created successfully', 'data' => $order]);
     }
 
- 
+
 }

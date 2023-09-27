@@ -67,7 +67,7 @@ class CategoryController extends Controller
             } else if ($item['status'] == 0) {
                 $row[$key]['status'] = 'Deactive';
             }
-            $row[$key]['image'] = '<img src="' . $item['image'] . '" height="50" width="50">';
+            $row[$key]['image'] = "<img src='" . $item['image'] . "' height='50' width='50' onerror=this.src='".asset("/images/placeholder.png")."'>";
             $row[$key]['counter'] = $index++;
         }
         $data['items'] = $row;

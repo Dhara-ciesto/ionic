@@ -16,6 +16,13 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="{{ asset('assets/libs/toastr/toastr.min.js') }}"></script>
+<script src="{{ asset('assets/js/pages/toastr.init.js') }}"></script>
+
+
+
+
+
 
 {{-- <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>

@@ -5,11 +5,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::post('notification/edit/{id}', [NotificationController::class, 'update'])->name('notification.update');
     Route::get('notification/delete/{id}', [NotificationController::class, 'destroy'])->name('notification.destroy');
     Route::get('notification-server-side', [NotificationController::class, 'logsServerSideOwn'])->name('notification.server_side');
+
+    //notification Tone routes
+    Route::get('media', [MediaController::class, 'index'])->name('media.index');
+    Route::get('media/create', [MediaController::class, 'create'])->name('media.create');
+    Route::post('media/store', [MediaController::class, 'store'])->name('media.store');
+    Route::get('media/edit/{id}', [MediaController::class, 'edit'])->name('media.edit');
+    Route::post('media/edit/{id}', [MediaController::class, 'update'])->name('media.update');
+    Route::get('media/delete/{id}', [MediaController::class, 'destroy'])->name('media.destroy');
+    Route::get('media-server-side', [MediaController::class, 'logsServerSideOwn'])->name('media.server_side');
+    Route::get('media/selected/delete', [MediaController::class, 'destroySelected'])->name('media.destroy.selected');
+
 
     //scent types routes
     Route::get('order', [OrderController::class, 'index'])->name('order.index');
