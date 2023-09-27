@@ -88,7 +88,7 @@ class OrderController extends Controller
         $data = [];
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
-            $row[$key]['receipt_image'] = '<img src="'.$item['receipt_image'].'" height="50" width="50">';
+            $row[$key]['receipt_image'] = "<img src='" . $item['receipt_image'] . "' height='50' width='50' onerror=this.src='".asset("/images/placeholder.png")."'>";
             $row[$key]['receipt_image_url'] = $item['receipt_image'];
 
             $row[$key]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="' . $row[$key]['id'] . '">';

@@ -214,8 +214,8 @@
         function setOrderId(order_id,lr_no,img) {
             $('#order_id').val(order_id);
             $('#lr_no').val(lr_no);
-
-            $('#old_image').html('<img src="'+img+'" height="100" width="100">');
+            var img = "<img src='"+img+"' height='50' width='50' onerror=this.src='/images/placeholder.png'>";
+            $('#old_image').html(img);
         }
 
         function remove(id, index) {

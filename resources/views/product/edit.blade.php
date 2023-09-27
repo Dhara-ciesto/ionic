@@ -64,7 +64,7 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                             @if($product->file)
-                                            <img src="{{ $product->file }}" height="100" width="100" style="align:right;">
+                                            <img src="{{ $product->file }}" height="100" width="100" style="align:right;" onerror="this.onerror=null;this.src='{{ asset("/images/placeholder.png") }}'">
                                             @endif
                                         </div>
                                     </div>

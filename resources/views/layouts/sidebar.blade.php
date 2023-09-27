@@ -139,7 +139,7 @@
                     </li>
                     <li>
                         <a href="{{ route('media.index') }}" class="waves-effect">
-                            <i class="fas fa-bell"></i>
+                            <i class="fas fa-images"></i>
                             <span key="t-starter-page">{{ __('Media Management') }}</span>
                         </a>
                     </li>
