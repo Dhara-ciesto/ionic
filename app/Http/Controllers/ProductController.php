@@ -274,6 +274,9 @@ class ProductController extends Controller
                         'category_id' => $category_id,
                         'product_name' => $data[1],
                         'file' => $data[2],
+                        'cartoon' => $data[3] ? $data[3] : 1,
+                        'qty' => $data[4] ? $data[4] : 1,
+                        'finish' => $data[5],
                     ]);
                 }
             }

@@ -69,11 +69,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- <div class="form-group">
+                                <div class="form-group">
                                     <div class="col-sm-11">
                                         <div class="mb-2">
                                             <label for="brand_name">Quantity<span class="error">*</span></label>
-                                            <input id="qty" name="qty" type="text"
+                                            <input id="qty" name="qty" type="number"
                                                 value="{{ old('qty', $product->qty) }}" class="form-control"
                                                 placeholder="Quantity">
                                             @error('qty')
@@ -83,6 +83,32 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="col-sm-11">
+                                        <div class="mb-2">
+                                            <label for="brand_name">Cartoon<span class="error">*</span></label>
+                                            <input id="cartoon" name="cartoon" type="number"
+                                                value="{{ old('cartoon', $product->cartoon) }}" class="form-control"
+                                                placeholder="Cartoon">
+                                            @error('cartoon')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-11">
+                                        <div class="mb-2">
+                                            <label for="brand_name">Finish<span class="error">*</span></label>
+                                            <input id="finish" name="finish" type="text"
+                                                value="{{ old('finish', $product->finish) }}" class="form-control"
+                                                placeholder="Finish">
+                                            @error('finish')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                 {{--<div class="form-group">
                                     <div class="col-sm-11">
                                         <div class="mb-2">
                                             <label for="brand_name">Price<span class="error">*</span></label>

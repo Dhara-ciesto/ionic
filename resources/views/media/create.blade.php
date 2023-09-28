@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-Media Management
+    Media Management
 @endsection
 
 @section('content')
@@ -24,10 +24,12 @@ Media Management
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="mb-3">
-                                    <label for="formrow-email-input" class="form-label">Media Image <span
-                                            class="required_sign">*</span></label>
-                                    <input type="file" class="form-control" multiple name="image[]" id="formrow-email-input"
-                                        placeholder="Select media image" accept="image/*" >
+                                    <label for="formrow-email-input" class="form-label">Media Image <span class="error">*</span></label>
+                                    <input type="file" class="form-control" multiple name="image[]"
+                                        id="formrow-email-input" placeholder="Select media image" accept="image/*">
+                                        @error('image')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

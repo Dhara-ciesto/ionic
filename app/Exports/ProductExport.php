@@ -16,8 +16,8 @@ class ProductExport implements FromCollection, WithHeadings
     {
         return new Collection(
             [
-                ['Sofa Leg', 'Handle leg', 'C:/user/desktop/handle.png'],
-                ['Mortise handle', 'Handle 2', 'C:/user/desktop/handle_mortise.png'],
+                ['Sofa Leg', 'Handle leg', 'C:/user/desktop/handle.png','12','5','Glosy'],
+                ['Mortise handle', 'Handle 2', 'C:/user/desktop/handle_mortise.png','25','7','Matte'],
             ]
         );
 
@@ -29,7 +29,7 @@ class ProductExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Category Name',    'Product Name',    'Image',
+            'Category Name', 'Product Name', 'Image', 'cartoon','qty','finish'
         ];
     }
 }

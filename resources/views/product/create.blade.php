@@ -54,6 +54,45 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <div class="col-sm-11">
+                                    <div class="mb-2">
+                                        <label for="brand_name">Quantity<span class="error">*</span></label>
+                                        <input id="qty" name="qty" type="number"
+                                            value="{{ old('qty',1) }}" class="form-control"
+                                            placeholder="Quantity">
+                                        @error('qty')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-11">
+                                    <div class="mb-2">
+                                        <label for="brand_name">Cartoon<span class="error">*</span></label>
+                                        <input id="cartoon" name="cartoon" type="number"
+                                            value="{{ old('cartoon',1) }}" class="form-control"
+                                            placeholder="Cartoon">
+                                        @error('cartoon')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-11">
+                                    <div class="mb-2">
+                                        <label for="brand_name">Finish<span class="error">*</span></label>
+                                        <input id="finish" name="finish" type="text"
+                                            value="{{ old('finish') }}" class="form-control"
+                                            placeholder="Finish">
+                                        @error('finish')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="col-sm-11 pt-2">
                                     <div class="text-end">
                                         <button type="submit" class="btn btn-outline-danger waves-effect waves-light m-2">Save</button>

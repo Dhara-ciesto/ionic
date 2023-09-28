@@ -11,6 +11,8 @@ use App\Models\EmailConfig;
 use Illuminate\Http\Request;
 use App\Models\FragranceTone;
 use App\Http\Controllers\Controller;
+use App\Models\DispatchOrder;
+use App\Models\OrderProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -72,16 +74,21 @@ class ApiResponseController extends Controller
     {
         $request->validate([
             'product_id' => 'required',
-            'qty' => 'required',
+            'qty' => 'required|numeric',
+            'cartoon' => 'required|numeric',
             'size' => 'required'
         ]);
+        // $product = Product::where('id', $request->product_id)->first();
+        // if (!$product->cartoon >= $request->cartoon) {
+        //     return response()->json(['success' => false, 'message' => 'Cartoon can not be greater than available cartoon']);
+        // }
         $cart = Cart::create([
             'user_id' => Auth::user()->id,
             'product_id' => $request->product_id,
             'qty' => $request->qty,
             'cartoon' => $request->cartoon,
             'size' => $request->size,
-            'length' => $request->length,
+            'finish' => $request->finish,
             // 'details' => $request->details,
             'status' => 'Active'
         ]);
@@ -93,7 +100,7 @@ class ApiResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function editCartItem(Request $request,$id)
+    public function editCartItem(Request $request, $id)
     {
         $request->validate([
             'product_id' => 'required',
@@ -113,8 +120,9 @@ class ApiResponseController extends Controller
      */
     public function getcart(Request $request)
     {
-        $carts = Cart::with('product')->where('user_id',Auth::user()->id)->get()->all();
-        if(!$carts){
+        $carts = Cart::with('product')
+            ->where('user_id', Auth::user()->id)->where('status', 'Active')->get()->all();
+        if (!$carts) {
             return response()->json(['success' => false, 'msg' => 'No cart items found']);
         }
         return response()->json(['success' => true, 'data' => $carts]);
@@ -128,15 +136,143 @@ class ApiResponseController extends Controller
     public function createOrder(Request $request)
     {
 
+        $last_id = Order::orderBy('id', 'DESC')->latest()->first() ? Order::orderBy('id', 'DESC')->latest()->first()->id + 1 : 1;
+
+        $no = str_pad($last_id, 5, "O100", STR_PAD_LEFT);
         $order = Order::create([
-            'uid'=> rand(111111111,999999999),
-            'cart_id' => $request->cart_id,
-            'qty' => $request->total_qty,
+            'uid' => $no,
+            // 'cart_id' => $request->cart_id,
+            // 'qty' => $request->total_qty,
             'order_by' => Auth::user()->id,
-            'description' => $request->description,
+            // 'description' => $request->description,
             'status' => 'Pending'
         ]);
+        $carts = Cart::where('user_id', Auth::user()->id)->get()->all();
+        foreach ($carts as $key => $value) {
+            OrderProduct::create([
+                'order_id' => $order->id,
+                'product_id' => $value->product_id,
+                'qty' => $value->qty,
+                'cartoon' => $value->cartoon,
+                'qty' => $value->qty,
+                'cart_id' => $value->id,
+                'status' => 'InProcess',
+            ]);
+            $value->status = 'Ordered';
+            $value->save();
+        }
         return response()->json(['success' => true, 'message' => 'Order Created successfully', 'data' => $order]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getOrder($status)
+    {
+        if($status == 'Open' || $status == 'open'){
+            $search = ['Processing'];
+        }elseif($status == 'Close' || $status == 'close'){
+            $search = ['Dispatched'];
+        }
+        $order = Order::with('products')
+            ->where('order_by', Auth::user()->id)->where('status', $search)->get()->all();
+        if (!$order) {
+            return response()->json(['success' => false, 'msg' => 'No order found']);
+        }
+        return response()->json(['success' => true, 'data' => $order]);
+    }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRecentOrders($status)
+    {
+        if($status == 'Open' || $status == 'open'){
+            $search = ['Processing'];
+        }elseif($status == 'Close' || $status == 'close'){
+            $search = ['Dispatched'];
+        }
+        $order = Order::with('products')
+           ->where('status', $search)
+           ->orderBy('id','desc')->get()->all();
+        if (!$order) {
+            return response()->json(['success' => false, 'msg' => 'No order found']);
+        }
+        return response()->json(['success' => true, 'data' => $order]);
+    }
+
+       /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dispatchOrder(Request $request)
+    {
+
+        // dd($request->all());
+        $order = OrderProduct::
+            where('order_id', $request->order_id)
+            ->where('product_id', $request->product_id)
+            ->where('status','InProcess')->get()->all();
+
+        if($request->product){
+            $reqData = '';
+            if ($request->file('receipt_image')) {
+                $photo = $request->file('receipt_image');
+                $filename = time() . '.' . $photo->getClientOriginalExtension();
+                $avatarPath = public_path('/images/product');
+                $photo->move($avatarPath, $filename);
+                $reqData = '/images/product/' . $filename;
+            }
+            foreach ($request->product as $key => $value) {
+
+                $order_product = OrderProduct::
+                where('order_id', $request->order_id)
+                ->where('product_id', $value['product_id'])
+                ->where('status','InProcess')->get()->first();
+                // dd( $order_product );
+                if($order_product && $order_product->cartoon >= $value['cartoon']){
+
+                    $dispatch = DispatchOrder::create([
+                        'lr_no' => $request->lr_no,
+                        'order_id' => $request->order_id,
+                        'product_id' => $value['product_id'],
+                        'order_product_id' => $order_product->product_id,
+                        'cartoon' => $value['cartoon'],
+                        'status' => 'Dispatched',
+                    ]);
+
+
+                    $dispatch->receipt_image = $reqData;
+                    $dispatch->save();
+
+                    $cartoon = DispatchOrder::where('order_id', $request->order_id)->where('product_id', $value['product_id'])->sum('cartoon');
+                    if($cartoon >=  $order_product->cartoon){
+                        $order_product->status = 'Dispatched';
+                        $order_product->save();
+                    }
+                }
+            }
+
+            $order_product_open = OrderProduct::
+            where('order_id', $request->order_id)
+            ->where('status','InProcess')->get()->count();
+
+            if(!$order_product_open){
+                $order = Order::where('id',$request->order_id)->get()->first();
+                $order->status = 'Dispatched';
+                $order->savE();
+
+            }
+
+            return response()->json(['success' => true, 'msg' => 'Order dispatched successfully']);
+        }else {
+            return response()->json(['success' => false, 'msg' => 'product not found']);
+        }
     }
 
 

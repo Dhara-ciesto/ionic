@@ -33,7 +33,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('categories', [ApiResponseController::class, 'getCategories'])->name('categories.index');
     Route::get('getcart', [ApiResponseController::class, 'getcart'])->name('product.getcart');
     Route::post('editCartItem/{id}', [ApiResponseController::class, 'editCartItem'])->name('product.editCartItem');
-    Route::post('createOrder', [ApiResponseController::class, 'createOrder'])->name('product.createOrder');
+    Route::post('createOrder', [ApiResponseController::class, 'createOrder']);
+    Route::get('getOrder/{status}', [ApiResponseController::class, 'getOrder']);
+    Route::get('getRecentOrders/{status}', [ApiResponseController::class, 'getRecentOrders']);
+    Route::post('dispatchOrder', [ApiResponseController::class, 'dispatchOrder']);
+
 
 
 

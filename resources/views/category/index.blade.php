@@ -91,8 +91,9 @@
                     url = url.replace(':queryId', row.id);
                     let color = row.status == 'Active' ? 'btn-outline-danger' : 'btn-outline-success';
                     // <button type="button" onClick="changeStatus(${row.id}, ${index}, '${new_status}')" class="btn btn-sm `+color+`">`+new_status+`</button>&nbsp;
+                    // <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>&nbsp;
                     let action =
-                        `<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>&nbsp;<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>&nbsp;<button type="button" onClick="changeStatus(${row.id}, ${index}, '${new_status}')" class="btn btn-sm `+color+`">`+new_status+`</button>`;
+                        `<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>&nbsp;<button type="button" onClick="changeStatus(${row.id}, ${index}, '${new_status}')" class="btn btn-sm `+color+`">`+new_status+`</button>`;
                     return action;
                 }
             }]
