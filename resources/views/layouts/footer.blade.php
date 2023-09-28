@@ -5,7 +5,7 @@
                 <script>
                     document.write(new Date().getFullYear())
 
-                </script> © Tira.
+                </script> © YogiIndustries.
 
             </div> 
             {{-- <div class="col-3">

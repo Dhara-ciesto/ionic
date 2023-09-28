@@ -23,7 +23,7 @@ class MediaController extends Controller
 
 
         $validated = $request->validate([
-            'image' => 'required',
+            'image' => 'required|image',
         ]);
 
         foreach ($request->file('image') as $key => $photo) {
