@@ -20,10 +20,9 @@ class MediaController extends Controller
     }
     public function store(Request $request)
     {
-
-
         $validated = $request->validate([
-            'image' => 'required|image',
+            'image' => 'required',
+            'image.*' => 'image',
         ]);
 
         foreach ($request->file('image') as $key => $photo) {
