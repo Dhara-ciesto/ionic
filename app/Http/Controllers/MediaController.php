@@ -10,7 +10,7 @@ class MediaController extends Controller
     public function index()
     {
 
-        $data['medias'] = Media::get()->all();
+        $data['medias'] = Media::orderBy('id','desc')->get()->all();
         return view('media.index', $data);
     }
     public function create()

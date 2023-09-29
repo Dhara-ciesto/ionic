@@ -42,14 +42,14 @@ class OrderController extends Controller
         $limit = $request->limit;
         $i = 1;
         // your table name
-        $query = Order::where('id', '>', 0);
+        $query = Order::with('orderBy')->where('id', '>', 0);
         // if (Auth::user()->id != 1) {
         //     $query->where('status', 'Active');
         // }
         $query->when($search, function ($q) use ($filter, $i) {
             foreach ($filter as $key => $item) {
-                if ($key == 'product_brand.name') {
-                    $q->whereHas('product_brand', function ($c) use ($item) {
+                if ($key == 'orderBy.name') {
+                    $q->whereHas('orderBy', function ($c) use ($item) {
                         $c->where('name', 'like', '%' . $item . '%');
                     });
                     // } else if ($key == 'scent_type.name') {
@@ -71,6 +71,9 @@ class OrderController extends Controller
         })->when($sort, function ($q1) use ($sort, $order) {
             if ($sort == 'counter') {
                 $q1->orderBy('id', $order);
+            }
+           elseif ($sort == 'order_by.name') {
+                $q1->orderBy('order_by', $order);
             } else {
                 $q1->orderBy($sort, $order);
             }
@@ -88,9 +91,6 @@ class OrderController extends Controller
         $data = [];
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
-            $row[$key]['receipt_image'] = "<img src='" . $item['receipt_image'] . "' height='50' width='50' onerror=this.src='".asset("/images/placeholder.png")."'>";
-            $row[$key]['receipt_image_url'] = $item['receipt_image'];
-
             $row[$key]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="' . $row[$key]['id'] . '">';
             $row[$key]['created_at'] =  date('d-m-Y h:i a', strtotime($row[$key]['created_at']));
         }

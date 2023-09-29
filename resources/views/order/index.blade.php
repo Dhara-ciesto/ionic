@@ -37,8 +37,8 @@
                                 </select>
                             </div> --}}
                             <div class="col-md-2">
-                                <label class="form-label">LR Number</label>
-                                <input type="text" class="form-control bootstrap-table-filter-control-lr_no" placeholder="Enter Product Name">
+                                <label class="form-label">Order No.</label>
+                                <input type="text" class="form-control bootstrap-table-filter-control-uid" placeholder="Enter Order No.">
                             </div>
                                 {{-- <div class="col-md-1">
                                 <label class="form-label">Scent Type</label>
@@ -82,16 +82,14 @@
                                     <th data-field="checkbox"><input type="checkbox" id="select_all"
                                             onchange="select_all(this)"></th>
                                     {{-- <th data-field="product_brand.name" data-filter-control="select" data-sortable="true">Brand </th> --}}
-                                    <th data-field="lr_no" data-filter-control="input" data-sortable="true">LR Number    </th>
-                                    <th data-field="receipt_image" data-filter-control="select" data-sortable="true">Receipt Image
-                                         </th>
-                                        <th data-field="qty" data-filter-control="input" data-sortable="true">Quantity </th>
+                                    <th data-field="uid" data-filter-control="input" data-sortable="true">Order No.    </th>
+                                    <th data-field="qty" data-filter-control="select" data-sortable="true">Total Products </th>
                                     <th data-field="created_at" data-filter-control="select" data-sortable="true">Date</th>
-                                    {{-- <th data-field="fragrance_tone_1.name" data-filter-control="select" data-sortable="true">Fragrance Tone 1 </th> --}}
+                                    <th data-field="order_by.name" data-filter-control="select" data-sortable="true">Order By </th>
                                     {{-- <th data-field="price" data-filter-control="input" data-sortable="true">Price </th> --}}
                                     {{-- <th data-field="campaign.name" data-filter-control="select" data-sortable="true">Campaign </th> --}}
                                     {{-- <th data-field="gender" data-filter-control="select" data-sortable="true">Gender</th> --}}
-                                    {{-- <th data-field="status"  data-sortable="true">Status</th> --}}
+                                    <th data-field="status"  data-sortable="true">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -167,7 +165,7 @@
             pageSize: 100,
             columns: [{}, {}, {}, {}, {}, {}, {
                 field: 'operate',
-                sortable: 'false',
+                sortable: false,
                 title: 'Action',
                 align: 'center',
                 valign: 'middle',

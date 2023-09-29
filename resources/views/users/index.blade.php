@@ -21,7 +21,19 @@
             <div class="card-body">
                 {{-- <h4 class="card-title">Basic example</h4> --}}
                 <div class="table-responsive">
-                    <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table" data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true" data-total-field="count" data-data-field="items" data-show-columns="true" data-show-toggle="false" data-filter-control="true" data-show-columns-toggle-all="true" >
+                    <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table" data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true" data-total-field="count" data-data-field="items" data-show-columns="true" data-show-toggle="false" data-filter-control="true" data-show-columns-toggle-all="true"  data-filter-control-container="#filters">
+                        <div id="filters" class="row bootstrap-table-filter-control">
+                            {{-- <div class="col-md-2">
+                                <label class="form-label">Brand</label>
+                                <select class="form-control bootstrap-table-filter-control-product_brand.name" data-placeholder="Select Brand Name" data-field="product_brand.name">
+                                    <option value=""></option>
+                                </select>
+                            </div> --}}
+                            <div class="col-md-2">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control bootstrap-table-filter-control-username" placeholder="Enter User Name">
+                            </div>
+                        </div>
                         <thead>
                             <tr>
                                 <th data-field="id" data-sortable="true">#</th>

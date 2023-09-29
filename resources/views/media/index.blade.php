@@ -40,7 +40,12 @@
     <div class="row">
         <div class="col-12">
             <div class="row">
-                <div class="col-sm-4"></div>
+                <div class="col-sm-4"><label class="form-label btn btn-primary" style="float: left;margin-left: 10px;"> Select All
+                    <input type="checkbox" id="select_all" onchange="select_all(this)">
+               </label>
+
+
+                    </div>
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">
                     <a class="btn btn-primary waves-effect waves-light" href="{{ route('media.create') }}" role="button"
@@ -99,6 +104,11 @@
                     .resumeTimer)
             }
         })
+
+        function select_all(e) {
+            $(".sub_chk").prop('checked', e.checked);
+        }
+        
         //media managment image copy image link
         $('.copy-link').on('click', function(e) {
             e.preventDefault();

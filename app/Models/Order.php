@@ -15,6 +15,11 @@ class Order extends Model
     {
         return $this->hasMany(OrderProduct::class,'order_id');
     }
+
+    public function orderBy()
+    {
+        return $this->hasOne(User::class,'id','order_by');
+    }
     // public function getProductsAttribute()
     // {
     //     $monitorId = $this->product;
