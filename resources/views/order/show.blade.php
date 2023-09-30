@@ -1,146 +1,155 @@
 @extends('layouts.master')
-@section('title') Product @endsection
+@section('title')
+    Order
+@endsection
 
 
 @section('content')
-@component('components.breadcrumb')
-@slot('li_1') Dashboard @endslot
-@slot('title') Product Details @endslot
-@endcomponent
-<div class="row">
-    <div class="col-md-12">
-        <a href="{{route('product.edit', ['id' => $product->id])}}" class="btn btn-outline-danger float-end">{{__('Edit Details')}}</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xl-4">
-        <div class="card overflow-hidden">
-            <div class="bg-white bg-soft">
-                <div class="row">
-                    <div class="col-7">
-                        <div class="text-primary p-3">
-                            {{-- <p>It will seem like simplified</p> --}}
-                        </div>
-                    </div>
-                    <div class="col-5 align-self-end">
-                        {{-- <img src="{{ URL::asset('/assets/images/profile-img.png') }}" alt="" class="img-fluid"> --}}
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-
-                        <div class="modal-body">
-                            @if($product->file)
-                            <img src="{{ asset($product->file) }}" alt="" class="w-100">
-                        @else
-                            <img src="{{ asset('/images/dp.png') }}" alt="" class="w-100">
-                        @endif
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-body pt-0">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class=" profile-user-wid mb-4 text-center">
-                            <a data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                @if($product->file)
-                                    <img src="{{ asset($product->file) }}" alt="" class="img-fluid" style="min-height: 300px;min-width:200px;" >
-                                @else
-                                    <img src="{{ asset('/images/dp.png') }}" alt="" class="img-thumbnail">
-                                @endif
-                            </a>
-                        </div>
-                        {{-- <p class="text-muted mb-0 text-truncate">UI/UX Designer</p> --}}
+    @component('components.breadcrumb')
+        @slot('li_1')
+            Dashboard
+        @endslot
+        @slot('title')
+            Order Details
+        @endslot
+    @endcomponent
+    <style>
+        .dlabel {
+            margin-bottom: 0px !important;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="float-start">
                         <div class="table-responsive">
                             <table class="table table-nowrap mb-0">
                                 <tbody>
                                     <tr>
-                                        <td><b>{{ $product->product_name ? $product->product_name : '' }}</b></td>
+                                        <th scope="row">Business Name :</th>
+                                        <td>{{ $order->orderBy->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Brand :</th>
-                                        <td>{{ $product->product_brand ? $product->product_brand->name : '' }}</td>
+                                        <th scope="row">Total Orders :</th>
+                                        <td>{{ count($orders) }}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Scent Type :</th>
-                                        <td>{{ $product->scent_type->name ? $product->scent_type->name : '' }}</td>
+                                        <th scope="row">Order In Processing :</th>
+                                        <td>{{ count($orders->where('status', 'Processing')) }}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Fragrance Tone 1 :</th>
-                                        <td>{{ $product->fragrance_tone_1->name ? $product->fragrance_tone_1->name : '' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Fragrance Tone 2 :</th>
-                                        <td>{{ $product->fragrance_tone_2 ? $product->fragrance_tone_2->name : '' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Size:</th>
-                                        <td>{{ $product->size ? $product->size.$product->size_unit->name : '' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Campaign :</th>
-                                        <td>{{ $product->campaign ? $product->campaign->name : '' }}</td>
+                                        <th scope="row">Dispatched Orders :</th>
+                                        <td>{{ count($orders->where('status', 'Dispatched')) }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    {{-- <h4 class="card-title mb-4">CV</h4> --}}
                 </div>
             </div>
         </div>
-        <!-- end card -->
     </div>
+    @foreach ($orders as $order)
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card overflow-hidden">
+                    <div class="bg-white bg-soft">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="text-primary p-3">
+                                    {{-- <p>It will seem like simplified</p> --}}
+                                </div>
+                            </div>
+                            <div class="col-5 align-self-end">
+                                {{-- <img src="{{ URL::asset('/assets/images/profile-img.png') }}" alt="" class="img-fluid"> --}}
+                            </div>
+                        </div>
+                    </div>
 
-    <div class="col-xl-8">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title mb-4">Details</h4>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="price" class="form-label"><b>Price:</b></label>
-                        <P>{{$product->price}}</P>
-                    </div>  
-                    <div class="col-md-3">
-                        <label for="price" class="form-label"><b>URL:</b></label>
-                        <P><a href="{{$product->url}}">{{$product->url}}</a></P>
-                    </div>  
-                    <div class="col-md-3">
-                        <label for="price" class="form-label"><b>Occasion:</b></label>
-                        <P>{{$product->occasion}}</P>
-                    </div>  
-                    <div class="col-md-3">
-                        <label for="price" class="form-label"><b>Gender:</b></label>
-                        <P>{{$product->gender}}</P>
-                    </div>      
+
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Order :</th>
+                                                <td>{{ $order->uid }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Status :</th>
+                                                <td>{{ $order->status }}</td>
+                                            </tr>
+                                            @if ($order->status == 'Processing')
+                                                <tr>
+                                                    <td colspan="2" style="text-align: end;"><button
+                                                            class="btn btn-outline-success" data-bs-toggle="modal"
+                                                            onclick="setOrderId({{ $order->id }})"
+                                                            data-bs-target="#exampleModal">Dispatch</button></td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- end card -->
             </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title mb-4">Other</h4>
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="price" class="form-label"><b>Fragrance Description:</b></label>
-                        <P>{{$product->fragrance_description}}</P>
-                    </div>  
-                    <div class="col-md-4">
-                        <label for="price" class="form-label"><b>Status:</b></label>
-                        <P>{{$product->status}}</P>
-                    </div>  
-                    <div class="col-md-4">
-                        <label for="price" class="form-label"><b>Photo:</b></label>
-                        <P><a href="{{ asset($product->file)}}">Download Image</a></P>
-                    </div>      
+
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body">
+                        {{-- <h4 class="card-title mb-4">Details</h4> --}}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="row">No. </th>
+                                                <th scope="row">Product </th>
+                                                <th scope="row">Total Cartoon </th>
+                                                <th scope="row">Dispatched Cartoon </th>
+                                                <th scope="row">Pending Cartoon </th>
+                                                {{-- <th scope="row">Total Qty </th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($order->products as $key => $product)
+                                                {{-- {{ dd($product->dispatch_product) }} --}}
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $product->product->product_name }}</td>
+                                                    <td>{{ $product->cartoon }}</td>
+                                                    {{-- <td>{{ $product->qty }}</td> --}}
+                                                    <td>{{ $product->dispatch_product->sum('cartoon') }}</td>
+                                                    <td>{{ $product->cartoon - $product->dispatch_product->sum('cartoon') }}
+                                                    </td>
+                                                </tr>
+                                                @foreach ($product->dispatch_product as $dorder)
+                                                    <tr>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>{{ $dorder->cartoon }}</td>
+                                                        {{-- <td>{{ $dorder->qty }}</td> --}}
+                                                        <td>{{ $dorder->lr_no }}</td>
+                                                        <td><a href="{{ asset($dorder->receipt_image) }}"
+                                                                target="_blank">{{ $dorder->receipt_image }}</a></td>
+                                                    </tr>
+                                                @endforeach
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+                {{--
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title mb-4">Notes</h4>
@@ -148,137 +157,376 @@
                     <div class="col-md-4">
                         <label for="price" class="form-label"><b>Fragrance Top Note:</b></label>
                         <P>{{$product->fragrance_top_note}}</P>
-                    </div>  
+                    </div>
                     <div class="col-md-4">
                         <label for="price" class="form-label"><b>Fragrance Middle Note:</b></label>
                         <P>{{$product->fragrance_middle_note}}</P>
-                    </div>  
+                    </div>
                     <div class="col-md-4">
                         <label for="price" class="form-label"><b>Fragrance Base Note:</b></label>
                         <P>{{$product->fragrance_base_note}}</P>
-                    </div>      
+                    </div>
                 </div>
             </div>
+        </div> --}}
+            </div>
+        </div>
+    @endforeach
+    <!-- end row -->
+
+    <!--  Update Profile example -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="profile_form" action="{{ route('order.dispatch') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myLargeModalLabel">Dispatch Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body" id="product_div">
+                                {{-- <div class="row mb-2">
+                                    <div class="col-lg-9" id="">
+
+                                            <label class="dlabel" style="margin-left: 10px;">
+                                                <input type="checkbox" class="mt-2 prod_checkbox" value="2"
+                                                    name="product[0][product_id]">&nbsp;product 1
+                                            </label>
+                                            <br>
+                                        <span class="font-size-10 ms-4" style="margin-top: -20px;">Total order cartoon :
+                                            2</span>
+                                    </div>
+                                    <div class="col-lg-3" id="">
+                                        <input type="number" value="" name="product[0][cartoon]"
+                                            class="form-control form-control-color" min="1">
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-lg-9" id="">
+                                        <label class="dlabel" style="margin-left: 10px;">
+                                            <input type="checkbox" class="mt-2 prod_checkbox" value="2"
+                                                name="product[1][product_id]">&nbsp;product 2
+                                        </label>
+                                        <br>
+                                        <span class="font-size-10 ms-4" style="margin-top: -20px;">Total order cartoon :
+                                            2</span>
+                                    </div>
+                                    <div class="col-lg-3" id="">
+                                        <input type="number" value="" name="product[1][cartoon]"
+                                            class="form-control form-control-color" min="1">
+                                    </div>
+                                </div> --}}
+                            </div>
+                        </div>
+
+                        <div class="row mt-2 ms-2">
+                            <div class="form-group">
+                                <div class="col-sm-11">
+                                    <div class="mb-2">
+                                        <input type="hidden" name="order_id" id="order_id" value="">
+                                        <label for="brand_name">LR Number<span class="error">*</span></label>
+                                        <input id="lr_no" name="lr_no" type="text" value="{{ old('lr_no') }}"
+                                            class="form-control" placeholder="LR Number">
+                                        @error('lr_no')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-11">
+                                    <div class="mb-2">
+                                        <label for="brand_name">Receipt Image<span class="error">*</span></label>
+                                        <input id="receipt_image" type="file" name="receipt_image" class="form-control"
+                                            placeholder="Campaign">{{ old('receipt_image') }}</textarea>
+                                        <small>File size maximum limit 5 MB.</small>
+                                        @error('receipt_image')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <br><span id="old_image"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-success">Submit</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"
+                            id="close_order_dtls">Cancel</button>
+
+                    </div>
+            </form>
         </div>
     </div>
-</div>
-<!-- end row -->
-
-<!--  Update Profile example -->
-<div class="modal fade update-profile" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myLargeModalLabel">Edit Profile</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" method="POST" enctype="multipart/form-data" id="update-profile">
-                    @csrf
-                    <input type="hidden" value="{{ Auth::user()->id }}" id="data_id">
-                    <div class="mb-3">
-                        <label for="useremail" class="form-label">Email</label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="useremail" value="{{ Auth::user()->email }}" name="email" placeholder="Enter email" autofocus>
-                        <div class="text-danger" id="emailError" data-ajax-feedback="email"></div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ Auth::user()->name }}" id="username" name="name" autofocus placeholder="Enter username">
-                        <div class="text-danger" id="nameError" data-ajax-feedback="name"></div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="userdob">Date of Birth</label>
-                        <div class="input-group" id="datepicker1">
-                            <input type="text" class="form-control @error('dob') is-invalid @enderror" placeholder="dd-mm-yyyy" data-date-format="dd-mm-yyyy" data-date-container='#datepicker1' data-date-end-date="0d" value="{{ date('d-m-Y', strtotime(Auth::user()->dob)) }}" data-provide="datepicker" name="dob" autofocus id="dob">
-                            <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
-                        </div>
-                        <div class="text-danger" id="dobError" data-ajax-feedback="dob"></div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="avatar">Profile Picture</label>
-                        <div class="input-group">
-                            <input type="file" class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar" autofocus>
-                            <label class="input-group-text" for="avatar">Upload</label>
-                        </div>
-                        <div class="text-start mt-2">
-                            <img src="{{ asset(Auth::user()->avatar) }}" alt="" class="rounded-circle avatar-lg">
-                        </div>
-                        <div class="text-danger" role="alert" id="avatarError" data-ajax-feedback="avatar"></div>
-                    </div>
-
-                    <div class="mt-3 d-grid">
-                        <button class="btn btn-primary waves-effect waves-light UpdateProfile" data-id="{{ Auth::user()->id }}" type="submit">Update</button>
-                    </div>
-                </form>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
 @endsection
 @push('js')
-<!-- jquery step -->
-<script src="{{ URL::asset('/assets/libs/jquery-steps/jquery-steps.min.js') }}"></script>
+    <!-- jquery step -->
+    <script src="{{ URL::asset('/assets/libs/jquery-steps/jquery-steps.min.js') }}"></script>
 
-<!-- form wizard init -->
-<script src="{{ URL::asset('/assets/js/pages/form-wizard.init.js') }}"></script>
-<!-- form repeater js -->
-<script src="{{ URL::asset('assets/libs/jquery-repeater/jquery-repeater.min.js') }}"></script>
+    <!-- form wizard init -->
+    <script src="{{ URL::asset('/assets/js/pages/form-wizard.init.js') }}"></script>
+    <!-- form repeater js -->
+    <script src="{{ URL::asset('assets/libs/jquery-repeater/jquery-repeater.min.js') }}"></script>
 
-<script src="{{ URL::asset('assets/js/pages/form-repeater.int.js') }}"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ URL::asset('assets/js/pages/form-repeater.int.js') }}"></script>
 
 
-<script>
-</script>
-@if(Session::has('success'))
-<script>
-    const Toast = Swal.mixin({
-        toast: true
-        , position: 'top-end'
-        , showConfirmButton: false
-        , timer: 3000
-        , timerProgressBar: true
-        , didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+        function dotToArray(str) {
+            var output = '';
+            var chucks = str.split('.');
+            if (chucks.length > 1) {
+                for (i = 0; i < chucks.length; i++) {
+                    if (i == 0) {
+                        output = chucks[i];
+                    } else {
+                        output += '[' + chucks[i] + ']';
+                    }
+                }
+            } else {
+                output = chucks[0];
+            }
+            return output
         }
-    })
 
-    Toast.fire({
-        icon: 'success'
-        , title: "{{Session::get('success')}}"
-    })
+        function setOrderId(order_id) {
+            $('#order_id').val(order_id);
+            $('#product_div').html('');
+            var img = ``;
+            $.ajax({
+                    url: '{{ route('order.getOrder') }}',
+                    type: "get",
+                    data: {'order_id' : order_id},
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    beforeSend: function() {
+                        $('#submit_btn').prop('disabled', true)
+                        $('#submit_btn').text('Loading...')
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        $('#submit_btn').prop('disabled', false)
+                        $('#submit_btn').text('Submit')
+                        if (data.success) {
+                            var res = data.data;
+                            console.log(res);
+                            for (i = 0; i < res.length; ++i) {
+                                    // do something with `substr[i]`
+                                    img += `<div class="row mb-2">
+                                            <div class="col-lg-9" id="">
+                                                <label class="dlabel" style="margin-left: 10px;">
+                                                    <input type="checkbox" class="mt-2 prod_checkbox" value="`+res[i].product_id+`"
+                                                        name="product[`+i+`][product_id]">&nbsp;`+res[i].product.product_name+`
+                                                </label>
+                                                <br>
+                                                <span class="font-size-10 ms-4" style="margin-top: -20px;">Total order cartoon :
+                                                    `+res[i].cartoon+`</span>
+                                            </div>
+                                            <div class="col-lg-3" id="">
+                                                <input type="hidden" name="product[`+i+`][total_cartoon]" value="`+(res[i].cartoon)+`">
+                                                <input type="number" value="`+(res[i].cartoon-res[i].dispatch_count)+`" name="product[`+i+`][cartoon]"
+                                                    class="form-control form-control-color" max="`+(res[i].cartoon-res[i].dispatch_count)+`" min="1">
+                                            </div>
+                                        </div>`;
+                                }
+                                // console.log(value.product_id);
+                                // var k=0;
+                                // $.each(res.products[key], function (i, j) {
+                                        // console.log(key + value);
 
-</script>
-@endif
-@if(Session::has('error'))
-<script>
-    const Toast = Swal.mixin({
-        toast: true
-        , position: 'top-end'
-        , showConfirmButton: false
-        , timer: 3000
-        , timerProgressBar: true
-        , didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                // });
+
+
+                            $('#product_div').html(img);
+                        } else {
+
+                    }
+
+                }
+            });
+
+
         }
-    })
+        $(".prod_checkbox").on('change', function() {
+            // console.log($(this).parent().parent());
+            console.log($(this).parent().parent().parent().find("input[name='product[cartoon][]']").length);
+            if (this.checked) {
+                // $("#input").attr('required', true);
+                $(this).parent().parent().parent().find("input[name='product[cartoon][]']").attr('required', true);
+            } else {
+                // $("#input").attr('required', false);
+                $(this).parent().parent().parent().find("input[name='product[cartoon][]']").attr('required', false);
 
-    Toast.fire({
-        icon: 'warning'
-        , title: "{{Session::get('error')}}"
-    })
+            }
+        });
+        $(document).find("#profile_form").validate({
+            errorPlacement: function(error, element) {
+                console.log(error);
+                error.insertAfter(element);
+            },
 
-</script>
-@endif
+            rules: {
+                order_id: "required",
+                // 'cartoon[]': {
+                //     required: function(element){
+                //         return $("#document_title").val()!="";
+                //     }
+                // }
+                lr_no: "required",
+                receipt_image: "required",
+            },
+            submitHandler: function(formd) {
+                let form = $('#profile_form')[0];
+                let form_data = new FormData(form);
+                let submissionId = $('#submissionId').val();
+                let url = "{{ route('order.dispatch') }}";
+                url = url.replace(':queryId', submissionId);
+
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    contentType: false,
+                    processData: false,
+                    // data: $('#profile_form').serialize(),
+                    data: form_data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    beforeSend: function() {
+                        $('#submit_btn').prop('disabled', true)
+                        $('#submit_btn').text('Loading...')
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        $('#submit_btn').prop('disabled', false)
+                        $('#submit_btn').text('Submit')
+                        if (data.success) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal
+                                        .resumeTimer)
+                                }
+                            })
+                            Toast.fire({
+                                icon: 'success',
+                                title: data.message
+                            });
+                            $('#profile_form')[0].reset();
+                            setTimeout(() => {
+                                location.reload()
+                            }, 2000);
+                            // $('#form_section').addClass('d-none');
+                            // $('#complete_section').removeClass('d-none');
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal
+                                        .resumeTimer)
+                                }
+                            })
+                            Toast.fire({
+                                icon: 'warning',
+                                title: data.message
+                            });
+
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $('#submit_btn').prop('disabled', false)
+                        $('#submit_btn').text('Submit')
+
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.errors) {
+                            $('.lara_error').remove(); // remove old errors
+                            // console.log(jqXHR.responseJSON.errors);
+                            $.each(jqXHR.responseJSON.errors, function(element, errorMessage) {
+                                console.log(element);
+                                element = dotToArray(element);
+                                console.log(element);
+                                if (element == 'product[product_id]') {
+                                    element = 'product' + '[0]' + '[product_id]';
+                                }
+                                $("input[name='" + element + "']").next('span')
+                                    .remove();
+                                $("select[name='" + element + "']").next('span')
+                                    .remove();
+
+                                let spanEl = document.createElement('span')
+                                $(spanEl).addClass('text-danger lara_error').text(
+                                        errorMessage)
+                                    .insertAfter($("input[name='" + element + "']"))
+                                $(spanEl).addClass('text-danger').text(errorMessage)
+                                    .insertAfter($(
+                                        "select[name='" + element + "']"))
+                            });
+                            $('html, body').animate({
+                                scrollTop: $(".lara_error").offset().top - 150
+                            }, 1);
+                        }
+
+                        // $("#profile_form_step-t-0").click();
+                    }
+                });
+
+            }
+        });
+    </script>
+    @if (Session::has('success'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: "{{ Session::get('success') }}"
+            })
+        </script>
+    @endif
+    @if (Session::has('error'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'warning',
+                title: "{{ Session::get('error') }}"
+            })
+        </script>
+    @endif
 @endpush

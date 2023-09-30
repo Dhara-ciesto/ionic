@@ -118,6 +118,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('order/view/{id}', [OrderController::class, 'show'])->name('order.show');
     Route::get('order/print/{id}', [OrderController::class, 'print'])->name('order.print');
     Route::post('order/addDetails', [OrderController::class, 'addDetails'])->name('order.addDetails');
+    Route::post('order/dispatchOrder', [OrderController::class, 'dispatchOrder'])->name('order.dispatch');
+    Route::get('order/getOrder', [OrderController::class, 'getOrder'])->name('order.getOrder');
 
 
 

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderProduct;
 use Illuminate\Http\Request;
+use App\Models\DispatchOrder;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
@@ -42,7 +43,7 @@ class OrderController extends Controller
         $limit = $request->limit;
         $i = 1;
         // your table name
-        $query = Order::with('orderBy')->where('id', '>', 0);
+        $query = Order::groupBy('order_by')->with('orderBy')->where('id', '>', 0);
         // if (Auth::user()->id != 1) {
         //     $query->where('status', 'Active');
         // }
@@ -52,35 +53,12 @@ class OrderController extends Controller
                     $q->whereHas('orderBy', function ($c) use ($item) {
                         $c->where('name', 'like', '%' . $item . '%');
                     });
-                    // } else if ($key == 'scent_type.name') {
-                    //     $q->whereHas('scent_type', function ($c) use ($item) {
-                    //         $c->where('name', 'like', '%' . $item . '%');
-                    //     });
-                    // } else if ($key == 'fragrance_tone_1.name') {
-                    //     $q->whereHas('fragrance_tone_1', function ($c) use ($item) {
-                    //         $c->where('name', 'like', '%' . $item . '%');
-                    //     });
-                    // } else if ($key == 'campaign.name') {
-                    //     $q->whereHas('campaign', function ($c) use ($item) {
-                    //         $c->where('name', 'like', '%' . $item . '%');
-                    //     });
                 } else {
                     $q->where($key, 'Like', '%' . $item . '%');
                 }
             }
-        })->when($sort, function ($q1) use ($sort, $order) {
-            if ($sort == 'counter') {
-                $q1->orderBy('id', $order);
-            }
-           elseif ($sort == 'order_by.name') {
-                $q1->orderBy('order_by', $order);
-            } else {
-                $q1->orderBy($sort, $order);
-            }
         });
-        if (!$sort) {
-            $query->orderBy('created_at', 'desc');
-        }
+
         $count =  $query->count();
         $row = $query->when($offset, function ($q) use ($offset) {
             $q->offset($offset);
@@ -92,7 +70,7 @@ class OrderController extends Controller
         foreach ($row as $key => $item) {
             $row[$key]['counter'] = $index++;
             $row[$key]['checkbox'] = '<input type="checkbox" class="sub_chk" data-id="' . $row[$key]['id'] . '">';
-            $row[$key]['created_at'] =  date('d-m-Y h:i a', strtotime($row[$key]['created_at']));
+            // $row[$key]['created_at'] =  date('d-m-Y h:i a', strtotime($row[$key]['created_at']));
         }
         $data['items'] = $row;
         $data['count'] = $count;
@@ -174,8 +152,10 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $data['product'] = Order::findOrFail($id);
-        return view('product.show', $data);
+        $data['order'] = Order::findOrFail($id);
+        $user_id = $data['order']->order_by;
+        $data['orders'] =  Order::where('order_by', $user_id)->get();
+        return view('order.show', $data);
     }
 
     /**
@@ -254,9 +234,10 @@ class OrderController extends Controller
             'lr_no' => 'required',
             'receipt_image' => 'image|max:5120'
 
-        ],['lr_no.required' => 'The LR number field is required',
-        'receipt_image.max' => 'The receipt image may not be greater than 5 MB'
-    ]);
+        ], [
+            'lr_no.required' => 'The LR number field is required',
+            'receipt_image.max' => 'The receipt image may not be greater than 5 MB'
+        ]);
         $order = Order::find($request->order_id);
         $order->lr_no = $request->lr_no;
         $reqData = '';
@@ -311,5 +292,97 @@ class OrderController extends Controller
         Order::whereIn('id', explode(",", $ids))->delete();
         \Log::info('Order with ids ' . $request->ids . ' Deleted ');
         return response()->json(['success' => "Orders Deleted successfully."]);
+    }
+
+    public function dispatchOrder(Request $request)
+    {
+        // dd($request->all());
+        $validation_rules = array();
+        if ($request->product) {
+            foreach ($request->product as $key => $value) {
+                if (isset($value['product_id']) && $value['product_id']  > 0) {
+                    // dump('f');
+                    $validation_rules = array_merge($validation_rules, ['product.' . $key.'.cartoon' => 'required']);
+                }
+            }
+        }
+        $validation_rules =  array_merge($validation_rules, [
+            'product' => 'required',
+            // 'product.product_id' => 'required_without:product.*.product_id',
+            // 'product.cartoon' => 'required',
+            'lr_no' => 'required',
+            'receipt_image.*' => 'required',
+        ]);
+        // dd($validation_rules);
+        $request->validate($validation_rules,['product.product_id.required_without' => 'Please Select at least one product']);
+        $order = OrderProduct::where('order_id', $request->order_id)
+            ->where('product_id', $request->product_id)
+            ->where('status', 'InProcess')->get()->all();
+
+        if ($request->product) {
+            $reqData = '';
+            if ($request->file('receipt_image')) {
+                $photo = $request->file('receipt_image');
+                $filename = time() . '.' . $photo->getClientOriginalExtension();
+                $avatarPath = public_path('/images/product');
+                $photo->move($avatarPath, $filename);
+                $reqData = '/images/product/' . $filename;
+            }
+            foreach ($request->product as $key => $value) {
+                // dd($value);
+                if(isset($value['product_id']) && isset($value['cartoon'])){
+
+                    $order_product = OrderProduct::where('order_id', $request->order_id)
+                        ->where('product_id', $value['product_id'])
+                        ->where('status', 'InProcess')->get()->first();
+                    // dd( $order_product );
+                    if ($order_product && $order_product->cartoon >= $value['cartoon']) {
+
+                        $dispatch = DispatchOrder::create([
+                            'lr_no' => $request->lr_no,
+                            'order_id' => $request->order_id,
+                            'product_id' => $value['product_id'],
+                            'order_product_id' => $order_product->id,
+                            'cartoon' => $value['cartoon'],
+                            'status' => 'Dispatched',
+                        ]);
+
+
+                        $dispatch->receipt_image = $reqData;
+                        $dispatch->save();
+
+                        $cartoon = DispatchOrder::where('order_id', $request->order_id)->where('product_id', $value['product_id'])->sum('cartoon');
+                        if ($cartoon >=  $order_product->cartoon) {
+                            $order_product->status = 'Dispatched';
+                            $order_product->save();
+                        }
+                    }
+                }
+            }
+
+            $order_product_open = OrderProduct::where('order_id', $request->order_id)
+                ->where('status', 'InProcess')->get()->count();
+
+            if (!$order_product_open) {
+                $order = Order::where('id', $request->order_id)->get()->first();
+                $order->status = 'Dispatched';
+                $order->savE();
+            }
+
+            return response()->json(['success' => true, 'msg' => 'Order dispatched successfully']);
+        } else {
+            return response()->json(['success' => false, 'msg' => 'product not found']);
+        }
+    }
+
+    public function getOrder(Request $request){
+        $order = OrderProduct::with('dispatch_product','product')
+        ->where('order_id',$request->order_id)
+        ->where('status','InProcess')->get()->all();
+        if (!$order) {
+            return response()->json(['success' => false, 'msg' => 'No order found']);
+        }
+     // dd($order[0]->products[0]->product->category);
+     return response()->json(['success' => true, 'data' => $order]);
     }
 }

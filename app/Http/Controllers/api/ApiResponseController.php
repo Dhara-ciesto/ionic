@@ -135,7 +135,10 @@ class ApiResponseController extends Controller
      */
     public function createOrder(Request $request)
     {
-
+        $carts = Cart::where('user_id', Auth::user()->id)->where('status','Active')->get()->all();
+        if(!$carts){
+            return response()->json(['success' => false, 'message' => 'No Products Available']);
+        }
         $last_id = Order::where('id','>',0)->orderBy('id', 'DESC')->latest()->first() ? Order::where('id','>',0)->orderBy('id', 'DESC')->latest()->first()->id + 1 : 1;
 
         $no = str_pad($last_id, 5, "O100", STR_PAD_LEFT);
@@ -147,7 +150,7 @@ class ApiResponseController extends Controller
             // 'description' => $request->description,
             'status' => 'Processing'
         ]);
-        $carts = Cart::where('user_id', Auth::user()->id)->get()->all();
+
         foreach ($carts as $key => $value) {
             OrderProduct::create([
                 'order_id' => $order->id,
@@ -242,7 +245,7 @@ class ApiResponseController extends Controller
                         'lr_no' => $request->lr_no,
                         'order_id' => $request->order_id,
                         'product_id' => $value['product_id'],
-                        'order_product_id' => $order_product->product_id,
+                        'order_product_id' => $order_product->id,
                         'cartoon' => $value['cartoon'],
                         'status' => 'Dispatched',
                     ]);

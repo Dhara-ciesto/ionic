@@ -74,22 +74,21 @@
                             </div> --}}
                             </div>
                             <button type="button" id="delete_all" style="margin-bottom:20px;margin-top:20px"
-                                class="btn btn-outline-danger" data-url="{{ route('product.destroy.selected') }}"
-                                onclick="delete_all()">Delete All Selected</button>
+                                class="btn btn-outline-danger" data-url="{{ route('product.destroy.selected') }}"   onclick="delete_all()">Delete All Selected</button>
                             <thead>
                                 <tr>
                                     <th data-field="counter" data-sortable="true">#</th>
                                     <th data-field="checkbox"><input type="checkbox" id="select_all"
                                             onchange="select_all(this)"></th>
                                     {{-- <th data-field="product_brand.name" data-filter-control="select" data-sortable="true">Brand </th> --}}
-                                    <th data-field="uid" data-filter-control="input" data-sortable="true">Order No.    </th>
-                                    <th data-field="qty" data-filter-control="select" data-sortable="true">Total Products </th>
+                                    {{-- <th data-field="uid" data-filter-control="input" data-sortable="true">Order No.    </th> --}}
+                                    {{-- <th data-field="qty" data-filter-control="select" data-sortable="true">Total Products </th> --}}
+                                    <th data-field="order_by.name" data-filter-control="select" data-sortable="true">Business Name </th>
                                     <th data-field="created_at" data-filter-control="select" data-sortable="true">Date</th>
-                                    <th data-field="order_by.name" data-filter-control="select" data-sortable="true">Order By </th>
                                     {{-- <th data-field="price" data-filter-control="input" data-sortable="true">Price </th> --}}
                                     {{-- <th data-field="campaign.name" data-filter-control="select" data-sortable="true">Campaign </th> --}}
                                     {{-- <th data-field="gender" data-filter-control="select" data-sortable="true">Gender</th> --}}
-                                    <th data-field="status"  data-sortable="true">Status</th>
+                                    {{-- <th data-field="status"  data-sortable="true">Status</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,51 +102,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form method="post" id="orderDetails" enctype="multipart/form-data">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="myLargeModalLabel">Add Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="col-sm-11">
-                                <div class="mb-2">
-                                    <input type="hidden" name="order_id" id="order_id" value="">
-                                    <label for="brand_name">LR Number<span class="error">*</span></label>
-                                    <input id="lr_no" name="lr_no" type="text" value="{{ old('lr_no') }}"
-                                        class="form-control" placeholder="LR Number">
-                                    @error('lr_no')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-11">
-                                <div class="mb-2">
-                                    <label for="brand_name">Receipt Image<span class="error">*</span></label>
-                                    <input id="receipt_image" type="file" name="receipt_image" class="form-control"
-                                        placeholder="Campaign">{{ old('receipt_image') }}</textarea>
-                                    <small>File size maximum limit 5 MB.</small>
-                                    @error('receipt_image')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                    <br><span id="old_image"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" onclick="addDetails()" class="btn btn-outline-success">Submit</button>
-                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" id="close_order_dtls">Cancel</button>
-
-                    </div>
-            </form>
-        </div>
-    </div>
     </div>
 @endsection
 @section('script')
@@ -163,7 +117,7 @@
         let $table = $('#user_table');
         $table.bootstrapTable({
             pageSize: 100,
-            columns: [{}, {}, {}, {}, {}, {}, {
+            columns: [{}, {}, {},{}, {
                 field: 'operate',
                 sortable: false,
                 title: 'Action',
@@ -173,25 +127,26 @@
                 formatter: function(value, row, index) {
                     let url = "{{ route('order.edit', ['id' => ':queryId']) }}";
                     url = url.replace(':queryId', row.id);
-                    let show_url = "{{ route('order.print', ['id' => ':queryId']) }}";
+                    let show_url = "{{ route('order.show', ['id' => ':queryId']) }}";
                     show_url = show_url.replace(':queryId', row.id);
                     let status = row.status == 'Active' ? 'Deactive' : 'Active';
                     var class_name = row.status == 'Active' ? 'btn-outline-danger' :
                         'btn-outline-primary';
-                    // <a href="${show_url}" class="btn btn-sm btn-outline-info">View</a>&nbsp;
+                    //
+                    // <a class="btn btn-sm btn-outline-info" data-bs-toggle="modal" onclick="setOrderId(${row.id},'${row.lr_no}','${row.receipt_image_url}')" data-bs-target="#exampleModal" >Details</a>&nbsp;
                     let action =
-                        ` <a class="btn btn-sm btn-outline-info" data-bs-toggle="modal" onclick="setOrderId(${row.id},'${row.lr_no}','${row.receipt_image_url}')" data-bs-target="#exampleModal" >Details</a>&nbsp; <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>`;
-                        if(row.status != 'Completed'){
-                            action += `&nbsp;<select class="form-control mt-2" id="status_` +
-                        index + `" onchange="changeStatus(${row.id}, ${index}, 'status_` + index + `')">
-                            <option value="Pending" ${row.status == 'Pending' ? `selected` : ''}>Pending</option>
-                            <option value="Completed" ${row.status == 'Completed' ? 'selected' : ''}>Completed</option>
-                            <option value="Dispatched" ${row.status == 'Dispatched' ? 'selected' :''}>Dispatched</option>
-                            <option value="Cancel" ${row.status == 'Cancel' ? 'selected' : ''}>Cancel</option>
-                            </select>`;
-                        }else{
-                            action += `<input type="text" class="form-control" value="${row.status}" disabled readonly>`;
-                        }
+                        `   <a href="${show_url}" class="btn btn-sm btn-outline-info">View</a>&nbsp;<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>`;
+                        // if(row.status != 'Completed'){
+                        //     action += `&nbsp;<select class="form-control mt-2" id="status_` +
+                        // index + `" onchange="changeStatus(${row.id}, ${index}, 'status_` + index + `')">
+                        //     <option value="Pending" ${row.status == 'Pending' ? `selected` : ''}>Pending</option>
+                        //     <option value="Completed" ${row.status == 'Completed' ? 'selected' : ''}>Completed</option>
+                        //     <option value="Dispatched" ${row.status == 'Dispatched' ? 'selected' :''}>Dispatched</option>
+                        //     <option value="Cancel" ${row.status == 'Cancel' ? 'selected' : ''}>Cancel</option>
+                        //     </select>`;
+                        // }else{
+                        //     action += `<input type="text" class="form-control" value="${row.status}" disabled readonly>`;
+                        // }
                     return action;
                 }
             }]
