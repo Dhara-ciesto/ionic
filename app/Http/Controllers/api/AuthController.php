@@ -20,7 +20,6 @@ class AuthController extends Controller
     {
         // Validate request data
         $validator = Validator::make($request->all(), [
-            'full_name' => 'required|string|max:255',
             'business_name' => 'required|unique:users,username|max:255',
             'whatsapp_no' => 'required|unique:users,whatsapp_no|digits:10'
         ],[
