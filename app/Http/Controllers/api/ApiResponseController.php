@@ -279,5 +279,18 @@ class ApiResponseController extends Controller
         }
     }
 
+    public function getSize($id){
+        $product = Product::find($id);
+        if($product){
+
+            $size = Product::where('product_name','Like', $product->product_name)
+            ->orderBy('id','desc')->pluck('size')->all();
+            if (!$size) {
+                return response()->json(['success' => false, 'msg' => 'No order found']);
+            }
+        }
+        // dd($order[0]->products[0]->product->category);
+        return response()->json(['success' => true, 'data' => $size]);
+    }
 
 }

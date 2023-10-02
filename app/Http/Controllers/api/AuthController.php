@@ -31,9 +31,10 @@ class AuthController extends Controller
         // Return errors if validation error occur.
         if ($validator->fails()) {
             $errors = $validator->errors();
+            // return response()->json(['status' => '0', 'message' => $validator->messages()->first()]);
             return response()->json([
-                'error' => $errors
-            ], 400);
+                'message' => $validator->messages()->first()
+            ], 200);
         }
         // Check if validation pass then create user and auth token. Return the auth token
         if ($validator->passes()) {
