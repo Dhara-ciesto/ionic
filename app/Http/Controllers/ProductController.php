@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -118,9 +119,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'product_name' => 'required|unique:products,product_name',
+            'product_name' => 'required',
             'photo' => 'required|image|max:5120',
             'category_id' => 'required|numeric',
+            'size' => 'required',
+            Rule::unique('products')->where(function ($query) use($request) {
+                return $query->where('size', $request->size);
+            }),
 
         ]);
 
@@ -176,9 +181,15 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'product_name' => 'required|unique:products,product_name,' . $id,
+            // 'product_name' => 'required|unique:products,product_name,' . $id,
             'category_id' => 'required|numeric',
             'photo' => 'image|max:5120',
+            'product_name' => [
+                'required', 'max:255',
+                Rule::unique('products')->ignore($id)->where(function ($query) use($request) {
+                    return $query->where('size', $request->size);
+                }),
+            ],
 
         ]);
         $reqData = $request->all();
