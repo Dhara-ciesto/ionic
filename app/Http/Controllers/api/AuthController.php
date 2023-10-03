@@ -61,11 +61,10 @@ class AuthController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'whatsapp_no' => 'required|unique:users,whatsapp_no|digits:10'
+            'whatsapp_no' => 'required|digits:10'
         ],[
             'whatsapp_no.required' => 'The Whatsapp No is required',
             'whatsapp_no.digits' => 'The Whatsapp No must be digit',
-            'whatsapp_no.unique' => 'The Whatsapp No is already been taken'
         ]);
         // Return errors if validation error occur.
         if ($validator->fails()) {
