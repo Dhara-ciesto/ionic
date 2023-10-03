@@ -31,6 +31,18 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
+                                <label for="username">Whatsapp No</label>
+                                <input id="whatsapp_no" name="whatsapp_no" type="number"
+                                    value="{{ old('whatsapp_no', $user->whatsapp_no) }}" class="form-control" placeholder="Whatsapp No">
+                                @error('whatsapp_no')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
                                 <label for="email">Email</label>
                                 <input id="email" name="email" type="text" value="{{old('email', $user->email)}}" class="form-control" placeholder="Email">
                                 @error('email')

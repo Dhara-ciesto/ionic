@@ -87,7 +87,7 @@
                                         <div class="mb-2">
                                             <label for="brand_name">Pcs/Box<span class="error">*</span></label>
                                             <input id="pcs" name="pcs" type="number"
-                                                value="{{ old('pcs', $product->pcs) }}" class="form-control"
+                                                value="{{ old('pcs', $product->pcs) }}" onchange="calculateqty()" class="form-control"
                                                 placeholder="Pcs/Box">
                                             @error('pcs')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -100,7 +100,7 @@
                                         <div class="mb-2">
                                             <label for="brand_name">Box/case<span class="error">*</span></label>
                                             <input id="box" name="box" type="number"
-                                                value="{{ old('box', $product->box) }}" class="form-control"
+                                                value="{{ old('box', $product->box) }}"  onchange="calculateqty()"class="form-control"
                                                 placeholder="Box/case">
                                             @error('box')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -111,8 +111,8 @@
                                 <div class="form-group">
                                     <div class="col-sm-11">
                                         <div class="mb-2">
-                                            <label for="brand_name">Quantity<span class="error">*</span></label>
-                                            <input id="qty" name="qty" type="number"
+                                            <label for="brand_name">Quantity/Cartoon<span class="error">*</span></label>
+                                            <input id="qty" name="qty" type="number" readonly
                                                 value="{{ old('qty', $product->qty) }}" class="form-control"
                                                 placeholder="Quantity">
                                             @error('qty')
@@ -187,5 +187,9 @@
                 placeholder: "Select an attribute"
             });
         });
+        function calculateqty(){
+            var qty = $('#pcs').val()*$('#box').val();
+            $('#qty').val(qty);
+        }
     </script>
 @endpush

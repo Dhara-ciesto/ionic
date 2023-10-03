@@ -36,7 +36,8 @@
                             </div>
                         </div>
                     </div>
-
+                    @php  $all_selected = array_diff($notification->user_ids, $users->pluck('id')->all()) == [] ? true : false;
+                    @endphp
                     <div class="form-group">
                         <div class="col-sm-6">
                             <div class="mb-2">
@@ -44,11 +45,12 @@
                                 <select id="user_ids" name="user_ids[]" class="form-control select2"
                                     data-placeholder="Select User" multiple>
                                     <option disabled>Select User</option>
-                                    <option value="all" @if($notification->user_ids) {{ in_array('all',$notification->user_ids)  ? 'selected' : '' }} @endif>Select All
+
+                                    <option value="all" @if($notification->user_ids) {{    $all_selected ? 'selected' : '' }} @endif>Select All
                                     </option>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}"
-                                            @if(old('user_ids',$notification->user_ids)) {{ in_array($user->id,old('user_ids',$notification->user_ids)) == $user->id ? 'selected' : '' }} @endif >{{ $user->name }}
+                                            @if($all_selected) @elseif(old('user_ids',$notification->user_ids)) {{ in_array($user->id,old('user_ids',$notification->user_ids)) == $user->id ? 'selected' : '' }} @endif >{{ $user->name }}
                                         </option>
                                     @endforeach
                                 </select>

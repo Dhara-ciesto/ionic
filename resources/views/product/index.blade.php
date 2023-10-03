@@ -79,10 +79,10 @@
                                 <th data-field="checkbox"><input type="checkbox" id="select_all" onchange="select_all(this)"></th>
                                 <th data-field="file" data-filter-control="" data-sortable="true">Image </th>
                                 <th data-field="product_name" data-filter-control="input" data-sortable="true">Product Name </th>
+                                <th data-field="size" data-filter-control="input" data-sortable="true">Size </th>
                                 <th data-field="category.name" data-filter-control="select" data-sortable="true">Category </th>
                                 <th data-field="pcs" data-filter-control="input" data-sortable="true">Pcs/Box </th>
                                 <th data-field="box" data-filter-control="select" data-sortable="true">Box/case </th>
-                                {{-- <th data-field="price" data-filter-control="input" data-sortable="true">Price </th> --}}
                                 {{-- <th data-field="campaign.name" data-filter-control="select" data-sortable="true">Campaign </th> --}}
                                 {{-- <th data-field="gender" data-filter-control="select" data-sortable="true">Gender</th> --}}
                                 <th data-field="status"  data-sortable="true">Status</th>
@@ -113,7 +113,7 @@
         let $table = $('#user_table');
         $table.bootstrapTable({
             pageSize: 100,
-            columns: [{}, {},{},{},{},{},{},{
+            columns: [{}, {},{},{},{},{},{},{},{
                 field: 'operate',
                 sortable: 'false',
                 title: 'Action',

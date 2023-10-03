@@ -111,7 +111,12 @@ class NotificationController extends Controller
             'title.required' => 'Please enter notification title',
             'user_ids.required' => 'Please Select Users.'
         ]);
-        $notification = Notification::create($request->all());
+        // dd($request->user_ids);
+        $reqData = $request->all();
+        if (in_array("all", $request->user_ids)){
+            $reqData['user_ids'] = User::where('role',2)->pluck('id')->all();
+        }
+        $notification = Notification::create($reqData);
 
         foreach ($notification->user_ids as $key => $value) {
             $mobile_no = User::where('id',$value)->pluck('whatsapp_no')->first();
@@ -143,7 +148,8 @@ class NotificationController extends Controller
      */
     public function edit($id)
     {
-        $data['users'] =  User::where('role',2)->get()->all();
+        $data['users'] =  User::where('role',2)->get();
+
         $data['notification'] = Notification::findOrFail($id);
         return view('notification.edit', $data);
     }
