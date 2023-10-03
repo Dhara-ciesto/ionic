@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request as Psr7Request;
+
 
 class NotificationController extends Controller
 {
@@ -108,7 +111,15 @@ class NotificationController extends Controller
             'title.required' => 'Please enter notification title',
             'user_ids.required' => 'Please Select Users.'
         ]);
-        Notification::create($request->all());
+        $notification = Notification::create($request->all());
+
+        foreach ($notification->user_ids as $key => $value) {
+            $mobile_no = User::where('id',$value)->pluck('whatsapp_no')->first();
+            $client = new Client();
+            $d = new Psr7Request('GET', "http://waw.vr4creativity.com/wapp/api/send?apikey=d82c7bbb589046c9aed04518f78ae45a&mobile=$mobile_no&msg=$notification->message");
+            $res = $client->sendAsync($d)->wait();
+        }
+
         \Log::info('Notification Created');
         return redirect()->route('notification.index')->with('success', 'Notification created successfully');
     }

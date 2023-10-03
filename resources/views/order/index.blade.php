@@ -132,10 +132,11 @@
                     let status = row.status == 'Active' ? 'Deactive' : 'Active';
                     var class_name = row.status == 'Active' ? 'btn-outline-danger' :
                         'btn-outline-primary';
+                        // <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>
                     //
                     // <a class="btn btn-sm btn-outline-info" data-bs-toggle="modal" onclick="setOrderId(${row.id},'${row.lr_no}','${row.receipt_image_url}')" data-bs-target="#exampleModal" >Details</a>&nbsp;
                     let action =
-                        `   <a href="${show_url}" class="btn btn-sm btn-outline-info">View</a>&nbsp;<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>`;
+                        `   <a href="${show_url}" class="btn btn-sm btn-outline-info">View</a>&nbsp;`;
                         // if(row.status != 'Completed'){
                         //     action += `&nbsp;<select class="form-control mt-2" id="status_` +
                         // index + `" onchange="changeStatus(${row.id}, ${index}, 'status_` + index + `')">

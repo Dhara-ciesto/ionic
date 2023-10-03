@@ -248,17 +248,20 @@ class ProductController extends Controller
 
             if ($i > 0) {
 
-                $exist_product = Product::where('product_name', 'Like', $data[1])->pluck('id')->first();
+                $exist_product = Product::where('product_name', 'Like', $data[1])->where('size', 'Like', $data[3])->pluck('id')->first();
                 // dump($data[1]);
                 // dd( $exist_product);
                 $category_id = Category::where('name', 'Like', $data[0])->pluck('id')->first();
                 $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'svg', 'svgz', 'cgm', 'djv', 'djvu', 'ico', 'ief','jpe', 'pbm', 'pgm', 'pnm', 'ppm', 'ras', 'rgb', 'tif', 'tiff', 'wbmp', 'xbm', 'xpm', 'xwd'];
-                $explodeImage = explode('.',  $data[2]);
-                $extension = end($explodeImage);
-                if (!($data[0] && $data[1] && $data[2])) {
+                if($data[2]){
+
+                    $explodeImage = explode('.',  $data[2]);
+                    $extension = end($explodeImage);
+                }
+                if (!($data[0] && $data[1] && $data[3])) {
                     $all_products[$i]['product'] = $data[1];
                     $all_products[$i]['error'] = 'Incomplete Data';
-                } else if(!in_array($extension, $imageExtensions)){
+                } else if($data[2] && !in_array($extension, $imageExtensions)){
                     $all_products[$i]['product'] = $data[1];
                     $all_products[$i]['error'] = 'Product image file must be a image';
                 } else if (!$category_id) {
@@ -274,9 +277,12 @@ class ProductController extends Controller
                         'category_id' => $category_id,
                         'product_name' => $data[1],
                         'file' => $data[2],
-                        'cartoon' => $data[3] ? $data[3] : 1,
-                        'qty' => $data[4] ? $data[4] : 1,
-                        'finish' => $data[5],
+                        'cartoon' => 1,
+                        'qty' => 1,
+                        'size' => $data[3],
+                        'finish' => $data[4],
+                        'pcs' => $data[5] ? $data[5] : 1,
+                        'box' => $data[6] ? $data[6] : 1,
                     ]);
                 }
             }

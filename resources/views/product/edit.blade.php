@@ -72,6 +72,45 @@
                                 <div class="form-group">
                                     <div class="col-sm-11">
                                         <div class="mb-2">
+                                            <label for="brand_name">Size<span class="error">*</span></label>
+                                            <input id="size" name="size" type="text"
+                                                value="{{ old('size',$product->size) }}" class="form-control"
+                                                placeholder="Size">
+                                            @error('size')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-11">
+                                        <div class="mb-2">
+                                            <label for="brand_name">Pcs/Box<span class="error">*</span></label>
+                                            <input id="pcs" name="pcs" type="number"
+                                                value="{{ old('pcs', $product->pcs) }}" class="form-control"
+                                                placeholder="Pcs/Box">
+                                            @error('pcs')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-11">
+                                        <div class="mb-2">
+                                            <label for="brand_name">Box/case<span class="error">*</span></label>
+                                            <input id="box" name="box" type="number"
+                                                value="{{ old('box', $product->box) }}" class="form-control"
+                                                placeholder="Box/case">
+                                            @error('box')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-11">
+                                        <div class="mb-2">
                                             <label for="brand_name">Quantity<span class="error">*</span></label>
                                             <input id="qty" name="qty" type="number"
                                                 value="{{ old('qty', $product->qty) }}" class="form-control"
@@ -82,7 +121,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                                     <div class="col-sm-11">
                                         <div class="mb-2">
                                             <label for="brand_name">Cartoon<span class="error">*</span></label>

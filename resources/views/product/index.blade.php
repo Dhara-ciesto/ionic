@@ -80,8 +80,8 @@
                                 <th data-field="file" data-filter-control="" data-sortable="true">Image </th>
                                 <th data-field="product_name" data-filter-control="input" data-sortable="true">Product Name </th>
                                 <th data-field="category.name" data-filter-control="select" data-sortable="true">Category </th>
-                                {{-- <th data-field="qty" data-filter-control="input" data-sortable="true">Quantity </th> --}}
-                                {{-- <th data-field="fragrance_tone_1.name" data-filter-control="select" data-sortable="true">Fragrance Tone 1 </th> --}}
+                                <th data-field="pcs" data-filter-control="input" data-sortable="true">Pcs/Box </th>
+                                <th data-field="box" data-filter-control="select" data-sortable="true">Box/case </th>
                                 {{-- <th data-field="price" data-filter-control="input" data-sortable="true">Price </th> --}}
                                 {{-- <th data-field="campaign.name" data-filter-control="select" data-sortable="true">Campaign </th> --}}
                                 {{-- <th data-field="gender" data-filter-control="select" data-sortable="true">Gender</th> --}}
@@ -113,7 +113,7 @@
         let $table = $('#user_table');
         $table.bootstrapTable({
             pageSize: 100,
-            columns: [{}, {},{},{},{},{
+            columns: [{}, {},{},{},{},{},{},{
                 field: 'operate',
                 sortable: 'false',
                 title: 'Action',

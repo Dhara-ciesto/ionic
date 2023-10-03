@@ -72,6 +72,7 @@ class AuthController extends Controller
             $errors = $validator->errors();
             // return response()->json(['status' => '0', 'message' => $validator->messages()->first()]);
             return response()->json([
+                'success' => false,
                 'message' => $validator->messages()->first()
             ], 200);
         }
@@ -88,6 +89,7 @@ class AuthController extends Controller
         $res = $client->sendAsync($d)->wait();
         return response()->json([
             // 'otp' => $otp->otp,
+            'success' => true,
             'message' => 'OTP Sent'
         ]);
 
@@ -109,6 +111,7 @@ class AuthController extends Controller
             $errors = $validator->errors();
             // return response()->json(['status' => '0', 'message' => $validator->messages()->first()]);
             return response()->json([
+                'success' => false,
                 'message' => $validator->messages()->first()
             ], 200);
         }
@@ -127,6 +130,7 @@ class AuthController extends Controller
             $otp->status = 'Deactive';
             $otp->save();
             return response()->json([
+                'success' => true,
                 'access_token' => $token,
                 'token_type' => 'Bearer',
             ]);

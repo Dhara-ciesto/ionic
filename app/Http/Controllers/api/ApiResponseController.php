@@ -15,6 +15,7 @@ use App\Models\DispatchOrder;
 use App\Models\OrderProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class ApiResponseController extends Controller
 {
@@ -72,16 +73,24 @@ class ApiResponseController extends Controller
      */
     public function addToCart(Request $request)
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'product_id' => 'required',
             'qty' => 'required|numeric',
             'cartoon' => 'required|numeric',
             'size' => 'required'
+        ],[
+            'product_id.required' => 'The product field is required',
+            'qty.required' => 'The quantity field is required',
         ]);
-        // $product = Product::where('id', $request->product_id)->first();
-        // if (!$product->cartoon >= $request->cartoon) {
-        //     return response()->json(['success' => false, 'message' => 'Cartoon can not be greater than available cartoon']);
-        // }
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->messages()->first()
+            ], 200);
+        }
+
         $cart = Cart::create([
             'user_id' => Auth::user()->id,
             'product_id' => $request->product_id,
@@ -102,13 +111,25 @@ class ApiResponseController extends Controller
      */
     public function editCartItem(Request $request, $id)
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'product_id' => 'required',
             'qty' => 'required',
             'size' => 'required'
+        ],[
+            'product_id.required' => 'The product field is required',
+            'qty.required' => 'The quantity field is required',
         ]);
-        $brand = Cart::findOrFail($id);
-        $brand->update($request->all());
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->messages()->first()
+            ], 200);
+        }
+
+        $cart = Cart::findOrFail($id);
+        $cart->update($request->all());
         return response()->json(['success' => true, 'message' => 'Product Updated in cart successfully']);
     }
 
@@ -217,7 +238,45 @@ class ApiResponseController extends Controller
     public function dispatchOrder(Request $request)
     {
 
-        // dd($request->all());
+        $validation_rules = array();
+
+        $validation_rules = array_merge($validation_rules, [
+            'product' => 'required',
+            'lr_no' => 'required',
+            'receipt_image' => 'required',
+        ]);
+
+        $product_id_exist = 0;
+        if ($request->product) {
+            foreach ($request->product as $key => $value) {
+                if (isset($value['product_id']) && $value['product_id']  > 0) {
+                    $product_id_exist = 1;
+                    $validation_rules = array_merge($validation_rules, ['product.' . $key . '.cartoon' => 'required']);
+                }
+            }
+        }
+        $validator = Validator::make(
+            $request->all(),
+            $validation_rules,
+            [
+                    'lr_no.required' => 'The LR number field is required',
+                    'product.*.cartoon.required' => 'The cartoon field is required',]
+        );
+        if (!$product_id_exist) {
+            $validator->after(function ($validator) {
+                $validator->errors()->add('product', 'Please Select atleast one product');
+            });
+        }
+
+        $validator->validate();
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->messages()->first()
+            ], 200);
+        }
+
         $order = OrderProduct::
             where('order_id', $request->order_id)
             ->where('product_id', $request->product_id)

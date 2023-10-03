@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-    @foreach ($orders as $order)
+    @foreach ($orders as $key => $order)
         <div class="row">
             <div class="col-xl-4">
                 <div class="card overflow-hidden">
@@ -85,9 +85,16 @@
                                             @if ($order->status == 'Processing')
                                                 <tr>
                                                     <td colspan="2" style="text-align: end;"><button
-                                                            class="btn btn-outline-success" data-bs-toggle="modal"
+                                                            class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
                                                             onclick="setOrderId({{ $order->id }})"
                                                             data-bs-target="#exampleModal">Dispatch</button></td>
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td colspan="2" style="text-align: end;">
+                                                        <button onClick="remove({{ $order->id }}, {{ $key }})"
+                                                            class="btn btn-sm btn-outline-danger">Delete</button>
+                                                    </td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -119,10 +126,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($order->products as $key => $product)
+                                            @foreach ($order->products as $pkey => $product)
                                                 {{-- {{ dd($product->dispatch_product) }} --}}
                                                 <tr>
-                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $pkey + 1 }}</td>
                                                     <td>{{ $product->product->product_name }}</td>
                                                     <td>{{ $product->cartoon }}</td>
                                                     {{-- <td>{{ $product->qty }}</td> --}}
@@ -188,6 +195,7 @@
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body" id="product_div">
+
                                 {{-- <div class="row mb-2">
                                     <div class="col-lg-9" id="">
 
@@ -253,7 +261,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-success">Submit</button>
+                        <button type="submit" id="submit_btn"class="btn btn-outline-success">Submit</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"
                             id="close_order_dtls">Cancel</button>
 
@@ -280,6 +288,59 @@
 
 
     <script>
+        function remove(id, index) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let url = "{{ route('order.destroy', ['id' => ':queryId']) }}";
+                    url = url.replace(':queryId', id);
+                    $.ajax({
+                        url: url,
+                        type: "get",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(data, textStatus, jqXHR) {
+                            console.log(data);
+                            if (data.success) {
+                                location.reload();
+                                // $table.bootstrapTable('removeByUniqueId', id);
+
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal
+                                            .resumeTimer)
+                                    }
+                                })
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: data.message
+                                });
+
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(jqXHR);
+                        }
+                    });
+                }
+            })
+
+        }
+
         function dotToArray(str) {
             var output = '';
             var chucks = str.split('.');
@@ -300,53 +361,78 @@
         function setOrderId(order_id) {
             $('#order_id').val(order_id);
             $('#product_div').html('');
-            var img = ``;
+            var img =
+                `<div class="card-header row mb-2"><div class="col-lg-8">Product</div><div class="col-lg-4" id="">Cartoon</div></div>`;
             $.ajax({
-                    url: '{{ route('order.getOrder') }}',
-                    type: "get",
-                    data: {'order_id' : order_id},
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    beforeSend: function() {
-                        $('#submit_btn').prop('disabled', true)
-                        $('#submit_btn').text('Loading...')
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        $('#submit_btn').prop('disabled', false)
-                        $('#submit_btn').text('Submit')
-                        if (data.success) {
-                            var res = data.data;
-                            console.log(res);
-                            for (i = 0; i < res.length; ++i) {
-                                    // do something with `substr[i]`
-                                    img += `<div class="row mb-2">
-                                            <div class="col-lg-9" id="">
+                url: '{{ route('order.getOrder') }}',
+                type: "get",
+                data: {
+                    'order_id': order_id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    $('#submit_btn').prop('disabled', true)
+                    $('#submit_btn').text('Loading...')
+                },
+                success: function(data, textStatus, jqXHR) {
+                    $('#submit_btn').prop('disabled', false)
+                    $('#submit_btn').text('Submit')
+                    if (data.success) {
+                        var res = data.data;
+                        console.log(res);
+                        for (i = 0; i < res.length; ++i) {
+                            // do something with `substr[i]`
+                            img += `<div class="row mb-2">
+                                            <div class="col-lg-8" id="">
                                                 <label class="dlabel" style="margin-left: 10px;">
-                                                    <input type="checkbox" class="mt-2 prod_checkbox" value="`+res[i].product_id+`"
-                                                        name="product[`+i+`][product_id]">&nbsp;`+res[i].product.product_name+`
+                                                    <input type="checkbox" class="mt-2 prod_checkbox" value="` + res[i]
+                                .product_id + `"
+                                                        name="product[` + i + `][product_id]">&nbsp;` + res[i].product
+                                .product_name + `
                                                 </label>
                                                 <br>
                                                 <span class="font-size-10 ms-4" style="margin-top: -20px;">Total order cartoon :
-                                                    `+res[i].cartoon+`</span>
+                                                    ` + res[i].cartoon + `</span>
                                             </div>
-                                            <div class="col-lg-3" id="">
-                                                <input type="hidden" name="product[`+i+`][total_cartoon]" value="`+(res[i].cartoon)+`">
-                                                <input type="number" value="`+(res[i].cartoon-res[i].dispatch_count)+`" name="product[`+i+`][cartoon]"
-                                                    class="form-control form-control-color" max="`+(res[i].cartoon-res[i].dispatch_count)+`" min="1">
+                                            <div class="col-lg-4" id="">
+                                                <input type="hidden" name="product[` + i +
+                                `][total_cartoon]" value="` + (res[i].cartoon) + `">
+                                                <input type="number" value="` + (res[i].cartoon - res[i]
+                                    .dispatch_count) + `" name="product[` + i + `][cartoon]"
+                                                    class="form-control form-control-color" max="` + (res[i].cartoon -
+                                    res[i].dispatch_count) + `" min="1">
                                             </div>
                                         </div>`;
+                        }
+                        // console.log(value.product_id);
+                        // var k=0;
+                        // $.each(res.products[key], function (i, j) {
+                        // console.log(key + value);
+
+                        // });
+
+
+                        $('#product_div').html(img);
+                    } else {
+                        const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal
+                                        .resumeTimer)
                                 }
-                                // console.log(value.product_id);
-                                // var k=0;
-                                // $.each(res.products[key], function (i, j) {
-                                        // console.log(key + value);
-
-                                // });
-
-
-                            $('#product_div').html(img);
-                        } else {
+                            })
+                            Toast.fire({
+                                icon: 'warning',
+                                title: data.message
+                            });
+                        location.reload();
 
                     }
 
@@ -380,8 +466,8 @@
                 //         return $("#document_title").val()!="";
                 //     }
                 // }
-                lr_no: "required",
-                receipt_image: "required",
+                // lr_no: "required",
+                // receipt_image: "required",
             },
             submitHandler: function(formd) {
                 let form = $('#profile_form')[0];
@@ -464,18 +550,30 @@
                                 if (element == 'product[product_id]') {
                                     element = 'product' + '[0]' + '[product_id]';
                                 }
+
                                 $("input[name='" + element + "']").next('span')
                                     .remove();
                                 $("select[name='" + element + "']").next('span')
                                     .remove();
-
                                 let spanEl = document.createElement('span')
-                                $(spanEl).addClass('text-danger lara_error').text(
-                                        errorMessage)
-                                    .insertAfter($("input[name='" + element + "']"))
-                                $(spanEl).addClass('text-danger').text(errorMessage)
-                                    .insertAfter($(
-                                        "select[name='" + element + "']"))
+                                if (element == 'product') {
+                                    $(spanEl).addClass('text-danger lara_error').text(
+                                            errorMessage)
+                                        .insertAfter($(".prod_checkbox").last().parent()
+                                            .parent().parent());
+                                    $(spanEl).addClass('text-danger').text(errorMessage)
+                                        .insertAfter($(".prod_checkbox").last().parent()
+                                            .parent().parent());
+                                    // $(spanEl).insertAfter($('[id^="NextElement"]').last());
+                                } else {
+
+                                    $(spanEl).addClass('text-danger lara_error').text(
+                                            errorMessage)
+                                        .insertAfter($("input[name='" + element + "']"))
+                                    $(spanEl).addClass('text-danger').text(errorMessage)
+                                        .insertAfter($(
+                                            "select[name='" + element + "']"))
+                                }
                             });
                             $('html, body').animate({
                                 scrollTop: $(".lara_error").offset().top - 150

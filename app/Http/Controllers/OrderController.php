@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -263,6 +264,7 @@ class OrderController extends Controller
     public function destroy($id)
     {
         Order::find($id)->delete();
+        // Order::withTrashed()->find(4)->restore();
         \Log::info('Order having id ' . $id . ' Deleted');
         return response()->json(['success' => true, 'message' => 'Order deleted successfully']);
     }
@@ -298,23 +300,42 @@ class OrderController extends Controller
     {
         // dd($request->all());
         $validation_rules = array();
+
+        $validation_rules = array_merge($validation_rules, [
+            'product' => 'required',
+            'lr_no' => 'required',
+            'receipt_image' => 'required',
+        ]);
+
+        $product_id_exist = 0;
         if ($request->product) {
             foreach ($request->product as $key => $value) {
                 if (isset($value['product_id']) && $value['product_id']  > 0) {
-                    // dump('f');
-                    $validation_rules = array_merge($validation_rules, ['product.' . $key.'.cartoon' => 'required']);
+                    $product_id_exist = 1;
+                    $validation_rules = array_merge($validation_rules, ['product.' . $key . '.cartoon' => 'required']);
                 }
             }
         }
-        $validation_rules =  array_merge($validation_rules, [
-            'product' => 'required',
-            // 'product.product_id' => 'required_without:product.*.product_id',
-            // 'product.cartoon' => 'required',
-            'lr_no' => 'required',
-            'receipt_image.*' => 'required',
-        ]);
-        // dd($validation_rules);
-        $request->validate($validation_rules,['product.product_id.required_without' => 'Please Select at least one product']);
+        $validator = Validator::make(
+            $request->all(),
+            $validation_rules,
+            [
+                    'lr_no.required' => 'The LR number field is required',
+                    'product.*.cartoon.required' => 'The cartoon field is required',]
+        );
+        if (!$product_id_exist) {
+            $validator->after(function ($validator) {
+                $validator->errors()->add('product', 'Please Select atleast one product');
+            });
+        }
+
+        $validator->validate();
+
+        if ($validator->fails()) {
+            return response()->json()
+                ->withErrors($validator)
+                ->withInput();
+        }
         $order = OrderProduct::where('order_id', $request->order_id)
             ->where('product_id', $request->product_id)
             ->where('status', 'InProcess')->get()->all();
@@ -330,7 +351,7 @@ class OrderController extends Controller
             }
             foreach ($request->product as $key => $value) {
                 // dd($value);
-                if(isset($value['product_id']) && isset($value['cartoon'])){
+                if (isset($value['product_id']) && isset($value['cartoon'])) {
 
                     $order_product = OrderProduct::where('order_id', $request->order_id)
                         ->where('product_id', $value['product_id'])
@@ -369,20 +390,21 @@ class OrderController extends Controller
                 $order->savE();
             }
 
-            return response()->json(['success' => true, 'msg' => 'Order dispatched successfully']);
+            return response()->json(['success' => true, 'message' => 'Order dispatched successfully']);
         } else {
-            return response()->json(['success' => false, 'msg' => 'product not found']);
+            return response()->json(['success' => false, 'message' => 'Product not found']);
         }
     }
 
-    public function getOrder(Request $request){
-        $order = OrderProduct::with('dispatch_product','product')
-        ->where('order_id',$request->order_id)
-        ->where('status','InProcess')->get()->all();
+    public function getOrder(Request $request)
+    {
+        $order = OrderProduct::with('dispatch_product', 'product')
+            ->where('order_id', $request->order_id)
+            ->where('status', 'InProcess')->get()->all();
         if (!$order) {
-            return response()->json(['success' => false, 'msg' => 'No order found']);
+            return response()->json(['success' => false, 'message' => 'No order found']);
         }
-     // dd($order[0]->products[0]->product->category);
-     return response()->json(['success' => true, 'data' => $order]);
+        // dd($order[0]->products[0]->product->category);
+        return response()->json(['success' => true, 'data' => $order]);
     }
 }
