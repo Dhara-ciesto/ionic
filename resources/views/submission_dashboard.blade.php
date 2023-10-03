@@ -13,13 +13,13 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h2>Welcome</h2>
+                <h3>Welcome !</h3>
             </div>
         </div>
     </div> <!-- end col -->
 </div> <!-- end row -->
 @endif
-@if(Auth::user()->role == 1)
+@if(Auth::user()->role == 1 || Auth::user()->role == 0)
 <div class="row">
     <div class="col-xl-12">
         <div class="row">
