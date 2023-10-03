@@ -126,7 +126,7 @@
                     let show_url = "{{route('product.show', ['id' => ':queryId'])}}";
                     show_url = show_url.replace(':queryId', row.id);
                     let status = row.status == 'Active' ? 'Deactive' : 'Active' ;
-                    var class_name = row.status == 'Active' ? 'btn-outline-danger' : 'btn-outline-primary' ;
+                    var class_name = row.status == 'Active' ? 'btn-outline-secondary' : 'btn-outline-primary' ;
 
                     let action = `<a href="${url}" class="btn btn-sm btn-outline-warning">Edit</a>&nbsp;<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-outline-danger">Delete</button>
                     <button type="button" onClick="changeStatus(${row.id}, ${index}, '${status}')" class="btn btn-sm `+class_name+`">`+status+`</button>`;

@@ -26,13 +26,16 @@ class UserPostRequest extends FormRequest
         if($this->edit) {
             return [
                 'username' => 'required|alpha_dash',
+                'whatsapp_no' => 'required|unique:users,whatsapp_no,' . $this->edit,
                 'email'    => 'required|email|unique:users,email,' . $this->edit,
+                'password' => 'required|confirmed',
                 // 'role'  => 'required',
                 // 'password' => ($this->password != null ? 'required|confirmed' : ''),
             ];
         } else {
             return [
                 'username' => 'required|alpha_dash',
+                'whatsapp_no' => 'required|unique:users,whatsapp_no',
                 'email'    => 'required|email|unique:users,email',
                 // 'role'  => 'required',
                 'password' => 'required|confirmed',

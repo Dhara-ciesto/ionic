@@ -72,7 +72,9 @@ class ProductController extends Controller
                     }
                 }
             })->when($sort, function ($q1) use ($sort, $order) {
-                if ($sort == 'counter') {
+                if ($sort == 'category.name') {
+                    $q1->orderBy('category_id', $order);
+                } elseif ($sort == 'counter') {
                     $q1->orderBy('id', $order);
                 } else {
                     $q1->orderBy($sort, $order);
@@ -215,8 +217,15 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        Product::find($id)->delete();
+        $product = Product::find($id);
+        $category_id = $product->category_id;
+        $product->delete();
         \Log::info('Product having id ' . $id . ' Deleted');
+        $prod_count = Product::where('category_id',$category_id)->get()->count();
+        if(!$prod_count){
+            Category::find($category_id)->delete();
+            \Log::info('Category having id ' . $category_id . ' Deleted due to no product on that category');
+        }
         return response()->json(['success' => true, 'message' => 'Product deleted successfully']);
     }
 

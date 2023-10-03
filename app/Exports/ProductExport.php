@@ -16,8 +16,8 @@ class ProductExport implements FromCollection, WithHeadings
     {
         return new Collection(
             [
-                ['Sofa Leg', 'Handle leg', 'C:/user/desktop/handle.png','12','5','Glosy'],
-                ['Mortise handle', 'Handle 2', 'C:/user/desktop/handle_mortise.png','25','7','Matte'],
+                ['Sofa Leg', 'Handle leg', 'https://app.yogiindustries.co.in/images/product/16959704500.jpg','4 x 16','Matt','40','24'],
+                ['Mortise handle', 'Handle 2', 'https://app.yogiindustries.co.in/images/product/16959704500.jpg','5 x 16','Matt','23','15'],
             ]
         );
 
@@ -29,7 +29,8 @@ class ProductExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Category Name', 'Product Name', 'Image', 'cartoon','qty','finish'
+
+            'Category', 'Product', 'Image','Size (inch)', 'Finish[Matt/Glossy]','pcs/box','Box/case'
         ];
     }
 }
