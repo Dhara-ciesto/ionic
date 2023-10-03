@@ -132,6 +132,7 @@ class AuthController extends Controller
                 'success' => true,
                 'access_token' => $token,
                 'token_type' => 'Bearer',
+                'user_role' => $user->role,
             ]);
         } else {
             return response()->json([
