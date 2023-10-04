@@ -35,13 +35,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('editCartItem/{id}', [ApiResponseController::class, 'editCartItem'])->name('product.editCartItem');
     Route::post('createOrder', [ApiResponseController::class, 'createOrder']);
     Route::get('getOrder/{status}', [ApiResponseController::class, 'getOrder']);
-    Route::get('getRecentOrders/{status}', [ApiResponseController::class, 'getRecentOrders']);
+    Route::get('getRecentOrders/{id}/{status}', [ApiResponseController::class, 'getRecentOrders']);
+    Route::post('getRecentOrders/{id}/{status}', [ApiResponseController::class, 'getRecentOrders']);
     Route::post('dispatchOrder', [ApiResponseController::class, 'dispatchOrder']);
     Route::get('getSize/{id}', [ApiResponseController::class, 'getSize']);
-
-
-
-
+    Route::get('getUsers', [AuthController::class, 'getUsers']);
     Route::get('/logout', [AuthController::class, 'signout']);
 });
 
@@ -50,8 +48,6 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::post('/sendotp', [AuthController::class, 'sendotp']);
     Route::post('/otpverify', [AuthController::class, 'otpverify']);
-
-
     Route::post('/register', [AuthController::class, 'register']);
 });
 

@@ -158,6 +158,13 @@ class AuthController extends Controller
     //     ]);
     // }
 
+    public function getUsers(){
+        $users = User::where('role',2)->get()->all();
+            return response()->json([
+                'success' => true,
+                'data' => $users,
+            ]);
+    }
 
     public function updateProfile(Request $request, $id)
     {

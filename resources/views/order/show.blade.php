@@ -53,18 +53,9 @@
     @foreach ($orders as $key => $order)
         <div class="row">
             <div class="col-xl-4">
-                <div class="card overflow-hidden">
+                <div class="card shadow-lg p-3 bg-body rounded">
                     <div class="bg-white bg-soft">
-                        <div class="row">
-                            <div class="col-7">
-                                <div class="text-primary p-3">
-                                    {{-- <p>It will seem like simplified</p> --}}
-                                </div>
-                            </div>
-                            <div class="col-5 align-self-end">
-                                {{-- <img src="{{ URL::asset('/assets/images/profile-img.png') }}" alt="" class="img-fluid"> --}}
-                            </div>
-                        </div>
+
                     </div>
 
 
@@ -109,13 +100,13 @@
 
             <div class="col-xl-8">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow-lg p-3 bg-body rounded">
                         {{-- <h4 class="card-title mb-4">Details</h4> --}}
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="table-responsive">
-                                    <table class="table table-nowrap mb-0">
-                                        <thead>
+                                    <table class="table table-nowrap mb-0  ">
+                                        <thead class="table-light">
                                             <tr>
                                                 <th scope="row">No. </th>
                                                 <th scope="row">Product </th>

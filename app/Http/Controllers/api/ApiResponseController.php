@@ -213,7 +213,7 @@ class ApiResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecentOrders($status)
+    public function getRecentOrders(Request $request,$user_id,$status)
     {
         if($status == 'Open' || $status == 'open'){
             $search = ['Processing'];
@@ -221,8 +221,12 @@ class ApiResponseController extends Controller
             $search = ['Dispatched'];
         }
         $order = Order::with('products')
-           ->where('status', $search)
-           ->orderBy('id','desc')->get()->all();
+            ->where('order_by', $user_id)
+           ->where('status', $search);
+        if(isset($request->date)){
+            $order = $order->whereDate('created_at',$request->date);
+        }
+        $order = $order->orderBy('id','desc')->get()->all();
         if (!$order) {
             return response()->json(['success' => false, 'msg' => 'No order found']);
         }
