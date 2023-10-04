@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-header">
                     <a href="{{ route('product.category.create') }}"
-                        class="btn btn-outline-danger float-end">{{ __('Add Product Category') }}</a>
+                        class="btn btn-outline-success float-end">{{ __('Add Product Category') }}</a>
                 </div>
                 <div class="card-body">
                     {{-- <h4 class="card-title">Basic example</h4> --}}

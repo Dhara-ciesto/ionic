@@ -384,25 +384,20 @@
                         console.log(res);
                         for (i = 0; i < res.length; ++i) {
                             // do something with `substr[i]`
-                            img += `<div class="row mb-2">
+                            img +=
+                                `<div class="row mb-2">
                                             <div class="col-lg-8" id="">
-                                                <label class="dlabel" style="margin-left: 10px;">
-                                                    <input type="checkbox" class="mt-2 prod_checkbox" value="` + res[i]
-                                .product_id + `"
-                                                        name="product[` + i + `][product_id]">&nbsp;` + res[i].product
-                                .product_name + `
-                                                </label>
-                                                <br>
-                                                <span class="font-size-10 ms-4" style="margin-top: -20px;">Total order cartoon :
+                                                <div class="form-check form-checkbox-outline form-check-primary mb-3">
+                                                            <input class="form-check-input prod_checkbox" type="checkbox" value="` + res[i].product_id + `"
+                                                            name="product[` + i + `][product_id]">&nbsp;&nbsp;` + res[i].product.product_name + `
+                                                            <br>
+                                                            <span class="font-size-10" style="margin-top: -20px;">Total order cartoon :
                                                     ` + res[i].cartoon + `</span>
+                                                </div>
                                             </div>
-                                            <div class="col-lg-4" id="">
-                                                <input type="hidden" name="product[` + i +
-                                `][total_cartoon]" value="` + (res[i].cartoon) + `">
-                                                <input type="number" value="` + (res[i].cartoon - res[i]
-                                    .dispatch_count) + `" name="product[` + i + `][cartoon]"
-                                                    class="form-control form-control-color" max="` + (res[i].cartoon -
-                                    res[i].dispatch_count) + `" min="1">
+                                            <div class="col-lg-4" id=""><input type="hidden" name="product[` + i +`][total_cartoon]" value="` + (res[i].cartoon) + `">
+                                                <input type="number" value="` + (res[i].cartoon - res[i].dispatch_count) + `" name="product[` + i + `][cartoon]"
+                                                    class="form-control form-control-color" max="` + (res[i].cartoon - res[i].dispatch_count) + `" min="1">
                                             </div>
                                         </div>`;
                         }
@@ -417,21 +412,21 @@
                         $('#product_div').html(img);
                     } else {
                         const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal
-                                        .resumeTimer)
-                                }
-                            })
-                            Toast.fire({
-                                icon: 'warning',
-                                title: data.message
-                            });
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal
+                                    .resumeTimer)
+                            }
+                        })
+                        Toast.fire({
+                            icon: 'warning',
+                            title: data.message
+                        });
                         location.reload();
 
                     }
