@@ -42,7 +42,10 @@ class Product extends Model
     {
         return $this->HasOne(Campaign::class, 'id', 'campaign_id');
     }
-
+    public function getImageAttribute($value)
+    {
+        return asset($value);
+    }
 
     // public function getSizeAttribute()
     // {

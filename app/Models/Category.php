@@ -14,5 +14,10 @@ class Category extends Model
     {
         return $this->hasMany(Product::class,'category_id');
     }
+    public function getImageAttribute($value)
+    {
+        return asset($value);
+    }
+
 
 }
