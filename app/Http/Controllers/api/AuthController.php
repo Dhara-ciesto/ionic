@@ -203,7 +203,7 @@ class AuthController extends Controller
 
         return [
             'success' => true,
-            'message' => 'Tokens Revoked'
+            'message' => 'Logout Successfully'
         ];
     }
 }

@@ -10,4 +10,9 @@ class DispatchOrder extends Model
     use HasFactory;
     protected $table = 'dispatch_products';
     protected $guarded = [];
+
+    public function getReceiptImageAttribute($value)
+    {
+        return ($value) ? asset($value) : "";
+    }
 }
