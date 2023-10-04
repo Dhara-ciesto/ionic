@@ -66,7 +66,7 @@ class ApiResponseController extends Controller
      */
     public function getCategories()
     {
-        $categories = Category::get();
+        $categories = Category::withCount('products')->get();
         return response()->json(['success' => true, 'message' => '', 'data' => $categories]);
     }
 
