@@ -24,9 +24,14 @@ class ApiResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($category_id = null)
     {
-        $products = Product::where('status', 'Active')->get();
+        $products =[];
+        if($category_id){
+            $products = Product::where('category_id',$category_id)->where('status', 'Active')->get();
+        }else{
+            $products = Product::where('status', 'Active')->get();
+        }
         return response()->json(['success' => true, 'message' => '', 'data' => $products]);
     }
 

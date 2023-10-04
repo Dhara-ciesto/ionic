@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::post('place-order', [FranchiseController::class, 'store']);
     // Route::post('change-password', [FranchiseController::class, 'changePassword']);
     Route::post('updateProfile/{id}', [AuthController::class, 'updateProfile']);
-    Route::get('products', [ApiResponseController::class, 'index'])->name('product.index');
+    Route::get('products/{id?}', [ApiResponseController::class, 'index'])->name('product.index');
     Route::post('addtocart', [ApiResponseController::class, 'addToCart'])->name('product.addtocart');
     Route::get('categories', [ApiResponseController::class, 'getCategories'])->name('categories.index');
     Route::get('getcart', [ApiResponseController::class, 'getcart'])->name('product.getcart');
