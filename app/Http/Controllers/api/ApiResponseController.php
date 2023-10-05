@@ -46,6 +46,7 @@ class ApiResponseController extends Controller
         $validator = Validator::make($request->all(), [
             'size' => 'required',
             'finish' => 'required',
+            'productname' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -54,7 +55,7 @@ class ApiResponseController extends Controller
                 'message' => $validator->messages()->first()
             ], 200);
         }
-        $product = Product::where('size', $request->size)->where('finish', $request->finish)->get()->first();
+        $product = Product::where('product_name',$request->productname)->where('size', $request->size)->where('finish', $request->finish)->get()->first();
         if($product){
             return response()->json(['success' => true, 'message' => '', 'data' => $product]);
         }else{

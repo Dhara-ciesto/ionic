@@ -164,7 +164,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     // Route::post('city/edit/{id}', [CityController::class, 'update'])->name('city.update');
     // Route::get('city/delete/{id}', [CityController::class, 'destroy'])->name('city.destroy');
 
-    // // Area
+    // // Area 
     // Route::get('area', [AreaController::class, 'index'])->name('area.index');
     // Route::get('area/create', [AreaController::class, 'create'])->name('area.create');
     // Route::post('area/create', [AreaController::class, 'store'])->name('area.store');
