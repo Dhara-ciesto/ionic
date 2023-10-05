@@ -138,9 +138,18 @@
                                     <div class="col-sm-11">
                                         <div class="mb-2">
                                             <label for="brand_name">Finish<span class="error">*</span></label>
-                                            <input id="finish" name="finish" type="text"
-                                                value="{{ old('finish', $product->finish) }}" class="form-control"
-                                                placeholder="Finish">
+                                            <select id="finish" name="finish" type="text"
+                                                class="form-control select2" data-placeholder="Select Finishing">
+                                                <option value="{{ 'Matt' }}"
+                                                    {{ old('finish', $product->finish) == 'Matt' ? 'selected' : '' }}>
+                                                    {{ 'Matt' }}</option>
+                                                <option value="{{ 'Glossy' }}"
+                                                    {{ old('finish', $product->finish) == 'Glossy' ? 'selected' : '' }}>
+                                                    {{ 'Glossy' }}</option>
+                                                <option value="{{ 'N/A' }}"
+                                                    {{ old('finish', $product->finish) == 'N/A' ? 'selected' : '' }}>
+                                                    {{ 'N/A' }}</option>
+                                            </select>
                                             @error('finish')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror

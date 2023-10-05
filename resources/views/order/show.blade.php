@@ -353,7 +353,7 @@
             $('#order_id').val(order_id);
             $('#product_div').html('');
             var img =
-                `<div class="card-header row mb-2"><div class="col-lg-8">Product</div><div class="col-lg-4" id="">Cartoon</div></div>`;
+                `<div class="card-header row mb-2"><div class="col-lg-9">Product</div><div class="col-lg-3" id="">Cartoon</div></div>`;
             $.ajax({
                 url: '{{ route('order.getOrder') }}',
                 type: "get",
@@ -377,16 +377,19 @@
                             // do something with `substr[i]`
                             img +=
                                 `<div class="row mb-2">
-                                            <div class="col-lg-8" id="">
+                                            <div class="col-lg-9 col-sm-9" id="">
                                                 <div class="form-check form-checkbox-outline form-check-primary mb-3">
                                                             <input class="form-check-input prod_checkbox" type="checkbox" value="` + res[i].product_id + `"
                                                             name="product[` + i + `][product_id]">&nbsp;&nbsp;` + res[i].product.product_name + `
                                                             <br>
-                                                            <span class="font-size-10" style="margin-top: -20px;">Total order cartoon :
-                                                    ` + res[i].cartoon + `</span>
+                                                            <span class="font-size-10" style="margin-top: -20px;color: black;">Total order cartoon :
+                                                    ` + res[i].cartoon + `</span><br>
+                                                            <span class="font-size-10" style="margin-top: -20px;color: black;">Size : ` + res[i].product.size + `</span><br>
+                                                            <span class="font-size-10" style="margin-top: -20px;color: black;">Finish : ` + res[i].product.finish + `</span>
+
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4" id=""><input type="hidden" name="product[` + i +`][total_cartoon]" value="` + (res[i].cartoon) + `">
+                                            <div class="col-lg-3 col-sm-3" id=""><input type="hidden" name="product[` + i +`][total_cartoon]" value="` + (res[i].cartoon) + `">
                                                 <input type="number" value="` + (res[i].cartoon - res[i].dispatch_count) + `" name="product[` + i + `][cartoon]"
                                                     class="form-control form-control-color" max="` + (res[i].cartoon - res[i].dispatch_count) + `" min="1">
                                             </div>

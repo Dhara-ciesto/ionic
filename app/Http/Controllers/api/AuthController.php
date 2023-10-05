@@ -22,7 +22,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'business_name' => 'required|unique:users,username|max:255',
             'whatsapp_no' => 'required|unique:users,whatsapp_no|digits:10'
-        ],[
+        ], [
             'business_name.required' => 'The Business name is required',
             'business_name.max' => 'The Business name can not more than25 character',
             'business_name.unique' => 'The Business name is already been taken'
@@ -62,7 +62,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($request->all(), [
             'whatsapp_no' => 'required|digits:10'
-        ],[
+        ], [
             'whatsapp_no.required' => 'The Whatsapp No is required',
             'whatsapp_no.digits' => 'The Whatsapp No must be digit',
         ]);
@@ -91,7 +91,6 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'OTP Sent'
         ]);
-
     }
 
     public function otpverify(Request $request)
@@ -101,7 +100,7 @@ class AuthController extends Controller
             'whatsapp_no' => 'required',
             'otp' => 'required'
 
-        ],[
+        ], [
             'whatsapp_no.required' => 'The Whatsapp No is required',
             'otp.required' => 'The OTP is required',
         ]);
@@ -158,12 +157,13 @@ class AuthController extends Controller
     //     ]);
     // }
 
-    public function getUsers(){
-        $users = User::where('role',2)->get()->all();
-            return response()->json([
-                'success' => true,
-                'data' => $users,
-            ]);
+    public function getUsers()
+    {
+        $users = User::where('role', 2)->get()->all();
+        return response()->json([
+            'success' => true,
+            'data' => $users,
+        ]);
     }
 
     public function updateProfile(Request $request, $id)

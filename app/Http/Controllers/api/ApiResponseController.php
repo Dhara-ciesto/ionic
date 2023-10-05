@@ -41,10 +41,25 @@ class ApiResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProduct($id)
+    public function getProduct(Request $request)
     {
-        $product = Product::with(['scent_type', 'product_brand', 'fragrance_tone_1', 'campaign'])->findOrFail($id);
-        return response()->json(['success' => true, 'message' => '', 'data' => $product]);
+        $validator = Validator::make($request->all(), [
+            'size' => 'required',
+            'finish' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->messages()->first()
+            ], 200);
+        }
+        $product = Product::where('size', $request->size)->where('finish', $request->finish)->get()->first();
+        if($product){
+            return response()->json(['success' => true, 'message' => '', 'data' => $product]);
+        }else{
+            return response()->json(['success' => false, 'message' => '', 'data' => '']);
+        }
     }
 
     /**
@@ -54,7 +69,7 @@ class ApiResponseController extends Controller
      */
     public function getProducts($product_ids)
     {
-        $product_ids =  explode(',', $product_ids);
+        $product_ids = explode(',', $product_ids);
         $products = Product::with(['category'])->whereIn('id', $product_ids)->get();
         return response()->json(['success' => true, 'message' => '', 'data' => $products]);
     }
@@ -91,6 +106,7 @@ class ApiResponseController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
+                // sept month ma me only 2 days ni j leave lidhi hti every month ma 1 day leave paid hoi so..
                 'success' => false,
                 'message' => $validator->messages()->first()
             ], 200);
@@ -352,7 +368,21 @@ class ApiResponseController extends Controller
         if($product){
 
             $size = Product::where('product_name','Like', $product->product_name)
-            ->orderBy('id','desc')->pluck('size')->all();
+            ->orderBy('id','desc')->groupBy('size')->pluck('size')->all();
+            if (!$size) {
+                return response()->json(['success' => false, 'msg' => 'No order found']);
+            }
+        }
+        // dd($order[0]->products[0]->product->category);
+        return response()->json(['success' => true, 'data' => $size]);
+    }
+
+    public function getFinish($id){
+        $product = Product::find($id);
+        if($product){
+
+            $size = Product::where('product_name','Like', $product->product_name)
+            ->orderBy('id','desc')->groupBy('finish')->pluck('finish')->all();
             if (!$size) {
                 return response()->json(['success' => false, 'msg' => 'No order found']);
             }

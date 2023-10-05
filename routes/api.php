@@ -23,12 +23,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Route::post('/franchise-login', [FranchiseController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('getUsers', [AuthController::class, 'getUsers']);
+    Route::get('/logout', [AuthController::class, 'signout']);
     // Route::get('bakery', [BakeryController::class, 'index']);
     // Route::get('kitchen', [KitchenController::class, 'index']);
     // Route::post('place-order', [FranchiseController::class, 'store']);
     // Route::post('change-password', [FranchiseController::class, 'changePassword']);
     Route::post('updateProfile/{id}', [AuthController::class, 'updateProfile']);
     Route::get('products/{id?}', [ApiResponseController::class, 'index'])->name('product.index');
+    Route::post('getProduct', [ApiResponseController::class, 'getProduct']);
     Route::post('addtocart', [ApiResponseController::class, 'addToCart'])->name('product.addtocart');
     Route::get('categories', [ApiResponseController::class, 'getCategories'])->name('categories.index');
     Route::get('getcart', [ApiResponseController::class, 'getcart'])->name('product.getcart');
@@ -39,8 +42,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('getRecentOrders/{id}/{status}', [ApiResponseController::class, 'getRecentOrders']);
     Route::post('dispatchOrder', [ApiResponseController::class, 'dispatchOrder']);
     Route::get('getSize/{id}', [ApiResponseController::class, 'getSize']);
-    Route::get('getUsers', [AuthController::class, 'getUsers']);
-    Route::get('/logout', [AuthController::class, 'signout']);
+    Route::get('getFinish/{id}', [ApiResponseController::class, 'getFinish']);
+
 });
 
 Route::group(['middleware' => ['cors']], function () {

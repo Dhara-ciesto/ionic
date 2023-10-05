@@ -12,11 +12,12 @@ use Illuminate\Http\Request;
 use App\Models\FragranceTone;
 use App\Exports\ProductExport;
 use App\Imports\ProductImport;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -126,7 +127,7 @@ class ProductController extends Controller
             'category_id' => 'required|numeric',
             'size' => 'required',
             Rule::unique('products')->where(function ($query) use($request) {
-                return $query->where('size', $request->size);
+                return $query->where('size', $request->size)->where('finish',$request->finish);
             }),
 
         ],['product_name.unique' => 'The product name has already been taken with same size.']);
@@ -189,7 +190,7 @@ class ProductController extends Controller
             'product_name' => [
                 'required', 'max:255',
                 Rule::unique('products')->ignore($id)->where(function ($query) use($request) {
-                    return $query->where('size', $request->size);
+                    return $query->where('size', $request->size)->where('finish',$request->finish);
                 }),
             ],
 
@@ -268,7 +269,8 @@ class ProductController extends Controller
 
             if ($i > 0) {
 
-                $exist_product = Product::where('product_name', 'Like', $data[1])->where('size', 'Like', $data[3])->pluck('id')->first();
+                $exist_product = Product::where('product_name', 'Like', $data[1])
+                ->where('size', 'Like', $data[3])->where('finish',$data[4])->pluck('id')->first();
                 // dump($data[1]);
                 // dd( $exist_product);
                 $category_id = Category::where('name', 'Like', $data[0])->pluck('id')->first();
