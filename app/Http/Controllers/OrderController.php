@@ -50,7 +50,7 @@ class OrderController extends Controller
         // }
         $query->when($search, function ($q) use ($filter, $i) {
             foreach ($filter as $key => $item) {
-                if ($key == 'orderBy.name') {
+                if ($key == 'order_by.name') {
                     $q->whereHas('orderBy', function ($c) use ($item) {
                         $c->where('name', 'like', '%' . $item . '%');
                     });

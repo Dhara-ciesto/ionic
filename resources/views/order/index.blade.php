@@ -37,8 +37,8 @@
                                 </select>
                             </div> --}}
                             <div class="col-md-2">
-                                <label class="form-label">Order No.</label>
-                                <input type="text" class="form-control bootstrap-table-filter-control-uid" placeholder="Enter Order No.">
+                                <label class="form-label">Business Name</label>
+                                <input type="text" class="form-control bootstrap-table-filter-control-order_by.name" placeholder="Enter Business Name" data-field="order_by.name">
                             </div>
                                 {{-- <div class="col-md-1">
                                 <label class="form-label">Scent Type</label>
