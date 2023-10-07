@@ -59,7 +59,7 @@ class ApiResponseController extends Controller
         if($product){
             return response()->json(['success' => true, 'message' => '', 'data' => $product]);
         }else{
-            return response()->json(['success' => false, 'message' => '', 'data' => '']);
+            return response()->json(['success' => false, 'message' => 'No product found', 'data' => '']);
         }
     }
 

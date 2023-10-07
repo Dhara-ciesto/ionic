@@ -387,7 +387,7 @@ class OrderController extends Controller
             if (!$order_product_open) {
                 $order = Order::where('id', $request->order_id)->get()->first();
                 $order->status = 'Dispatched';
-                $order->savE();
+                $order->save();
             }
 
             return response()->json(['success' => true, 'message' => 'Order dispatched successfully']);
