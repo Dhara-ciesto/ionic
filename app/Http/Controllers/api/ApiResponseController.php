@@ -163,7 +163,7 @@ class ApiResponseController extends Controller
      */
     public function getcart(Request $request)
     {
-        $carts = Cart::with('product')
+        $carts = Cart::with('product.category')
             ->where('user_id', Auth::user()->id)->where('status', 'Active')->get()->all();
         if (!$carts) {
             return response()->json(['success' => false, 'msg' => 'No cart items found']);
