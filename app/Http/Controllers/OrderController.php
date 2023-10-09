@@ -155,7 +155,7 @@ class OrderController extends Controller
     {
         $data['order'] = Order::findOrFail($id);
         $user_id = $data['order']->order_by;
-        $data['orders'] =  Order::where('order_by', $user_id)->get();
+        $data['orders'] =  Order::where('order_by', $user_id)->orderBy('id','DESC')->get();
         return view('order.show', $data);
     }
 
