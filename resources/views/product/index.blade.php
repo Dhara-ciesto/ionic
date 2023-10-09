@@ -37,7 +37,11 @@
                             </div> --}}
                             <div class="col-md-2">
                                 <label class="form-label">Product</label>
-                                <input type="text" class="form-control bootstrap-table-filter-control-product_name" placeholder="Enter Product Name">
+                                <input type="text" class="form-control bootstrap-table-filter-control-product_name" placeholder="Enter Product Name" data-field="product_name">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Category</label>
+                                <input type="text" class="form-control bootstrap-table-filter-control-category.name" data-field="category.name">
                             </div>
                             {{-- <div class="col-md-1">
                                 <label class="form-label">Scent Type</label>
