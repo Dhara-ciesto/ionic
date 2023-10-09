@@ -15,6 +15,7 @@
                     </a>
                 </li>
                 @if (Auth::user()->role == 1 || Auth::user()->role == 0)
+
                 <li>
                     <a href="{{ route('product.category.index') }}" class="waves-effect ">
                         <i class="fas fa-building"></i>
@@ -27,7 +28,7 @@
                             <span key="t-starter-page">{{ __('Product') }}</span>
                         </a>
                     </li>
-
+                 
                     {{-- <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="fas fa-cog"></i>
