@@ -175,7 +175,7 @@
     <!--  Update Profile example -->
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <form id="profile_form" action="{{ route('order.dispatch') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">

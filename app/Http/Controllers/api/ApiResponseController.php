@@ -222,7 +222,7 @@ class ApiResponseController extends Controller
         }elseif($status == 'Close' || $status == 'close'){
             $search = ['Dispatched'];
         }
-        $order = Order::with('products.dispatch_product')
+        $order = Order::with(['products.dispatch_product','products.product','products.product.category'])
             ->where('order_by', Auth::user()->id)->where('status', $search)->get()->all();
         if (!$order) {
             return response()->json(['success' => false, 'msg' => 'No order found']);
