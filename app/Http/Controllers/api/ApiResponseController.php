@@ -227,7 +227,7 @@ class ApiResponseController extends Controller
         if (!$order) {
             return response()->json(['success' => false, 'msg' => 'No order found']);
         }
-        return response()->json(['success' => true, 'data' => $order]);
+        return response()->json(['success' => true, 'data' => $order,'msg' => '']);
     }
 
      /**
@@ -375,7 +375,7 @@ class ApiResponseController extends Controller
             }
         }
         // dd($order[0]->products[0]->product->category);
-        return response()->json(['success' => true, 'data' => $size]);
+        return response()->json(['success' => true, 'data' => $size,'msg' => '']);
     }
 
     public function getFinish($id){
