@@ -225,7 +225,7 @@ class ApiResponseController extends Controller
         $order = Order::with(['products.dispatch_product','products.product','products.product.category'])
             ->where('order_by', Auth::user()->id)->where('status', $search)->get()->all();
         if (!$order) {
-            return response()->json(['success' => false, 'msg' => 'No order found']);
+            return response()->json(['success' => false,'data' => '', 'msg' => 'No order found']);
         }
         return response()->json(['success' => true, 'data' => $order,'msg' => '']);
     }
