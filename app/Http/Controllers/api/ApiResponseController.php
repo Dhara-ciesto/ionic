@@ -225,7 +225,7 @@ class ApiResponseController extends Controller
         $order = Order::with(['products.dispatch_product','products.product','products.product.category'])
             ->where('order_by', Auth::user()->id)->where('status', $search)->get()->all();
         if (!$order) {
-            return response()->json(['success' => false,'data' => '', 'msg' => 'No order found']);
+            return response()->json(['success' => false,'data' => [], 'msg' => 'No order found']);
         }
         return response()->json(['success' => true, 'data' => $order,'msg' => '']);
     }
@@ -250,7 +250,7 @@ class ApiResponseController extends Controller
         }
         $order = $order->orderBy('id','desc')->get()->all();
         if (!$order) {
-            return response()->json(['success' => false, 'msg' => 'No order found']);
+            return response()->json(['success' => false, 'data' => [],'msg' => 'No order found']);
         }
         // dd($order[0]->products[0]->product->category);
         return response()->json(['success' => true, 'data' => $order,'msg' => '']);
@@ -371,7 +371,7 @@ class ApiResponseController extends Controller
             $size = Product::where('product_name','Like', $product->product_name)
             ->orderBy('id','desc')->groupBy('size')->pluck('size')->all();
             if (!$size) {
-                return response()->json(['success' => false, 'msg' => 'No order found']);
+                return response()->json(['success' => false,'data' => [], 'msg' => 'No order found']);
             }
         }
         // dd($order[0]->products[0]->product->category);
@@ -389,7 +389,7 @@ class ApiResponseController extends Controller
             }
         }
         // dd($order[0]->products[0]->product->category);
-        return response()->json(['success' => true, 'data' => $size]);
+        return response()->json(['success' => true, 'msg' => '', 'data' => $size]);
     }
 
 }
