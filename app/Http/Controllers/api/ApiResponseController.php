@@ -253,7 +253,7 @@ class ApiResponseController extends Controller
             return response()->json(['success' => false, 'msg' => 'No order found']);
         }
         // dd($order[0]->products[0]->product->category);
-        return response()->json(['success' => true, 'data' => $order]);
+        return response()->json(['success' => true, 'data' => $order,'msg' => '']);
     }
 
        /**
