@@ -19,6 +19,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         // Validate request data
+        // $this->otpverify($request);
         $validator = Validator::make($request->all(), [
             'business_name' => 'required|unique:users,username|max:255',
             'whatsapp_no' => 'required|unique:users,whatsapp_no|digits:10'
@@ -97,6 +98,7 @@ class AuthController extends Controller
     public function otpverify(Request $request)
     {
 
+        // dd('d');
         $validator = Validator::make($request->all(), [
             'whatsapp_no' => 'required',
             'otp' => 'required'
@@ -116,24 +118,33 @@ class AuthController extends Controller
         }
 
 
-        $otp = OTP::where('whatsapp_no', $request->whatsapp_no)->where('otp', $request->otp)->where('status', 'Active')->first();
+        $otp = OTP::where('whatsapp_no', $request->whatsapp_no)
+        ->where('otp', $request->otp)->where('status', 'Active')->first();
         if ($otp) {
 
-            $user = User::where('whatsapp_no', $request->whatsapp_no)->get()->first();
-            if (!Auth::loginUsingId($user->id)) {
-                return response()->json([
-                    'message' => 'Invalid login details'
-                ], 401);
-            }
-            $token = $user->createToken('auth_token')->plainTextToken;
             $otp->status = 'Deactive';
             $otp->save();
-            return response()->json([
-                'success' => true,
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'user_role' => $user->role,
-            ]);
+            $user = User::where('whatsapp_no', $request->whatsapp_no)->get()->first();
+            if($user){
+
+                if (!Auth::loginUsingId($user->id)) {
+                    return response()->json([
+                        'message' => 'Invalid login details'
+                    ], 401);
+                }
+                $token = $user->createToken('auth_token')->plainTextToken;
+                return response()->json([
+                    'success' => true,
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
+                    'user_role' => $user->role,
+                ]);
+            }else{
+                 return response()->json([
+                    'success' => true,
+                     'message' => 'OTP Verified'
+                ]);
+            }
         } else {
             return response()->json([
                 'success' => false,
