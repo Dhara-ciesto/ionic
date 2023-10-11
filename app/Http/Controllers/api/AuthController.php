@@ -65,7 +65,7 @@ class AuthController extends Controller
             'whatsapp_no' => 'required|digits:10'
         ], [
             'whatsapp_no.required' => 'The Whatsapp No is required',
-            'whatsapp_no.digits' => 'The Whatsapp No must be digit',
+            'whatsapp_no.digits' => 'The Whatsapp No must be 10 digit',
         ]);
         // Return errors if validation error occur.
         if ($validator->fails()) {
