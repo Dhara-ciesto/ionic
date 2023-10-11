@@ -58,7 +58,7 @@ class AuthController extends Controller
 
 
 
-    public function sendotp(Request $request,$type=null)
+    public function sendotp(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
@@ -77,7 +77,7 @@ class AuthController extends Controller
             ], 200);
         }
 
-        if($type == 'login'){
+        if($request->type == 'login'){
             $user = User::where('whatsapp_no',$request->whatsapp_no)->get()->first();
             if(!$user){
                 return response()->json([
