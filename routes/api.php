@@ -43,7 +43,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('dispatchOrder', [ApiResponseController::class, 'dispatchOrder']);
     Route::get('getSize/{id}', [ApiResponseController::class, 'getSize']);
     Route::get('getFinish/{id}', [ApiResponseController::class, 'getFinish']);
-    Route::get('getAllRecentOrder/{status}', [ApiResponseController::class, 'getallRecentOrder']);
+    Route::post('getAllRecentOrder/{status}', [ApiResponseController::class, 'getallRecentOrder']);
 
 
 });

@@ -242,7 +242,8 @@ class ApiResponseController extends Controller
         }elseif($status == 'Close' || $status == 'close'){
             $search = ['Dispatched'];
         }
-        $order = Order::with(['products.dispatch_product','products.product','products.product.category','orderBy'])
+        $order = Order::with(['products.dispatch_product','products.product','products.product.category',
+        'orderBy'])
             ->where('status', $search);
             if(isset($request->date)){
                 $order = $order->whereDate('created_at',$request->date);
