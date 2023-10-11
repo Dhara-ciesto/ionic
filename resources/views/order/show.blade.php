@@ -66,6 +66,10 @@
                                     <table class="table table-nowrap mb-0">
                                         <tbody>
                                             <tr>
+                                                <th scope="row">Date :</th>
+                                                <td>{{ date('d-m-Y',strtotime($order->created_at)) }}</td>
+                                            </tr>
+                                            <tr>
                                                 <th scope="row">Order :</th>
                                                 <td>{{ $order->uid }}</td>
                                             </tr>
