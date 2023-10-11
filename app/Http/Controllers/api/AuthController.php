@@ -58,7 +58,7 @@ class AuthController extends Controller
 
 
 
-    public function sendotp(Request $request)
+    public function sendotp(Request $request,$type=null)
     {
 
         $validator = Validator::make($request->all(), [
@@ -77,7 +77,16 @@ class AuthController extends Controller
             ], 200);
         }
 
-
+        if($type == 'login'){
+            $user = User::where('whatsapp_no',$request->whatsapp_no)->get()->first();
+            if(!$user){
+                return response()->json([
+                    // 'otp' => $otp->otp,
+                    'success' => false,
+                    'message' => 'User not exist with this number'
+                ]);
+            }
+        }
         $otp = OTP::create([
             'otp' => rand(111111, 999999),
             'whatsapp_no' => $request->whatsapp_no,
@@ -143,7 +152,7 @@ class AuthController extends Controller
             }else{
                  return response()->json([
                     'success' => true,
-                     'message' => 'OTP Verified'
+                    'message' => 'OTP Verified'
                 ]);
             }
         } else {
