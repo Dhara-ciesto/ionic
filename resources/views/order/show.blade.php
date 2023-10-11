@@ -119,7 +119,7 @@
                                         <tbody>
                                             @foreach ($order->products as $pkey => $product)
                                                 {{-- {{ dd($product->dispatch_product) }} --}}
-                                                <tr>
+                                                <tr @if ($product->status == 'Dispatched')  style="text-decoration: line-through;" @endif>
                                                     <td>{{ $pkey + 1 }}</td>
                                                     <td>{{ $product->product->product_name }}</td>
                                                     <td>{{ $product->cartoon }}</td>
@@ -129,12 +129,12 @@
                                                     </td>
                                                 </tr>
                                                 @foreach ($product->dispatch_product as $dorder)
-                                                    <tr @if ($order->status == 'Dispatched')  style="text-decoration: line-through;" @endif>
+                                                    <tr @if ($dorder->status == 'Dispatched')  style="text-decoration: line-through;" @endif>
                                                         <td>&nbsp;</td>
                                                         <td>&nbsp;</td>
                                                         <td>{{ $dorder->cartoon }}</td>
                                                         {{-- <td>{{ $dorder->qty }}</td> --}}
-                                                        <td>{{ $dorder->lr_no }}</td>
+                                                        <td><b>LR Number : </b> {{ $dorder->lr_no }}</td>
                                                         <td>@if($dorder->receipt_image)<a href="{{ asset($dorder->receipt_image) }}"
                                                                 target="_blank"><i class="fa fa-eye"></i></a>@endif</td>
                                                     </tr>
