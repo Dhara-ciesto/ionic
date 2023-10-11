@@ -11,6 +11,7 @@ class Order extends Model
 {
     use HasFactory,SoftDeletes;
     protected $guarded = [];
+    protected $appends = ['image'];
 
     public function products()
     {
@@ -46,4 +47,11 @@ class Order extends Model
             get: fn($value) =>  Product::whereIn('id',explode(',', $this->attributes['product_id']))->get(),
         );
     }
+    public function image(): Attribute
+    {
+        return new Attribute(
+            get: fn($value) =>  asset('images/customer.png'),
+        );
+    }
+
 }
