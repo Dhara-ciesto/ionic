@@ -129,14 +129,14 @@
                                                     </td>
                                                 </tr>
                                                 @foreach ($product->dispatch_product as $dorder)
-                                                    <tr>
+                                                    <tr @if ($order->status == 'Dispatched')  style="text-decoration: line-through;" @endif>
                                                         <td>&nbsp;</td>
                                                         <td>&nbsp;</td>
                                                         <td>{{ $dorder->cartoon }}</td>
                                                         {{-- <td>{{ $dorder->qty }}</td> --}}
                                                         <td>{{ $dorder->lr_no }}</td>
-                                                        <td><a href="{{ asset($dorder->receipt_image) }}"
-                                                                target="_blank">{{ $dorder->receipt_image }}</a></td>
+                                                        <td>@if($dorder->receipt_image)<a href="{{ asset($dorder->receipt_image) }}"
+                                                                target="_blank"><i class="fa fa-eye"></i></a>@endif</td>
                                                     </tr>
                                                 @endforeach
                                             @endforeach
