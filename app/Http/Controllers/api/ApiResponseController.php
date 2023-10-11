@@ -312,7 +312,7 @@ class ApiResponseController extends Controller
         $validation_rules = array_merge($validation_rules, [
             'product' => 'required',
             'lr_no' => 'required',
-            'receipt_image' => 'required',
+            'receipt_image' => 'image|max:5120',
         ]);
 
         $product_id_exist = 0;
