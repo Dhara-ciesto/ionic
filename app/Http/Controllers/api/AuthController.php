@@ -94,9 +94,9 @@ class AuthController extends Controller
         $number = User::find(1)->whatsapp_no;
         $msg = urlencode("Dear, Your OTP for registration is $otp->otp");
         // $number = $request->whatsapp_no;
-        // $client = new Client();
-        // $d = new Psr7Request('GET', "http://waw.vr4creativity.com/wapp/api/send?apikey=d82c7bbb589046c9aed04518f78ae45a&mobile=$number&msg=$msg");
-        // $res = $client->sendAsync($d)->wait();
+        $client = new Client();
+        $d = new Psr7Request('GET', "http://waw.vr4creativity.com/wapp/api/send?apikey=d82c7bbb589046c9aed04518f78ae45a&mobile=$number&msg=$msg");
+        $res = $client->sendAsync($d)->wait();
         return response()->json([
             // 'otp' => $otp->otp,
             'success' => true,

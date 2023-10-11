@@ -196,6 +196,7 @@ class ApiResponseController extends Controller
         $last_id = Order::where('id','>',0)->orderBy('id', 'DESC')->latest()->first() ? Order::where('id','>',0)->orderBy('id', 'DESC')->latest()->first()->id + 1 : 1;
 
         $no = str_pad($last_id, 5, "O100", STR_PAD_LEFT);
+
         $order = Order::create([
             'uid' => $no,
             // 'cart_id' => $request->cart_id,
@@ -206,15 +207,21 @@ class ApiResponseController extends Controller
         ]);
 
         foreach ($carts as $key => $value) {
-            OrderProduct::create([
-                'order_id' => $order->id,
-                'product_id' => $value->product_id,
-                'qty' => $value->qty,
-                'cartoon' => $value->cartoon,
-                'qty' => $value->qty,
-                'cart_id' => $value->id,
-                'status' => 'InProcess',
-            ]);
+            $orderexist = OrderProduct::where('order_id',$order->id)->where('product_id',$value->product_id)->get()->first();
+            if($orderexist){
+                $orderexist->cartoon = $orderexist->cartoon + $value->cartoon;
+                $orderexist->save();
+            }else{
+                OrderProduct::create([
+                    'order_id' => $order->id,
+                    'product_id' => $value->product_id,
+                    'qty' => $value->qty,
+                    'cartoon' => $value->cartoon,
+                    'qty' => $value->qty,
+                    'cart_id' => $value->id,
+                    'status' => 'InProcess',
+                ]);
+            }
             $value->status = 'Ordered';
             $value->save();
         }
