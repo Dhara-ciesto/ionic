@@ -235,6 +235,26 @@ class ApiResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getallRecentOrder($status)
+    {
+        if($status == 'Open' || $status == 'open'){
+            $search = ['Processing'];
+        }elseif($status == 'Close' || $status == 'close'){
+            $search = ['Dispatched'];
+        }
+        $order = Order::with(['products.dispatch_product','products.product','products.product.category','order_by'])
+            ->where('status', $search)->orderBy('id','DESC')->get()->all();
+        if (!$order) {
+            return response()->json(['success' => false,'data' => [], 'msg' => 'No order found']);
+        }
+        return response()->json(['success' => true, 'data' => $order,'msg' => '']);
+    }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getRecentOrders(Request $request,$user_id,$status)
     {
         if($status == 'Open' || $status == 'open'){
