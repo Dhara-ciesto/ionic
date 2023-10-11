@@ -129,7 +129,7 @@
                                                     </td>
                                                 </tr>
                                                 @foreach ($product->dispatch_product as $dorder)
-                                                    <tr @if ($dorder->status == 'Dispatched')  style="text-decoration: line-through;" @endif>
+                                                    <tr>
                                                         <td>&nbsp;</td>
                                                         <td>&nbsp;</td>
                                                         <td>{{ $dorder->cartoon }}</td>
