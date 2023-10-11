@@ -24,14 +24,21 @@ class ApiResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($category_id = null)
+    public function index(Request $request,$category_id = null)
     {
         $products =[];
         if($category_id){
-            $products = Product::where('category_id',$category_id)->where('status', 'Active')->get();
+            $products = Product::where('category_id',$category_id)->where('status', 'Active');
+            if($request->product_name){
+                $products = $products->where('product_name','Like','%'.$request->product_name.'%');
+            }
         }else{
-            $products = Product::where('status', 'Active')->get();
+            $products = Product::where('status', 'Active');
+            if($request->product_name){
+                $products = $products->where('product_name','Like','%'.$request->product_name.'%');
+            }
         }
+        $products = $products->get();
         return response()->json(['success' => true, 'message' => '', 'data' => $products]);
     }
 
@@ -80,9 +87,13 @@ class ApiResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getCategories()
+    public function getCategories(Request $request)
     {
-        $categories = Category::withCount('products')->get();
+        $categories = Category::withCount('products');
+        if($request->category_name){
+            $categories = $categories->where('name','Like','%'.$request->category_name.'%');
+        }
+        $categories = $categories->get();
         return response()->json(['success' => true, 'message' => '', 'data' => $categories]);
     }
 
