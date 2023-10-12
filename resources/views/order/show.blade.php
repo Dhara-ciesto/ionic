@@ -395,7 +395,7 @@
                                             </div>
                                             <div class="col-lg-3 col-sm-3" id=""><input type="hidden" name="product[` + i +`][total_cartoon]" value="` + (res[i].cartoon) + `">
                                                 <input type="number" value="` + (res[i].cartoon - res[i].dispatch_count) + `" name="product[` + i + `][cartoon]"
-                                                    class="form-control form-control-color" max="` + (res[i].cartoon - res[i].dispatch_count) + `" min="1">
+                                                    class="form-control w-50" max="` + (res[i].cartoon - res[i].dispatch_count) + `" min="1">
                                             </div>
                                         </div>`;
                         }
