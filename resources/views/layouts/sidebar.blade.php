@@ -28,7 +28,7 @@
                             <span key="t-starter-page">{{ __('Product') }}</span>
                         </a>
                     </li>
-                 
+
                     {{-- <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="fas fa-cog"></i>
@@ -118,10 +118,16 @@
                             <span key="t-starter-page">{{__('Order Report')}}</span>
                         </a>
                     </li> --}}
+                    <li>
+                        <a href="{{route('user.uindex')}}" class="waves-effect">
+                            <i class="fas fa-users"></i>
+                            <span key="t-starter-page">{{__('Users')}}</span>
+                        </a>
+                    </li>
                     @if (Auth::user()->role == 0)
                     <li>
                         <a href="{{route('user.index')}}" class="waves-effect">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-user"></i>
                             <span key="t-starter-page">{{__('Manage Admin')}}</span>
                         </a>
                     </li>

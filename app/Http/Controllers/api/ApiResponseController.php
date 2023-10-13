@@ -24,18 +24,18 @@ class ApiResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request,$category_id = null)
+    public function index(Request $request, $category_id = null)
     {
-        $products =[];
-        if($category_id){
-            $products = Product::where('category_id',$category_id)->where('status', 'Active');
-            if($request->product_name){
-                $products = $products->where('product_name','Like','%'.$request->product_name.'%');
+        $products = [];
+        if ($category_id) {
+            $products = Product::where('category_id', $category_id)->where('status', 'Active');
+            if ($request->product_name) {
+                $products = $products->where('product_name', 'Like', '%' . $request->product_name . '%');
             }
-        }else{
+        } else {
             $products = Product::where('status', 'Active');
-            if($request->product_name){
-                $products = $products->where('product_name','Like','%'.$request->product_name.'%');
+            if ($request->product_name) {
+                $products = $products->where('product_name', 'Like', '%' . $request->product_name . '%');
             }
         }
         $products = $products->get();
@@ -62,10 +62,10 @@ class ApiResponseController extends Controller
                 'message' => $validator->messages()->first()
             ], 200);
         }
-        $product = Product::where('product_name',$request->productname)->where('size', $request->size)->where('finish', $request->finish)->get()->first();
-        if($product){
+        $product = Product::where('product_name', $request->productname)->where('size', $request->size)->where('finish', $request->finish)->get()->first();
+        if ($product) {
             return response()->json(['success' => true, 'message' => '', 'data' => $product]);
-        }else{
+        } else {
             return response()->json(['success' => false, 'message' => 'No product found', 'data' => '']);
         }
     }
@@ -90,8 +90,8 @@ class ApiResponseController extends Controller
     public function getCategories(Request $request)
     {
         $categories = Category::withCount('products');
-        if($request->category_name){
-            $categories = $categories->where('name','Like','%'.$request->category_name.'%');
+        if ($request->category_name) {
+            $categories = $categories->where('name', 'Like', '%' . $request->category_name . '%');
         }
         $categories = $categories->get();
         return response()->json(['success' => true, 'message' => '', 'data' => $categories]);
@@ -111,7 +111,7 @@ class ApiResponseController extends Controller
             'qty' => 'required|numeric',
             'cartoon' => 'required|numeric',
             'size' => 'required'
-        ],[
+        ], [
             'product_id.required' => 'The product field is required',
             'qty.required' => 'The quantity field is required',
         ]);
@@ -149,7 +149,7 @@ class ApiResponseController extends Controller
             'product_id' => 'required',
             'qty' => 'required',
             'size' => 'required'
-        ],[
+        ], [
             'product_id.required' => 'The product field is required',
             'qty.required' => 'The quantity field is required',
         ]);
@@ -189,11 +189,11 @@ class ApiResponseController extends Controller
      */
     public function createOrder(Request $request)
     {
-        $carts = Cart::where('user_id', Auth::user()->id)->where('status','Active')->get()->all();
-        if(!$carts){
+        $carts = Cart::where('user_id', Auth::user()->id)->where('status', 'Active')->get()->all();
+        if (!$carts) {
             return response()->json(['success' => false, 'message' => 'No Products Available']);
         }
-        $last_id = Order::where('id','>',0)->orderBy('id', 'DESC')->latest()->first() ? Order::where('id','>',0)->orderBy('id', 'DESC')->latest()->first()->id + 1 : 1;
+        $last_id = Order::where('id', '>', 0)->orderBy('id', 'DESC')->latest()->first() ? Order::where('id', '>', 0)->orderBy('id', 'DESC')->latest()->first()->id + 1 : 1;
 
         $no = str_pad($last_id, 5, "O100", STR_PAD_LEFT);
 
@@ -207,11 +207,11 @@ class ApiResponseController extends Controller
         ]);
 
         foreach ($carts as $key => $value) {
-            $orderexist = OrderProduct::where('order_id',$order->id)->where('product_id',$value->product_id)->get()->first();
-            if($orderexist){
+            $orderexist = OrderProduct::where('order_id', $order->id)->where('product_id', $value->product_id)->get()->first();
+            if ($orderexist) {
                 $orderexist->cartoon = $orderexist->cartoon + $value->cartoon;
                 $orderexist->save();
-            }else{
+            } else {
                 OrderProduct::create([
                     'order_id' => $order->id,
                     'product_id' => $value->product_id,
@@ -235,71 +235,73 @@ class ApiResponseController extends Controller
      */
     public function getOrder($status)
     {
-        if($status == 'Open' || $status == 'open'){
+        if ($status == 'Open' || $status == 'open') {
             $search = ['Processing'];
-        }elseif($status == 'Close' || $status == 'close'){
+        } elseif ($status == 'Close' || $status == 'close') {
             $search = ['Dispatched'];
         }
-        $order = Order::with(['products.dispatch_product','products.product','products.product.category'])
+        $order = Order::with(['products.dispatch_product', 'products.product', 'products.product.category'])
             ->where('order_by', Auth::user()->id)->where('status', $search)->get()->all();
         if (!$order) {
-            return response()->json(['success' => false,'data' => [], 'msg' => 'No order found']);
+            return response()->json(['success' => false, 'data' => [], 'msg' => 'No order found']);
         }
-        return response()->json(['success' => true, 'data' => $order,'msg' => '']);
+        return response()->json(['success' => true, 'data' => $order, 'msg' => '']);
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getallRecentOrder(Request $request,$status)
+    public function getallRecentOrder(Request $request, $status)
     {
-        if($status == 'Open' || $status == 'open'){
+        if ($status == 'Open' || $status == 'open') {
             $search = ['Processing'];
-        }elseif($status == 'Close' || $status == 'close'){
+        } elseif ($status == 'Close' || $status == 'close') {
             $search = ['Dispatched'];
         }
-        $order = Order::with(['products.dispatch_product','products.product','products.product.category',
-        'orderBy'])
+        $order = Order::with([
+            'products.dispatch_product', 'products.product', 'products.product.category',
+            'orderBy'
+        ])
             ->where('status', $search);
-            if(isset($request->date)){
-                $order = $order->whereDate('created_at',$request->date);
-            }
-            $order = $order->orderBy('id','DESC')->get()->all();
-        if (!$order) {
-            return response()->json(['success' => false,'data' => [], 'msg' => 'No order found']);
+        if (isset($request->date)) {
+            $order = $order->whereDate('created_at', $request->date);
         }
-        return response()->json(['success' => true, 'data' => $order,'msg' => '']);
+        $order = $order->orderBy('id', 'DESC')->get()->all();
+        if (!$order) {
+            return response()->json(['success' => false, 'data' => [], 'msg' => 'No order found']);
+        }
+        return response()->json(['success' => true, 'data' => $order, 'msg' => '']);
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecentOrders(Request $request,$user_id,$status)
+    public function getRecentOrders(Request $request, $user_id, $status)
     {
-        if($status == 'Open' || $status == 'open'){
+        if ($status == 'Open' || $status == 'open') {
             $search = ['Processing'];
-        }elseif($status == 'Close' || $status == 'close'){
+        } elseif ($status == 'Close' || $status == 'close') {
             $search = ['Dispatched'];
         }
         $order = Order::with('products.dispatch_product')
             ->where('order_by', $user_id)
-           ->where('status', $search);
-        if(isset($request->date)){
-            $order = $order->whereDate('created_at',$request->date);
+            ->where('status', $search);
+        if (isset($request->date)) {
+            $order = $order->whereDate('created_at', $request->date);
         }
-        $order = $order->orderBy('id','desc')->get()->all();
+        $order = $order->orderBy('id', 'desc')->get()->all();
         if (!$order) {
-            return response()->json(['success' => false, 'data' => [],'msg' => 'No order found']);
+            return response()->json(['success' => false, 'data' => [], 'msg' => 'No order found']);
         }
         // dd($order[0]->products[0]->product->category);
-        return response()->json(['success' => true, 'data' => $order,'msg' => '']);
+        return response()->json(['success' => true, 'data' => $order, 'msg' => '']);
     }
 
-       /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -328,8 +330,9 @@ class ApiResponseController extends Controller
             $request->all(),
             $validation_rules,
             [
-                    'lr_no.required' => 'The LR number field is required',
-                    'product.*.cartoon.required' => 'The cartoon field is required',]
+                'lr_no.required' => 'The LR number field is required',
+                'product.*.cartoon.required' => 'The cartoon field is required',
+            ]
         );
         if (!$product_id_exist) {
             $validator->after(function ($validator) {
@@ -346,12 +349,11 @@ class ApiResponseController extends Controller
             ], 200);
         }
 
-        $order = OrderProduct::
-            where('order_id', $request->order_id)
+        $order = OrderProduct::where('order_id', $request->order_id)
             ->where('product_id', $request->product_id)
-            ->where('status','InProcess')->get()->all();
+            ->where('status', 'InProcess')->get()->all();
 
-        if($request->product){
+        if ($request->product) {
             $reqData = '';
             if ($request->file('receipt_image')) {
                 $photo = $request->file('receipt_image');
@@ -362,12 +364,11 @@ class ApiResponseController extends Controller
             }
             foreach ($request->product as $key => $value) {
 
-                $order_product = OrderProduct::
-                where('order_id', $request->order_id)
-                ->where('product_id', $value['product_id'])
-                ->where('status','InProcess')->get()->first();
+                $order_product = OrderProduct::where('order_id', $request->order_id)
+                    ->where('product_id', $value['product_id'])
+                    ->where('status', 'InProcess')->get()->first();
                 // dd( $order_product );
-                if($order_product && $order_product->cartoon >= $value['cartoon']){
+                if ($order_product && $order_product->cartoon >= $value['cartoon']) {
 
                     $dispatch = DispatchOrder::create([
                         'lr_no' => $request->lr_no,
@@ -383,50 +384,50 @@ class ApiResponseController extends Controller
                     $dispatch->save();
 
                     $cartoon = DispatchOrder::where('order_id', $request->order_id)->where('product_id', $value['product_id'])->sum('cartoon');
-                    if($cartoon >=  $order_product->cartoon){
+                    if ($cartoon >=  $order_product->cartoon) {
                         $order_product->status = 'Dispatched';
                         $order_product->save();
                     }
                 }
             }
 
-            $order_product_open = OrderProduct::
-            where('order_id', $request->order_id)
-            ->where('status','InProcess')->get()->count();
+            $order_product_open = OrderProduct::where('order_id', $request->order_id)
+                ->where('status', 'InProcess')->get()->count();
 
-            if(!$order_product_open){
-                $order = Order::where('id',$request->order_id)->get()->first();
+            if (!$order_product_open) {
+                $order = Order::where('id', $request->order_id)->get()->first();
                 $order->status = 'Dispatched';
                 $order->savE();
-
             }
 
             return response()->json(['success' => true, 'msg' => 'Order dispatched successfully']);
-        }else {
+        } else {
             return response()->json(['success' => false, 'msg' => 'product not found']);
         }
     }
 
-    public function getSize($id){
+    public function getSize($id)
+    {
         $product = Product::find($id);
-        if($product){
+        if ($product) {
 
-            $size = Product::where('product_name','Like', $product->product_name)
-            ->orderBy('id','desc')->groupBy('size')->pluck('size')->all();
+            $size = Product::where('product_name', 'Like', $product->product_name)
+                ->orderBy('id', 'desc')->groupBy('size')->pluck('size')->all();
             if (!$size) {
-                return response()->json(['success' => false,'data' => [], 'msg' => 'No order found']);
+                return response()->json(['success' => false, 'data' => [], 'msg' => 'No order found']);
             }
         }
         // dd($order[0]->products[0]->product->category);
-        return response()->json(['success' => true, 'data' => $size,'msg' => '']);
+        return response()->json(['success' => true, 'data' => $size, 'msg' => '']);
     }
 
-    public function getFinish($id){
+    public function getFinish($id)
+    {
         $product = Product::find($id);
-        if($product){
+        if ($product) {
 
-            $size = Product::where('product_name','Like', $product->product_name)
-            ->orderBy('id','desc')->groupBy('finish')->pluck('finish')->all();
+            $size = Product::where('product_name', 'Like', $product->product_name)
+                ->orderBy('id', 'desc')->groupBy('finish')->pluck('finish')->all();
             if (!$size) {
                 return response()->json(['success' => false, 'msg' => 'No order found']);
             }
@@ -435,4 +436,24 @@ class ApiResponseController extends Controller
         return response()->json(['success' => true, 'msg' => '', 'data' => $size]);
     }
 
+    public function getOrderProducts(Request $request, $id,$status)
+    {
+        if ($status == 'Open' || $status == 'open') {
+            $search = ['InProcess'];
+        } elseif ($status == 'Close' || $status == 'close') {
+            $search = ['Dispatched'];
+        }
+        $order = OrderProduct::with('product', 'dispatch_product', 'product.category')
+        ->where('order_id', $id)->where('status', $search)
+
+        ->WhereHas('product', function ($q) use ($request) {
+            $q->where('product_name', 'LIKE', '%' . $request->product_name . '%');
+        })
+        ->get()->all();
+
+        if (!$order) {
+            return response()->json(['success' => false, 'data' => [], 'msg' => 'No order found']);
+        }
+        return response()->json(['success' => true, 'data' => $order, 'msg' => '']);
+    }
 }

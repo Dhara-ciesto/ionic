@@ -56,7 +56,7 @@
                                     </option>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}"
-                                            {{ old('user_ids') == $user->id ? 'selected' : '' }}>{{ $user->name }}
+                                            {{ old('user_ids') == $user->id ? 'selected' : '' }}>{{  $user->username.' - '. $user->name }}
                                         </option>
                                     @endforeach
                                 </select>

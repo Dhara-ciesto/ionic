@@ -34,6 +34,16 @@ class UserController extends Controller
         return view('users.index');
     }
 
+       /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function uindex()
+    {
+        return view('users.uindex');
+    }
+
     public function logsServerSideOwn(Request $request)
     {
         $search = $request->filter;
@@ -42,16 +52,27 @@ class UserController extends Controller
         $order = $request->order;
         $offset = $request->offset;
         $limit = $request->limit;
+        $getadmin = $request->getadmin;
         $i = 1;
 
         // your table name
-        $query = User::where('role', '=', 1)->when($search, function ($q) use ($filter, $i) {
+        $query = User::when($search, function ($q) use ($filter, $i) {
             foreach ($filter as $key => $item) {
-                $q->where($key, $item);
+                if ($key == 'username') {
+                    $q->where($key,'Like', '%'.$item.'%');
+                }else{
+                    $q->where($key, $item);
+                }
             }
         })->when($sort, function ($q1) use ($sort, $order) {
             $q1->orderBy($sort, $order);
         });
+        // dd($getadmin);
+        if($getadmin == 'true'){
+            $query->where('role', 1);
+        }else{
+            $query->where('role', 2);
+        }
         if (!$sort) {
             $query->orderBy('created_at', 'desc');
         }

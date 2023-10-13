@@ -65,7 +65,7 @@ class OrderController extends Controller
             $q->offset($offset);
         })->when($limit, function ($q) use ($limit) {
             $q->limit($limit);
-        })->get()->toArray();
+        })->orderBy('created_at','DESC')->get()->toArray();
         $index = $offset + 1;
         $data = [];
         foreach ($row as $key => $item) {

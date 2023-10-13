@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
-@section('title') Manage Admin @endsection
+@section('title') Users @endsection
 
 @section('content')
 @component('components.breadcrumb')
 @slot('li_1') Dashboard @endslot
-@slot('title') Admin @endslot
+@slot('title') Users @endslot
 @endcomponent
 
 <div class="row">
@@ -16,7 +16,7 @@
                     <a href="{{route('user.export')}}" class="btn btn-primary float-end mx-1">{{__('Export')}}</a>
                 @endif
 
-                <a href="{{route('user.create')}}" class="btn btn-primary float-end">{{__('Add Admin')}}</a>
+                {{-- <a href="{{route('user.create')}}" class="btn btn-primary float-end">{{__('Add Admin')}}</a> --}}
             </div>
             <div class="card-body">
                 {{-- <h4 class="card-title">Basic example</h4> --}}
@@ -94,7 +94,7 @@
 
     function ajaxRequest(params) {
         var url = "{{ route('user.server_side') }}"
-        params.data.getadmin = true;
+        params.data.getadmin = false;
         $.get(url + '?' + $.param(params.data)).then(function(res) {
             params.success(res)
         })

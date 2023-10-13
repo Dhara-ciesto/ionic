@@ -134,13 +134,13 @@
                                                 </tr>
                                                 @foreach ($product->dispatch_product as $dorder)
                                                     <tr>
-                                                        <td>&nbsp;</td>
-                                                        <td>&nbsp;</td>
+                                                        <td><b>Date:</b></td>
+                                                        <td>{{ date('d-m-Y   h:i a', strtotime($dorder->created_at)) }}</td>
                                                         <td>{{ $dorder->cartoon }}</td>
                                                         {{-- <td>{{ $dorder->qty }}</td> --}}
                                                         <td><b>LR Number : </b> {{ $dorder->lr_no }}</td>
-                                                        <td>@if($dorder->receipt_image)<a href="{{ asset($dorder->receipt_image) }}"
-                                                                target="_blank"><i class="fa fa-eye"></i></a>@endif</td>
+                                                        <td>@if($dorder->receipt_image)<a class="pop"> <i class="fa fa-eye" data-image="{{ asset($dorder->receipt_image) }}"></i>
+                                                               </a>@endif</td>
                                                     </tr>
                                                 @endforeach
                                             @endforeach
@@ -177,6 +177,24 @@
     <!-- end row -->
 
     <!--  Update Profile example -->
+
+    <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+                {{-- <button type="button" class="close mb-3"  data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> --}}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myLargeModalLabel">Receipt Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <img src="" class="imagepreview" style="width: 100%;" >
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -283,6 +301,12 @@
 
 
     <script>
+        $(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('i').attr('data-image'));
+			$('#imagemodal').modal('show');
+		});
+});
         function remove(id, index) {
             Swal.fire({
                 title: 'Are you sure?',
