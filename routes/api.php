@@ -46,8 +46,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('getAllRecentOrder/{status}', [ApiResponseController::class, 'getallRecentOrder']);
     Route::post('getOrderProducts/{id}/{status}', [ApiResponseController::class, 'getOrderProducts']);
 
-
-
 });
 
 Route::group(['middleware' => ['cors']], function () {

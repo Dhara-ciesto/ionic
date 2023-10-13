@@ -436,20 +436,27 @@ class ApiResponseController extends Controller
         return response()->json(['success' => true, 'msg' => '', 'data' => $size]);
     }
 
-    public function getOrderProducts(Request $request, $id,$status)
+    public function getOrderProducts(Request $request, $id, $status)
     {
         if ($status == 'Open' || $status == 'open') {
             $search = ['InProcess'];
         } elseif ($status == 'Close' || $status == 'close') {
             $search = ['Dispatched'];
         }
-        $order = OrderProduct::with('product', 'dispatch_product', 'product.category')
-        ->where('order_id', $id)->where('status', $search)
-
-        ->WhereHas('product', function ($q) use ($request) {
-            $q->where('product_name', 'LIKE', '%' . $request->product_name . '%');
-        })
-        ->get()->all();
+        // dd( $request->date);
+        $order = OrderProduct::where('order_id', $id)->where('status', $search)
+            ->with(['dispatch_product' => function ($query) use ($request,$search) {
+                if($request->date && $search == ['Dispatched']){
+                    $query->whereDate('created_at', $request->date);
+                }
+            }, 'product', 'product.category'])
+            ->WhereHas('product', function ($q) use ($request) {
+                $q->where('product_name', 'LIKE', '%' . $request->product_name . '%');
+            });
+            if($request->date && $search == ['InProcess']){
+                $order =  $order->whereDate('created_at', $request->date);
+            }
+            $order = $order->get()->all();
 
         if (!$order) {
             return response()->json(['success' => false, 'data' => [], 'msg' => 'No order found']);

@@ -30,16 +30,18 @@
                                 </select>
                             </div> --}}
                             <div class="col-md-2">
-                                <label class="form-label">Name</label>
+                                <label class="form-label">Business Name</label>
                                 <input type="text" class="form-control bootstrap-table-filter-control-username" placeholder="Enter User Name">
                             </div>
                         </div>
                         <thead>
                             <tr>
                                 <th data-field="id" data-sortable="true">#</th>
-                                <th data-field="username" data-filter-control="select" data-sortable="true">Name</th>
-                                <th data-field="email" data-filter-control="select" data-sortable="true">Email</th>
-                                <th data-field="role" data-filter-control="select" data-sortable="true">Role</th>
+                                <th data-field="username" data-filter-control="select" data-sortable="true">Business Name</th>
+                                <th data-field="name" data-filter-control="select" data-sortable="true">Full Name</th>
+                                <th data-field="whatsapp_no" data-filter-control="select" data-sortable="true">Whatsapp No</th>
+                                {{-- <th data-field="email" data-filter-control="select" data-sortable="true">Email</th> --}}
+                                {{-- <th data-field="role" data-filter-control="select" data-sortable="true">Role</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -80,9 +82,8 @@
                 , formatter: function(value, row, index) {
                     let url = "{{route('user.edit', ['id' => ':queryId'])}}";
                     url = url.replace(':queryId', row.id);
-                    let action = `
-                    <a href="${url}" class="btn btn-sm btn-warning">Edit</a>
-                    <button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-danger">Delete</button>
+                    // <a href="${url}" class="btn btn-sm btn-warning">Edit</a>
+                    let action = `<button onClick="remove(${row.id}, ${index})" class="btn btn-sm btn-danger">Delete</button>
 
                     `;
                     return action;
