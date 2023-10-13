@@ -133,7 +133,7 @@ class AuthController extends Controller
 
             $otp->status = 'Deactive';
             $otp->save();
-            $user = User::where('whatsapp_no', $request->whatsapp_no)->get()->first();
+            $user = User::where('whatsapp_no', $request->whatsapp_no)->where('status','Active')->get()->first();
             if($user){
 
                 if (!Auth::loginUsingId($user->id)) {

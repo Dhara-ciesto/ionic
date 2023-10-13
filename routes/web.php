@@ -145,6 +145,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('users/exports', [UserController::class, 'export'])->name('user.export');
     Route::get('users/change-password', [UserController::class, 'changePassword'])->name('user.change_password');
     Route::post('users/change-password', [UserController::class, 'changePasswordStore'])->name('user.change_password.store');
+    Route::post('users/changeStatus/{id}', [UserController::class, 'changeStatus'])->name('user.change_status');
+
     // // Privacy Policy
     // Route::get('privacy-policy', [PrivacyPolicyController::class, 'index'])->name('privacy-policy');
     // Route::post('privacy-policy', [PrivacyPolicyController::class, 'store'])->name('privacy-policy');

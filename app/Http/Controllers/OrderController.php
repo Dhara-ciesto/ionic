@@ -44,10 +44,10 @@ class OrderController extends Controller
         $limit = $request->limit;
         $i = 1;
         // your table name
-        $query = Order::groupBy('order_by')->with('orderBy')->where('id', '>', 0);
-        // if (Auth::user()->id != 1) {
-        //     $query->where('status', 'Active');
-        // }
+        $query = Order::with('orderBy')->groupBy('order_by')->WhereHas('orderBy', function ($q) use ($request) {
+            $q->where('deleted_at','=',NULL);
+        });
+      
         $query->when($search, function ($q) use ($filter, $i) {
             foreach ($filter as $key => $item) {
                 if ($key == 'order_by.name') {

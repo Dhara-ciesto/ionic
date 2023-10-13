@@ -203,6 +203,21 @@ class UserController extends Controller
         return view('users/changePassword');
     }
 
+
+    /**
+     * Change status of specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function changeStatus($id, Request $request)
+    {
+        $user = User::findOrFail($id);
+        $user->update(['status' => $request->status]);
+        \Log::info('User having id ' . $id . ' Updated status to ' . $request->status);
+        return response()->json(['success' => true, 'message' => 'User status changed successfully']);
+    }
+
     public function changePasswordStore(Request $request)
     {
         $validator = Validator::make($request->all(),[

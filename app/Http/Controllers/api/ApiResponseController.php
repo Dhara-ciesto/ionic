@@ -38,7 +38,7 @@ class ApiResponseController extends Controller
                 $products = $products->where('product_name', 'Like', '%' . $request->product_name . '%');
             }
         }
-        $products = $products->get();
+        $products = $products->where('status','Active')->orderBy('id','DESC')->get();
         return response()->json(['success' => true, 'message' => '', 'data' => $products]);
     }
 
@@ -62,7 +62,7 @@ class ApiResponseController extends Controller
                 'message' => $validator->messages()->first()
             ], 200);
         }
-        $product = Product::where('product_name', $request->productname)->where('size', $request->size)->where('finish', $request->finish)->get()->first();
+        $product = Product::where('product_name', $request->productname)->where('size', $request->size)->where('finish', $request->finish)->where('status','Active')->get()->first();
         if ($product) {
             return response()->json(['success' => true, 'message' => '', 'data' => $product]);
         } else {
@@ -78,7 +78,7 @@ class ApiResponseController extends Controller
     public function getProducts($product_ids)
     {
         $product_ids = explode(',', $product_ids);
-        $products = Product::with(['category'])->whereIn('id', $product_ids)->get();
+        $products = Product::with(['category'])->whereIn('id', $product_ids)->where('status','Active')->orderBy('id','DESC')->get();
         return response()->json(['success' => true, 'message' => '', 'data' => $products]);
     }
 
@@ -93,7 +93,7 @@ class ApiResponseController extends Controller
         if ($request->category_name) {
             $categories = $categories->where('name', 'Like', '%' . $request->category_name . '%');
         }
-        $categories = $categories->get();
+        $categories = $categories->where('status','Active')->orderBy('id','DESC')->get();
         return response()->json(['success' => true, 'message' => '', 'data' => $categories]);
     }
 
