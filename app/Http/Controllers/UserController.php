@@ -215,7 +215,7 @@ class UserController extends Controller
     public function changeStatus($id, Request $request)
     {
         $user = User::findOrFail($id);
-        // $user->update(['status' => $request->status]);
+        $user->update(['status' => $request->status]);
         $user->tokens()->delete();
         \Log::info('User having id ' . $id . ' Updated status to ' . $request->status);
         return response()->json(['success' => true, 'message' => 'User status changed successfully']);
