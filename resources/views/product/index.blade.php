@@ -26,7 +26,7 @@
                     <div class="">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                         data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
-                        data-total-field="count" data-data-field="items" data-show-columns="false"
+                        data-total-field="count" data-data-field="items" data-show-columns="false"   data-detail-view="true"
                         data-show-toggle="false" data-filter-control="true" data-filter-control-container="#filters" data-show-columns-toggle-all="true">
                         <div id="filters" class="row bootstrap-table-filter-control">
                             {{-- <div class="col-md-2">
@@ -83,7 +83,7 @@
                                 <th data-field="checkbox"><input type="checkbox" id="select_all" onchange="select_all(this)"></th>
                                 <th data-field="file" data-filter-control="" data-sortable="true">Image </th>
                                 <th data-field="product_name" data-filter-control="input" data-sortable="true">Product Name </th>
-                                <th data-field="size" data-filter-control="input" data-sortable="true">Size </th>
+                                <th data-field="size" data-formatter="sizeDetailFormatter"  data-sortable="true">Size </th>
                                 <th data-field="category.name" data-filter-control="select" data-sortable="true">Category </th>
                                 <th data-field="pcs" data-filter-control="input" data-sortable="true">Pcs/Box </th>
                                 <th data-field="box" data-filter-control="select" data-sortable="true">Box/case </th>
@@ -145,6 +145,10 @@
             $.get(url + '?' + $.param(params.data)).then(function(res) {
                 params.success(res)
             })
+        }
+
+        function sizeDetailFormatter(index, row) {
+            return '<b>Size: </b>' + row.size + '<br><b>Finish: </b>' + row.finish;
         }
 
         window.tableFilterStripHtml = function(value) {

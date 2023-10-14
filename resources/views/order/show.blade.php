@@ -134,7 +134,7 @@
                                                 </tr>
                                                 @foreach ($product->dispatch_product as $dorder)
                                                     <tr>
-                                                        <td><b>Date:</b></td>
+                                                        <td><b>Dispatch Date:</b></td>
                                                         <td>{{ date('d-m-Y   h:i a', strtotime($dorder->created_at)) }}</td>
                                                         <td>{{ $dorder->cartoon }}</td>
                                                         {{-- <td>{{ $dorder->qty }}</td> --}}
