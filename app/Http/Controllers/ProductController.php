@@ -130,7 +130,7 @@ class ProductController extends Controller
                 return $query->where('size', $request->size)->where('finish',$request->finish);
             }),
 
-        ],['product_name.unique' => 'The product name has already been taken with same size.']);
+        ],['product_name.unique' => 'The product name has already been taken with same size and finish.']);
 
         $reqData = $request->all();
 
