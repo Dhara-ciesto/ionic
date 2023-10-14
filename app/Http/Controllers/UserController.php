@@ -185,7 +185,9 @@ class UserController extends Controller
         if ($id == 1 || $id == Auth::user()->id) {
             return response()->json(['success' => false, 'message' => 'User can not deleted']);
         } else {
-            User::find($id)->delete();
+            $user =  User::find($id);
+            $user->tokens()->delete();
+            $user->delete();
             return response()->json(['success' => true, 'message' => 'User deleted successfully']);
         }
     }
@@ -213,7 +215,9 @@ class UserController extends Controller
     public function changeStatus($id, Request $request)
     {
         $user = User::findOrFail($id);
-        $user->update(['status' => $request->status]);
+        // $user->update(['status' => $request->status]);
+        $user->tokens()->delete();
+        $user->currentAccessToken()->delete();
         \Log::info('User having id ' . $id . ' Updated status to ' . $request->status);
         return response()->json(['success' => true, 'message' => 'User status changed successfully']);
     }

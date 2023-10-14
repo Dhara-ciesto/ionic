@@ -85,6 +85,12 @@ class AuthController extends Controller
                     'success' => false,
                     'message' => 'User not exist with this number'
                 ]);
+            }elseif($user->status != 'Active'){
+                return response()->json([
+                    // 'otp' => $otp->otp,
+                    'success' => false,
+                    'message' => 'User account is deactivated'
+                ]);
             }
         }
         $otp = OTP::create([
