@@ -89,7 +89,7 @@ class AuthController extends Controller
                 return response()->json([
                     // 'otp' => $otp->otp,
                     'success' => false,
-                    'message' => 'Your account has been deactivated. Please contact your administrator.'
+                    'message' => 'Your account has been deactivated. Please contact on +91 9737971972.'
                 ]);
             }
         }
