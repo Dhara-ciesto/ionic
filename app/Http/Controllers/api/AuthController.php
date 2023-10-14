@@ -83,13 +83,13 @@ class AuthController extends Controller
                 return response()->json([
                     // 'otp' => $otp->otp,
                     'success' => false,
-                    'message' => 'User not exist with this number'
+                    'message' => 'This Number is not registered.'
                 ]);
             }elseif($user->status != 'Active'){
                 return response()->json([
                     // 'otp' => $otp->otp,
                     'success' => false,
-                    'message' => 'User account is deactivated'
+                    'message' => 'Your account has been deactivated. Please contact your administrator.'
                 ]);
             }
         }
