@@ -26,7 +26,7 @@
                     <div class="">
                         <table class="table mb-0" id="user_table" data-unique-id="id" data-toggle="table"
                         data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true"
-                        data-total-field="count" data-data-field="items" data-show-columns="false"   data-detail-view="true"
+                        data-total-field="count" data-data-field="items" data-show-columns="false" 
                         data-show-toggle="false" data-filter-control="true" data-filter-control-container="#filters" data-show-columns-toggle-all="true">
                         <div id="filters" class="row bootstrap-table-filter-control">
                             {{-- <div class="col-md-2">
